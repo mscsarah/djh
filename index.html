@@ -7,6 +7,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<!-- نقلنا كود المظهر هنا ليعمل فوراً ويمنع أي خطأ برمجي -->
+<script>
+  let isDark = true;
+  function initTheme() {
+    const savedTheme = localStorage.getItem('dijlahTheme');
+    isDark = savedTheme === 'light' ? false : true;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  }
+  initTheme();
+  
+  function toggleTheme() {
+    isDark = !isDark;
+    localStorage.setItem('dijlahTheme', isDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    const themeBtn = document.getElementById('themeBtn');
+    if(themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
+    const nav = document.querySelector('nav');
+    if(nav) {
+      nav.style.background = window.scrollY > 80
+        ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(255,255,255,0.97)')
+        : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(255,255,255,0.8)');
+    }
+  }
+</script>
+
 <style>
 :root {
   --navy: #f8fafc;
@@ -493,7 +519,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </a>
 <div class="nav-links">
-<a class="nav-link live-btn" href="#live-stream">
+<a class="nav-link live-btn nav-cta" href="#live-stream">
   <i class="fas fa-circle"></i> البث المباشر
 </a>
 <a class="nav-link" href="#departments">الكليات والأقساط</a>
@@ -510,7 +536,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <!-- Flash overlay -->
 <div class="hero-flash" id="heroFlash"></div>
 
-<!-- السلايدر الرئيسي: حقن مباشر لـ 15 صورة عريضة بدون أي تأخير زمني -->
+<!-- السلايدر الرئيسي: حاوية فارغة سيتم ملؤها فوراً بالكود المباشر لتجنب أي تأخير -->
 <div class="hero-slides" id="heroSlides"></div>
 
 <!-- Content -->
@@ -526,6 +552,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
       منظومة متكاملة من 4 منصات رقمية ذكية - تُحوّل الجامعة من إدارة ورقية إلى تجربة رقمية استثنائية تليق بمكانة جامعة دجلة وطموحاتها المستقبلية.
     </p>
 <div class="hero-btns">
+<a class="btn-live" href="#live-stream"><i class="fas fa-broadcast-tower"></i> البث المباشر لجامعة دجلة</a>
 <a class="btn-primary" href="#platforms"><i class="fas fa-play-circle" style="margin-left:8px"></i>اكتشف المنصات الأربع</a>
 <a class="btn-secondary" href="system.html" target="_blank"><i class="fas fa-chart-line" style="margin-left:8px"></i>شاهد لوحة الإدارة</a>
 </div>
@@ -564,27 +591,23 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <!-- ===== الحقن المباشر للسلايدر (Zero Delay) ===== -->
 <script>
   (function buildHeroInstantly() {
+    // استخدمت هنا فقط الصور العريضة والواضحة والموثوقة تماماً
     const heroWideImages = [
-      { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', fixed: true },
-      { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', fixed: true },
+      { src: 'image_db6842.png', title: 'التميز الأكاديمي', desc: 'تطوير مستمر', fixed: true },
+      { src: 'image_db67ce.png', title: 'بيئة تعليمية', desc: 'إشراف مباشر', fixed: true },
       { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', fixed: false },
       { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', fixed: false },
       { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', fixed: false },
-      { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', fixed: false },
-      { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', fixed: false },
-      { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', fixed: false },
-      { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', fixed: false },
-      { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', fixed: false },
-      { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', fixed: false },
-      { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', fixed: false },
-      { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', fixed: false },
-      { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', fixed: false },
-      { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', fixed: false },
-      { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', fixed: false },
       { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', fixed: false },
-      { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', fixed: false },
+      { src: '696512383_1435764055258584_8253520068821710749_n.jpg', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', fixed: false },
       { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', fixed: false },
-      { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', fixed: false }
+      { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', fixed: false },
+      { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', fixed: false },
+      { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', fixed: false },
+      { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', fixed: false },
+      { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', fixed: false },
+      { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', fixed: false },
+      { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', fixed: false }
     ];
 
     const fixedImgs = heroWideImages.filter(img => img.fixed);
@@ -1260,39 +1283,6 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
      ==================================================== -->
 <script>
 // ─────────────────────────────────────────────
-//  Theme Management
-// ─────────────────────────────────────────────
-let isDark = true;
-
-function initTheme() {
-  const savedTheme = localStorage.getItem('dijlahTheme');
-  if (savedTheme === 'light') {
-    isDark = false;
-  } else {
-    isDark = true;
-  }
-  applyTheme();
-}
-
-function toggleTheme() {
-  isDark = !isDark;
-  localStorage.setItem('dijlahTheme', isDark ? 'dark' : 'light');
-  applyTheme();
-}
-
-function applyTheme() {
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  const themeBtn = document.getElementById('themeBtn');
-  if(themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
-  const nav = document.querySelector('nav');
-  if(nav) {
-    nav.style.background = window.scrollY > 80
-      ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(255,255,255,0.97)')
-      : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(255,255,255,0.8)');
-  }
-}
-
-// ─────────────────────────────────────────────
 //  الصور الأساسية للواجهة وللمعرض
 // ─────────────────────────────────────────────
 function initDynamicContent() {
@@ -1568,7 +1558,6 @@ setInterval(updateIoTData, 3000);
 //  Stars & Main Init
 // ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  initTheme();
   initDynamicContent();
   
   if(window.finalHeroImages && window.finalHeroImages.length > 0) {
