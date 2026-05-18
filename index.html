@@ -8,8 +8,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
-<!-- نقلنا كود المظهر هنا ليعمل فوراً ويمنع أي خطأ برمجي -->
 <script>
+  // تهيئة الوضع الليلي ليعمل فور تحميل الصفحة
   let isDark = true;
   function initTheme() {
     const savedTheme = localStorage.getItem('dijlahTheme');
@@ -87,12 +87,36 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#1c283d!important;padding:8px 22px!important;border-radius:25px!important;font-weight:900!important;box-shadow:0 4px 15px rgba(170,204,56,0.35)}
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(170,204,56,0.5)!important}
 
-.live-btn {
+/* إصلاح زر البث المباشر في النافبار والواجهة */
+.live-btn-nav {
   background: #ef4444 !important; color: #fff !important; display: flex; align-items: center; gap: 6px; animation: pulse-red 2s infinite; box-shadow: 0 0 15px rgba(239,68,68,0.4);
-  border-radius: 20px !important; padding: 8px 18px !important; font-weight: 800 !important;
+  border-radius: 20px !important; padding: 8px 18px !important; font-weight: 800 !important; border:none; outline:none; text-decoration: none !important;
 }
-.live-btn i { font-size: 10px; animation: blink 1.5s infinite; }
-.live-btn:hover { background: #dc2626 !important; transform: translateY(-2px); }
+.live-btn-nav i { font-size: 10px; animation: blink 1.5s infinite; }
+.live-btn-nav:hover { background: #dc2626 !important; transform: translateY(-2px); color: #fff !important;}
+
+a.btn-live, a.btn-live:link, a.btn-live:visited {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  padding: 14px 36px !important;
+  border-radius: 30px !important;
+  font-weight: 900 !important;
+  font-size: 15px !important;
+  text-decoration: none !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 6px 25px rgba(239,68,68,0.4) !important;
+  transition: all .3s ease !important;
+}
+a.btn-live:hover {
+  background: #dc2626 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 35px rgba(239,68,68,0.6) !important;
+  color: #ffffff !important;
+}
+
 @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
@@ -181,7 +205,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 
 /* ===== Live Stream Section ===== */
 #live-stream {background: var(--navy2);padding: 90px 5%;position: relative;z-index: 2;}
-.video-container {max-width: 900px;margin: 40px auto 0;border-radius: 20px;overflow: hidden;box-shadow: 0 20px 60px rgba(0,0,0,0.4);border: 2px solid var(--glass-border);background: #000;position: relative;}
+.video-container {max-width: 900px;margin: 40px auto 0;border-radius: 20px;overflow: hidden;box-shadow: 0 20px 60px rgba(0,0,0,0.2);border: 2px solid var(--glass-border);background: #000;position: relative;}
 #dijlahLiveVideo {width: 100%;aspect-ratio: 16 / 9;display: block;position: relative;z-index: 1;background: transparent;}
 
 /* ===== 4 Platforms ===== */
@@ -486,7 +510,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
   footer{grid-template-columns:1fr}
   .gallery-mosaic{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px}
   .cta-checklist{grid-template-columns:1fr}
-  nav .nav-links .nav-link:not(.nav-cta):not(.live-btn){display:none}
+  nav .nav-links .nav-link:not(.nav-cta):not(.live-btn-nav){display:none}
   .db-bottom{grid-template-columns:1fr}
   .db-body{grid-template-columns:1fr 1fr}
   .hero-prev{right:10px}
@@ -496,8 +520,8 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 @media(max-width:600px){
   .gallery-mosaic{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px}
   .gm.tall{grid-row:span 1}
-  .live-btn { padding: 6px 12px !important; font-size: 11px !important; }
-  .nav-cta { display: none !important; } /* إخفاء زر احجز عرضاً في الموبايل لتوفير مساحة للبث المباشر */
+  .live-btn-nav { padding: 6px 12px !important; font-size: 11px !important; }
+  .nav-cta { display: none !important; }
 }
 </style>
 </head>
@@ -519,7 +543,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </a>
 <div class="nav-links">
-<a class="nav-link live-btn nav-cta" href="#live-stream">
+<a class="nav-link live-btn-nav" href="#live-stream">
   <i class="fas fa-circle"></i> البث المباشر
 </a>
 <a class="nav-link" href="#departments">الكليات والأقساط</a>
@@ -536,8 +560,19 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <!-- Flash overlay -->
 <div class="hero-flash" id="heroFlash"></div>
 
-<!-- السلايدر الرئيسي: حاوية فارغة سيتم ملؤها فوراً بالكود المباشر لتجنب أي تأخير -->
-<div class="hero-slides" id="heroSlides"></div>
+<!-- السلايدر الرئيسي: حقن مباشر لـ 10 صور عريضة لتجنب التأخير والخطأ -->
+<div class="hero-slides" id="heroSlides">
+  <div class="hero-slide active"><div class="slide-bg" style="background-image:url('image_cf38e8.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('image_cf384d.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('680134993_1421913266643663_8918523409866496429_n.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('691602021_1435764025258587_4517447480099574972_n.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('693372346_1435763868591936_9161946611862580438_n.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('694521958_1435765291925127_3855133316545751472_n.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('694716693_1435764115258578_762644510018286221_n.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('696429002_1435765301925126_2887835527564741738_n.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('696512383_1435764055258584_8253520068821710749_n.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('693439674_1435765241925132_1309757349121582130_n.jpg')"></div></div>
+</div>
 
 <!-- Content -->
 <div class="hero-content">
@@ -568,7 +603,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="slide-counter" id="slideCounter">
 <div class="cur" id="curNum">01</div>
 <div class="sep"></div>
-<div class="tot" id="totNum">15</div>
+<div class="tot" id="totNum">10</div>
 </div>
 <!-- Caption overlay -->
 <div id="heroCaption">
@@ -581,61 +616,23 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <span>استكشف</span>
 </div>
 <!-- Dots -->
-<div class="hero-dots" id="heroDots"></div>
+<div class="hero-dots" id="heroDots">
+  <div class="hero-dot active" onclick="goToSlide(0)"></div>
+  <div class="hero-dot" onclick="goToSlide(1)"></div>
+  <div class="hero-dot" onclick="goToSlide(2)"></div>
+  <div class="hero-dot" onclick="goToSlide(3)"></div>
+  <div class="hero-dot" onclick="goToSlide(4)"></div>
+  <div class="hero-dot" onclick="goToSlide(5)"></div>
+  <div class="hero-dot" onclick="goToSlide(6)"></div>
+  <div class="hero-dot" onclick="goToSlide(7)"></div>
+  <div class="hero-dot" onclick="goToSlide(8)"></div>
+  <div class="hero-dot" onclick="goToSlide(9)"></div>
+</div>
 <!-- Progress bar -->
 <div class="hero-progress">
 <div class="hero-progress-fill" id="progressFill"></div>
 </div>
 </section>
-
-<!-- ===== الحقن المباشر للسلايدر (Zero Delay) ===== -->
-<script>
-  (function buildHeroInstantly() {
-    // استخدمت هنا فقط الصور العريضة والواضحة والموثوقة تماماً
-    const heroWideImages = [
-      { src: 'image_db6842.png', title: 'التميز الأكاديمي', desc: 'تطوير مستمر', fixed: true },
-      { src: 'image_db67ce.png', title: 'بيئة تعليمية', desc: 'إشراف مباشر', fixed: true },
-      { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', fixed: false },
-      { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', fixed: false },
-      { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', fixed: false },
-      { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', fixed: false },
-      { src: '696512383_1435764055258584_8253520068821710749_n.jpg', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', fixed: false },
-      { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', fixed: false },
-      { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', fixed: false },
-      { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', fixed: false },
-      { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', fixed: false },
-      { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', fixed: false },
-      { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', fixed: false },
-      { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', fixed: false },
-      { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', fixed: false }
-    ];
-
-    const fixedImgs = heroWideImages.filter(img => img.fixed);
-    const variableImgs = heroWideImages.filter(img => !img.fixed);
-    
-    const hr = new Date().getHours();
-    let seed = hr + new Date().getDate();
-    function rnd() { let x = Math.sin(seed++) * 10000; return x - Math.floor(x); }
-    
-    // خلط الصور العشوائية بشكل يتبدل كل ساعة
-    variableImgs.sort(() => rnd() - 0.5);
-    
-    // أخذ 15 صورة كحد أقصى (2 ثابتة + 13 عشوائية)
-    window.finalHeroImages = [...fixedImgs, ...variableImgs.slice(0, 13)];
-    
-    let slidesHTML = '';
-    let dotsHTML = '';
-    
-    window.finalHeroImages.forEach((img, i) => {
-      slidesHTML += `<div class="hero-slide ${i === 0 ? 'active' : ''}"><div class="slide-bg" style="background-image:url('${img.src}')"></div></div>`;
-      dotsHTML += `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`;
-    });
-    
-    document.getElementById('heroSlides').innerHTML = slidesHTML;
-    document.getElementById('heroDots').innerHTML = dotsHTML;
-    document.getElementById('totNum').textContent = window.finalHeroImages.length.toString().padStart(2, '0');
-  })();
-</script>
 
 <!-- ===== LIVE STREAM SECTION ===== -->
 <section id="live-stream">
@@ -767,48 +764,48 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
     <p class="section-sub center">تعرف على كليات وأقسام جامعة دجلة ومعدلات القبول والأقساط الدراسية للعام الدراسي الجديد.</p>
   </div>
   <div class="tuition-grid">
-    <div class="tuition-card" onclick="openTuitionImage('image_db120f.jpg', 'كليات المجموعة الطبية')">
-      <div class="tuition-img-wrapper"><img src="image_db120f.jpg" alt="المجموعة الطبية"></div>
+    <div class="tuition-card" onclick="openTuitionImage('1.jpg', 'كليات المجموعة الطبية')">
+      <div class="tuition-img-wrapper"><img src="1.jpg" alt="المجموعة الطبية"></div>
       <div class="tuition-info"><h4>كليات المجموعة الطبية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db6388.jpg', 'كلية التقنيات الطبية والصحية')">
-      <div class="tuition-img-wrapper"><img src="image_db6388.jpg" alt="كلية التقنيات الطبية والصحية"></div>
+    <div class="tuition-card" onclick="openTuitionImage('12.jpg', 'كلية التقنيات الطبية والصحية')">
+      <div class="tuition-img-wrapper"><img src="12.jpg" alt="كلية التقنيات الطبية والصحية"></div>
       <div class="tuition-info"><h4>كلية التقنيات الطبية والصحية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db638d.jpg', 'كلية الهندسة')">
-      <div class="tuition-img-wrapper"><img src="image_db638d.jpg" alt="كلية الهندسة"></div>
+    <div class="tuition-card" onclick="openTuitionImage('2.jpg', 'كلية الهندسة')">
+      <div class="tuition-img-wrapper"><img src="2.jpg" alt="كلية الهندسة"></div>
       <div class="tuition-info"><h4>كلية الهندسة</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db6391.jpg', 'الكلية التقنية الهندسية')">
-      <div class="tuition-img-wrapper"><img src="image_db6391.jpg" alt="الكلية التقنية الهندسية"></div>
+    <div class="tuition-card" onclick="openTuitionImage('9.jpg', 'الكلية التقنية الهندسية')">
+      <div class="tuition-img-wrapper"><img src="9.jpg" alt="الكلية التقنية الهندسية"></div>
       <div class="tuition-info"><h4>الكلية التقنية الهندسية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db63ae.jpg', 'هندسة تقنيات التبريد والتكييف')">
-      <div class="tuition-img-wrapper"><img src="image_db63ae.jpg" alt="هندسة تقنيات التبريد والتكييف"></div>
+    <div class="tuition-card" onclick="openTuitionImage('10.jpg', 'هندسة تقنيات التبريد والتكييف')">
+      <div class="tuition-img-wrapper"><img src="10.jpg" alt="هندسة تقنيات التبريد والتكييف"></div>
       <div class="tuition-info"><h4>هندسة تقنيات التبريد والتكييف</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db63c9.jpg', 'كلية القانون')">
-      <div class="tuition-img-wrapper"><img src="image_db63c9.jpg" alt="كلية القانون"></div>
+    <div class="tuition-card" onclick="openTuitionImage('3.jpg', 'كلية القانون')">
+      <div class="tuition-img-wrapper"><img src="3.jpg" alt="كلية القانون"></div>
       <div class="tuition-info"><h4>كلية القانون</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db63ec.jpg', 'كلية الإعلام')">
-      <div class="tuition-img-wrapper"><img src="image_db63ec.jpg" alt="كلية الإعلام"></div>
+    <div class="tuition-card" onclick="openTuitionImage('8.jpg', 'كلية الإعلام')">
+      <div class="tuition-img-wrapper"><img src="8.jpg" alt="كلية الإعلام"></div>
       <div class="tuition-info"><h4>كلية الإعلام</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db6407.jpg', 'كلية الإدارة والاقتصاد')">
-      <div class="tuition-img-wrapper"><img src="image_db6407.jpg" alt="كلية الإدارة والاقتصاد"></div>
+    <div class="tuition-card" onclick="openTuitionImage('7.jpg', 'كلية الإدارة والاقتصاد')">
+      <div class="tuition-img-wrapper"><img src="7.jpg" alt="كلية الإدارة والاقتصاد"></div>
       <div class="tuition-info"><h4>كلية الإدارة والاقتصاد</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db6425.jpg', 'كلية الفنون الجميلة')">
-      <div class="tuition-img-wrapper"><img src="image_db6425.jpg" alt="كلية الفنون الجميلة"></div>
+    <div class="tuition-card" onclick="openTuitionImage('4.jpg', 'كلية الفنون الجميلة')">
+      <div class="tuition-img-wrapper"><img src="4.jpg" alt="كلية الفنون الجميلة"></div>
       <div class="tuition-info"><h4>كلية الفنون الجميلة</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db6442.jpg', 'كلية التربية')">
-      <div class="tuition-img-wrapper"><img src="image_db6442.jpg" alt="كلية التربية"></div>
+    <div class="tuition-card" onclick="openTuitionImage('5.jpg', 'كلية التربية')">
+      <div class="tuition-img-wrapper"><img src="5.jpg" alt="كلية التربية"></div>
       <div class="tuition-info"><h4>كلية التربية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('image_db67c5.png', 'كلية العلوم')">
-      <div class="tuition-img-wrapper"><img src="image_db67c5.png" alt="كلية العلوم"></div>
+    <div class="tuition-card" onclick="openTuitionImage('6.jpg', 'كلية العلوم')">
+      <div class="tuition-img-wrapper"><img src="6.jpg" alt="كلية العلوم"></div>
       <div class="tuition-info"><h4>كلية العلوم</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
   </div>
@@ -1285,36 +1282,34 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 // ─────────────────────────────────────────────
 //  الصور الأساسية للواجهة وللمعرض
 // ─────────────────────────────────────────────
-function initDynamicContent() {
+const galleryMasterImages = [
+  { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', isTall: false },
+  { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', isTall: false },
+  { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', isTall: false },
+  { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', isTall: false },
+  { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', isTall: false },
+  { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', isTall: false },
+  { src: '696512383_1435764055258584_8253520068821710749_n.jpg', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', isTall: false },
+  { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', isTall: false },
+  { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', isTall: false },
+  { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', isTall: false },
+  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات', desc: 'استعداد وتركيز', isTall: true },
+  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني', desc: 'مراقبة وتنظيم', isTall: true },
+  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'فعاليات وأعياد', desc: 'الاحتفالات بالجامعة', isTall: true },
+  { src: '3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif', title: 'واجهة الجامعة', desc: 'مبنى الجامعة الرئيسي', isTall: true },
+  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية', desc: 'أجواء احتفالية', isTall: true },
+  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', isTall: true },
+  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض', desc: 'مؤتمرات علمية', isTall: true },
+  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', isTall: true },
+  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', isTall: true },
+  { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', isTall: true },
+  { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', isTall: true },
+  { src: '2df68a43-a9c2-4351-ab93-cc3eb5e09385.jfif', title: 'جانب من الندوة', desc: 'مشاركة فعالة', isTall: true }
+];
+
+function buildGallery() {
   const galleryContainer = document.querySelector('.gallery-mosaic');
   if(galleryContainer) {
-    const galleryMasterImages = [
-      { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', isTall: false },
-      { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', isTall: false },
-      { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', isTall: false },
-      { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', isTall: false },
-      { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', isTall: false },
-      { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', isTall: false },
-      { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', isTall: false },
-      { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', isTall: false },
-      { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', isTall: false },
-      { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', isTall: false },
-      { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', isTall: false },
-      { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', isTall: false },
-      { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', isTall: false },
-      { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', isTall: false },
-      { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', isTall: false },
-      { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', isTall: false },
-      { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', isTall: false },
-      { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', isTall: false },
-      { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', isTall: false },
-      { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', isTall: false },
-      { src: 'image_db67ce.png', title: 'بيئة تعليمية', desc: 'إشراف مباشر', isTall: true },
-      { src: 'image_db6842.png', title: 'التميز الأكاديمي', desc: 'تطوير مستمر', isTall: true }
-    ];
-
-    window.galleryImagesGlobal = galleryMasterImages;
-
     galleryContainer.innerHTML = '';
     galleryMasterImages.forEach((img, i) => {
       let tallClass = img.isTall ? 'tall' : '';
@@ -1469,8 +1464,7 @@ function closeLightboxOnBg(e) {
 }
 
 function updateLightbox() {
-  if(!window.galleryImagesGlobal) return;
-  const item = window.galleryImagesGlobal[lbCurrent];
+  const item = galleryMasterImages[lbCurrent];
   const img  = document.getElementById('lbImg');
   img.style.opacity = '0';
   
@@ -1479,12 +1473,12 @@ function updateLightbox() {
   img.onload = function() { img.style.opacity = '1'; };
   img.onerror = function() { img.src = ''; img.alt = 'الصورة غير متوفرة'; img.style.opacity = '1'; };
   
-  document.getElementById('lbCounter').textContent = `${lbCurrent + 1} / ${window.galleryImagesGlobal.length}`;
+  document.getElementById('lbCounter').textContent = `${lbCurrent + 1} / ${galleryMasterImages.length}`;
   document.getElementById('lbTitle').textContent = item.title;
 }
 
-function lbPrev() { if(!window.galleryImagesGlobal) return; lbCurrent = (lbCurrent - 1 + window.galleryImagesGlobal.length) % window.galleryImagesGlobal.length; updateLightbox(); }
-function lbNext() { if(!window.galleryImagesGlobal) return; lbCurrent = (lbCurrent + 1) % window.galleryImagesGlobal.length; updateLightbox(); }
+function lbPrev() { lbCurrent = (lbCurrent - 1 + galleryMasterImages.length) % galleryMasterImages.length; updateLightbox(); }
+function lbNext() { lbCurrent = (lbCurrent + 1) % galleryMasterImages.length; updateLightbox(); }
 
 const lightboxEl = document.getElementById('lightbox');
 if(lightboxEl) {
@@ -1558,7 +1552,7 @@ setInterval(updateIoTData, 3000);
 //  Stars & Main Init
 // ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  initDynamicContent();
+  buildGallery();
   
   if(window.finalHeroImages && window.finalHeroImages.length > 0) {
     updateCounter(0);
@@ -1567,7 +1561,7 @@ window.addEventListener('DOMContentLoaded', () => {
     startAutoplay();
   }
   
-  // HLS Stream (يشتغل عند الضغط فقط بدون autoplay)
+  // HLS Stream (يعمل بالضغط ولا يشتغل تلقائيا)
   var video = document.getElementById('dijlahLiveVideo');
   if (video) {
     var videoSrc = 'https://stream.addresses-sat.com/ANA_DEJLAH/index.m3u8?fbclid=IwY2xjawR4BHdleHRuA2FlbQIxMABicmlkETE5UWx0MWhGdG9yQmNuMmtTc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHulbH_7babATCeZORhWoqdwEz50vg9_m7VXygetr-msLBbOORNGPZ0qjXQm8_aem_f8Onr8RgHluHlQVQUBL9KA';
