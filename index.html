@@ -560,60 +560,6 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </section>
 
-<!-- ===== الحقن المباشر للسلايدر (Zero Delay) ===== -->
-<script>
-  // نضع هذا السكريبت مباشرة تحت قسم الهيرو لكي يملأ الصور بدون أي انتظار (يمنع الشاشة السوداء)
-  (function buildHeroInstantly() {
-    const heroWideImages = [
-      { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', fixed: true },
-      { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', fixed: true },
-      { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', fixed: false },
-      { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', fixed: false },
-      { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', fixed: false },
-      { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', fixed: false },
-      { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', fixed: false },
-      { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', fixed: false },
-      { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', fixed: false },
-      { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', fixed: false },
-      { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', fixed: false },
-      { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', fixed: false },
-      { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', fixed: false },
-      { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', fixed: false },
-      { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', fixed: false },
-      { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', fixed: false },
-      { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', fixed: false },
-      { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', fixed: false },
-      { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', fixed: false },
-      { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', fixed: false }
-    ];
-
-    const fixedImgs = heroWideImages.filter(img => img.fixed);
-    const variableImgs = heroWideImages.filter(img => !img.fixed);
-    
-    const hr = new Date().getHours();
-    let seed = hr + new Date().getDate();
-    function rnd() { let x = Math.sin(seed++) * 10000; return x - Math.floor(x); }
-    
-    // خلط الصور العشوائية
-    variableImgs.sort(() => rnd() - 0.5);
-    
-    // أخذ 15 صورة كحد أقصى (2 ثابتة + 13 عشوائية)
-    window.finalHeroImages = [...fixedImgs, ...variableImgs.slice(0, 13)];
-    
-    let slidesHTML = '';
-    let dotsHTML = '';
-    
-    window.finalHeroImages.forEach((img, i) => {
-      slidesHTML += `<div class="hero-slide ${i === 0 ? 'active' : ''}"><div class="slide-bg" style="background-image:url('${img.src}')"></div></div>`;
-      dotsHTML += `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`;
-    });
-    
-    document.getElementById('heroSlides').innerHTML = slidesHTML;
-    document.getElementById('heroDots').innerHTML = dotsHTML;
-    document.getElementById('totNum').textContent = window.finalHeroImages.length.toString().padStart(2, '0');
-  })();
-</script>
-
 <!-- ===== LIVE STREAM SECTION ===== -->
 <section id="live-stream">
   <div class="text-center">
@@ -744,48 +690,48 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
     <p class="section-sub center">تعرف على كليات وأقسام جامعة دجلة ومعدلات القبول والأقساط الدراسية للعام الدراسي الجديد.</p>
   </div>
   <div class="tuition-grid">
-    <div class="tuition-card" onclick="openTuitionImage('1.jpg', 'كليات المجموعة الطبية')">
-      <div class="tuition-img-wrapper"><img src="1.jpg" alt="المجموعة الطبية"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db120f.jpg', 'كليات المجموعة الطبية')">
+      <div class="tuition-img-wrapper"><img src="image_db120f.jpg" alt="المجموعة الطبية"></div>
       <div class="tuition-info"><h4>كليات المجموعة الطبية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('12.jpg', 'كلية التقنيات الطبية والصحية')">
-      <div class="tuition-img-wrapper"><img src="12.jpg" alt="كلية التقنيات الطبية والصحية"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db6388.jpg', 'كلية التقنيات الطبية والصحية')">
+      <div class="tuition-img-wrapper"><img src="image_db6388.jpg" alt="كلية التقنيات الطبية والصحية"></div>
       <div class="tuition-info"><h4>كلية التقنيات الطبية والصحية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('2.jpg', 'كلية الهندسة')">
-      <div class="tuition-img-wrapper"><img src="2.jpg" alt="كلية الهندسة"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db638d.jpg', 'كلية الهندسة')">
+      <div class="tuition-img-wrapper"><img src="image_db638d.jpg" alt="كلية الهندسة"></div>
       <div class="tuition-info"><h4>كلية الهندسة</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('9.jpg', 'الكلية التقنية الهندسية')">
-      <div class="tuition-img-wrapper"><img src="9.jpg" alt="الكلية التقنية الهندسية"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db6391.jpg', 'الكلية التقنية الهندسية')">
+      <div class="tuition-img-wrapper"><img src="image_db6391.jpg" alt="الكلية التقنية الهندسية"></div>
       <div class="tuition-info"><h4>الكلية التقنية الهندسية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('10.jpg', 'هندسة تقنيات التبريد والتكييف')">
-      <div class="tuition-img-wrapper"><img src="10.jpg" alt="هندسة تقنيات التبريد والتكييف"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db63ae.jpg', 'هندسة تقنيات التبريد والتكييف')">
+      <div class="tuition-img-wrapper"><img src="image_db63ae.jpg" alt="هندسة تقنيات التبريد والتكييف"></div>
       <div class="tuition-info"><h4>هندسة تقنيات التبريد والتكييف</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('3.jpg', 'كلية القانون')">
-      <div class="tuition-img-wrapper"><img src="3.jpg" alt="كلية القانون"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db63c9.jpg', 'كلية القانون')">
+      <div class="tuition-img-wrapper"><img src="image_db63c9.jpg" alt="كلية القانون"></div>
       <div class="tuition-info"><h4>كلية القانون</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('8.jpg', 'كلية الإعلام')">
-      <div class="tuition-img-wrapper"><img src="8.jpg" alt="كلية الإعلام"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db63ec.jpg', 'كلية الإعلام')">
+      <div class="tuition-img-wrapper"><img src="image_db63ec.jpg" alt="كلية الإعلام"></div>
       <div class="tuition-info"><h4>كلية الإعلام</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('7.jpg', 'كلية الإدارة والاقتصاد')">
-      <div class="tuition-img-wrapper"><img src="7.jpg" alt="كلية الإدارة والاقتصاد"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db6407.jpg', 'كلية الإدارة والاقتصاد')">
+      <div class="tuition-img-wrapper"><img src="image_db6407.jpg" alt="كلية الإدارة والاقتصاد"></div>
       <div class="tuition-info"><h4>كلية الإدارة والاقتصاد</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('4.jpg', 'كلية الفنون الجميلة')">
-      <div class="tuition-img-wrapper"><img src="4.jpg" alt="كلية الفنون الجميلة"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db6425.jpg', 'كلية الفنون الجميلة')">
+      <div class="tuition-img-wrapper"><img src="image_db6425.jpg" alt="كلية الفنون الجميلة"></div>
       <div class="tuition-info"><h4>كلية الفنون الجميلة</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('5.jpg', 'كلية التربية')">
-      <div class="tuition-img-wrapper"><img src="5.jpg" alt="كلية التربية"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db6442.jpg', 'كلية التربية')">
+      <div class="tuition-img-wrapper"><img src="image_db6442.jpg" alt="كلية التربية"></div>
       <div class="tuition-info"><h4>كلية التربية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
-    <div class="tuition-card" onclick="openTuitionImage('6.jpg', 'كلية العلوم')">
-      <div class="tuition-img-wrapper"><img src="6.jpg" alt="كلية العلوم"></div>
+    <div class="tuition-card" onclick="openTuitionImage('image_db67c5.png', 'كلية العلوم')">
+      <div class="tuition-img-wrapper"><img src="image_db67c5.png" alt="كلية العلوم"></div>
       <div class="tuition-info"><h4>كلية العلوم</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
     </div>
   </div>
@@ -1295,7 +1241,6 @@ function applyTheme() {
 // ─────────────────────────────────────────────
 //  الصور الأساسية والمخصصة بالأسماء الصحيحة والمباشرة
 // ─────────────────────────────────────────────
-// قمنا ببناء المصفوفة الخاصة بالمعرض لتعمل بشكل منفصل وتركنا الواجهة للمولد الفوري بالأسفل
 const galleryMasterImages = [
   // العريضة
   { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', isTall: false },
@@ -1319,19 +1264,9 @@ const galleryMasterImages = [
   { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', isTall: false },
   { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', isTall: false },
   
-  // الطولانية
-  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات', desc: 'استعداد وتركيز', isTall: true },
-  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني', desc: 'مراقبة وتنظيم', isTall: true },
-  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'فعاليات وأعياد', desc: 'الاحتفالات بالجامعة', isTall: true },
-  { src: '3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif', title: 'واجهة الجامعة', desc: 'مبنى الجامعة الرئيسي', isTall: true },
-  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية', desc: 'أجواء احتفالية', isTall: true },
-  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', isTall: true },
-  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض', desc: 'مؤتمرات علمية', isTall: true },
-  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', isTall: true },
-  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', isTall: true },
-  { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', isTall: true },
-  { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', isTall: true },
-  { src: '2df68a43-a9c2-4351-ab93-cc3eb5e09385.jfif', title: 'جانب من الندوة', desc: 'مشاركة فعالة', isTall: true }
+  // صور طولانية ستظهر بطريقة احترافية في المعرض فقط
+  { src: 'image_db67ce.png', title: 'بيئة تعليمية', desc: 'إشراف مباشر', isTall: true },
+  { src: 'image_db6842.png', title: 'التميز الأكاديمي', desc: 'تطوير مستمر', isTall: true }
 ];
 
 let currentSlide = 0;
@@ -1379,7 +1314,6 @@ function startProgress() {
 
 function updateCaption(n) {
   const heroCaption = document.getElementById('heroCaption');
-  // الوصول للمصفوفة التي ولدت صور الهيرو من المتغير العام
   if(!heroCaption || !window.finalHeroImages || !window.finalHeroImages[n]) return;
   heroCaption.style.opacity = '0';
   heroCaption.style.transform = 'translateY(14px)';
