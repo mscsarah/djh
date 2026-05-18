@@ -1,23 +1,37 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html dir="rtl" lang="ar" data-theme="light">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>جامعة دجلة | مشروع التحول الرقمي الشامل</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-<!-- تضمين مكتبة HLS.js لتشغيل البث المباشر داخل المتصفح -->
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
+/* المتغيرات الافتراضية للوضع الفاتح (الأبيض) */
 :root {
-  --navy: #0d1b2e;
-  --navy2: #1c283d;
-  --navy3: #243447;
+  --navy: #f8fafc;
+  --navy2: #f1f5f9;
+  --navy3: #e2e8f0;
+  --text: #0f172a;
+  --text2: #475569;
+  --glass: rgba(255,255,255,0.8);
+  --glass-border: rgba(15,23,42,0.1);
+  --card-bg: rgba(255,255,255,0.9);
+  --surface: rgba(248,250,252,0.9);
+  
   --gold: #aacc38;
   --gold2: #d2eb7c;
   --gold3: #c8e040;
   --blue: #3bb4e5;
   --blue2: #1a8fc0;
+}
+
+/* متغيرات الوضع الليلي */
+[data-theme="dark"] {
+  --navy: #0d1b2e;
+  --navy2: #1c283d;
+  --navy3: #243447;
   --text: #f0f4f8;
   --text2: #94a3b8;
   --glass: rgba(255,255,255,0.06);
@@ -25,17 +39,7 @@
   --card-bg: rgba(13,27,46,0.7);
   --surface: rgba(28,40,61,0.85);
 }
-[data-theme="light"] {
-  --navy: #f0f6ff;
-  --navy2: #e2ebf8;
-  --navy3: #d0dff2;
-  --text: #1c283d;
-  --text2: #4a6080;
-  --glass: rgba(255,255,255,0.7);
-  --glass-border: rgba(28,40,61,0.15);
-  --card-bg: rgba(255,255,255,0.85);
-  --surface: rgba(240,246,255,0.9);
-}
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:'Cairo',sans-serif;background:var(--navy);color:var(--text);transition:background .4s,color .4s;overflow-x:hidden}
@@ -45,11 +49,10 @@ body{font-family:'Cairo',sans-serif;background:var(--navy);color:var(--text);tra
 
 /* ===== Stars Canvas ===== */
 #starsCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;transition:opacity .5s}
-[data-theme="light"] #starsCanvas{opacity:0}
+:root[data-theme="light"] #starsCanvas, html:not([data-theme="dark"]) #starsCanvas { opacity: 0 !important; }
 
 /* ===== Navbar ===== */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,27,46,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(170,204,56,0.2);transition:all .3s}
-[data-theme="light"] nav{background:rgba(240,246,255,0.9);border-bottom:1px solid rgba(170,204,56,0.3)}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;display:flex;align-items:center;justify-content:space-between;background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);transition:all .3s}
 .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
 .nav-logo svg{width:44px;height:44px;filter:drop-shadow(0 0 8px rgba(170,204,56,0.4))}
 .nav-logo-text{display:flex;flex-direction:column;line-height:1.2}
@@ -61,74 +64,26 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#1c283d!important;padding:8px 22px!important;border-radius:25px!important;font-weight:900!important;box-shadow:0 4px 15px rgba(170,204,56,0.35)}
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(170,204,56,0.5)!important}
 
-/* --- Live Button Styling --- */
 .live-btn {
-  background: #ef4444 !important;
-  color: #fff !important;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  animation: pulse-red 2s infinite;
-  box-shadow: 0 0 15px rgba(239,68,68,0.4);
+  background: #ef4444 !important; color: #fff !important; display: flex; align-items: center; gap: 6px; animation: pulse-red 2s infinite; box-shadow: 0 0 15px rgba(239,68,68,0.4);
 }
 .live-btn i { font-size: 10px; animation: blink 1.5s infinite; }
 .live-btn:hover { background: #dc2626 !important; transform: translateY(-2px); }
-@keyframes pulse-red {
-  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
+@keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 .theme-toggle{width:40px;height:40px;border-radius:50%;border:2px solid rgba(170,204,56,0.4);background:rgba(170,204,56,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;color:var(--gold)}
 .theme-toggle:hover{background:rgba(170,204,56,0.2);transform:rotate(20deg)}
 
-/* ========================================
-   HERO - CINEMATIC SLIDESHOW
-   ======================================== */
+/* ===== HERO - CINEMATIC SLIDESHOW ===== */
 #hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-
-/* Slide container */
 .hero-slides{position:absolute;inset:0;z-index:1}
 .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease}
 .hero-slide.active{opacity:1}
+.slide-bg{position:absolute;inset:-8%;background-size:cover;background-position:center;will-change:transform;}
+.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(160deg, rgba(13,27,46,.92) 0%, rgba(13,27,46,.55) 45%, rgba(13,27,46,.75) 100%);z-index:1;}
+.hero-slide::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,transparent 35%,rgba(0,0,0,.45) 100%);z-index:2;pointer-events:none;}
 
-/* Background image layer - animated independently */
-.slide-bg{
-  position:absolute;
-  inset:-8%;
-  background-size:cover;
-  background-position:center;
-  will-change:transform;
-}
-
-/* Dark cinematic overlay */
-.hero-slide::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    160deg,
-    rgba(13,27,46,.92) 0%,
-    rgba(13,27,46,.55) 45%,
-    rgba(13,27,46,.75) 100%
-  );
-  z-index:1;
-}
-/* Vignette */
-.hero-slide::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:radial-gradient(ellipse at 60% 50%,transparent 35%,rgba(0,0,0,.45) 100%);
-  z-index:2;
-  pointer-events:none;
-}
-[data-theme="light"] .hero-slide::after{
-  background:linear-gradient(160deg,rgba(240,246,255,.82) 0%,rgba(240,246,255,.45) 45%,rgba(240,246,255,.72) 100%);
-}
-
-/* ── Ken Burns - 4 cinematic variations ── */
 @keyframes kb1{from{transform:scale(1) translate(0%,0%)}to{transform:scale(1.12) translate(-2.5%,-1.5%)}}
 @keyframes kb2{from{transform:scale(1.1) translate(-2%,0%)}to{transform:scale(1) translate(2.5%,1.5%)}}
 @keyframes kb3{from{transform:scale(1) translate(2%,1.5%)}to{transform:scale(1.1) translate(-1.5%,-2%)}}
@@ -142,13 +97,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 /* ── Hero Content ── */
 .hero-content{position:relative;z-index:3;text-align:center;padding:0 20px;max-width:1000px}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(170,204,56,0.12);border:1px solid rgba(170,204,56,0.35);border-radius:30px;padding:6px 18px;font-size:12px;font-weight:700;color:var(--gold);margin-bottom:24px;backdrop-filter:blur(10px)}
-.hero-title{font-size:clamp(32px,6vw,72px);font-weight:900;line-height:1.2;margin-bottom:16px;color:var(--text)}
+.hero-title{font-size:clamp(32px,6vw,72px);font-weight:900;line-height:1.2;margin-bottom:16px;color:#fff}
 .hero-title span{background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:clamp(14px,2vw,20px);color:var(--text2);margin-bottom:36px;line-height:1.7;max-width:700px;margin-left:auto;margin-right:auto}
+.hero-sub{font-size:clamp(14px,2vw,20px);color:#cbd5e1;margin-bottom:36px;line-height:1.7;max-width:700px;margin-left:auto;margin-right:auto}
 .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#1c283d;padding:14px 36px;border-radius:30px;font-weight:900;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:all .3s;box-shadow:0 6px 25px rgba(170,204,56,0.4)}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 35px rgba(170,204,56,0.55)}
-.btn-secondary{background:rgba(255,255,255,0.08);color:var(--text);padding:14px 36px;border-radius:30px;font-weight:800;font-size:15px;text-decoration:none;border:2px solid rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;backdrop-filter:blur(10px)}
+.btn-secondary{background:rgba(255,255,255,0.08);color:#fff;padding:14px 36px;border-radius:30px;font-weight:800;font-size:15px;text-decoration:none;border:2px solid rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;backdrop-filter:blur(10px)}
 .btn-secondary:hover{background:rgba(255,255,255,0.15);border-color:var(--gold);color:var(--gold)}
 
 .btn-live {
@@ -157,54 +112,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 }
 .btn-live:hover { transform: translateY(-3px); background: #dc2626; box-shadow: 0 10px 35px rgba(239,68,68,0.6); }
 
-/* ── Progress Bar ── */
-.hero-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.08);z-index:10;overflow:hidden}
-.hero-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:0 2px 2px 0}
-
-/* ── Navigation Arrows ── */
-.hero-nav{
-  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
-  width:54px;height:54px;border-radius:50%;
-  background:rgba(255,255,255,0.08);
-  border:1.5px solid rgba(255,255,255,0.2);
-  color:#fff;font-size:20px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(14px);
-  transition:all .3s;
-}
+/* ── Navigation Arrows & Dots ── */
+.hero-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(14px);transition:all .3s;}
 .hero-nav:hover{background:rgba(170,204,56,0.28);border-color:var(--gold);transform:translateY(-50%) scale(1.1)}
 .hero-prev{right:28px}
 .hero-next{left:28px}
-
-/* ── Slide Counter ── */
-.slide-counter{
-  position:absolute;bottom:84px;right:5%;z-index:5;
-  display:flex;flex-direction:column;align-items:flex-end;
-}
+.slide-counter{position:absolute;bottom:84px;right:5%;z-index:5;display:flex;flex-direction:column;align-items:flex-end;}
 .slide-counter .cur{font-size:32px;font-weight:900;color:var(--gold);line-height:1}
 .slide-counter .sep{width:36px;height:2px;background:rgba(255,255,255,.25);margin:4px 0;border-radius:2px}
 .slide-counter .tot{font-size:13px;font-weight:700;color:rgba(255,255,255,0.5)}
-
-/* ── Slide Caption ── */
-.slide-caption{
-  position:absolute;bottom:84px;left:5%;z-index:5;
-  opacity:0;transform:translateY(10px);
-  transition:opacity .6s ease,transform .6s ease;
-}
+.slide-caption{position:absolute;bottom:84px;left:5%;z-index:5;opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease;}
 .hero-slide.active ~ .slide-caption{opacity:1;transform:translateY(0)}
-.s-cap-label{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
-.s-cap-title{font-size:18px;font-weight:900;color:#fff}
-
-/* ── Dots ── */
 .hero-dots{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:6px}
 .hero-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.28);cursor:pointer;transition:all .35s}
 .hero-dot.active{background:var(--gold);width:22px;border-radius:4px}
-
-/* ── Scroll Hint ── */
+.hero-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.08);z-index:10;overflow:hidden}
+.hero-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:0 2px 2px 0}
 .scroll-hint{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--gold);font-size:11px;font-weight:700;animation:bounce2 2s infinite}
 @keyframes bounce2{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
-
-/* ── Flash overlay on slide change ── */
 .hero-flash{position:absolute;inset:0;z-index:9;pointer-events:none;background:var(--gold);opacity:0;transition:opacity .25s}
 
 /* ===== Stats Bar ===== */
@@ -223,101 +148,125 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .section-sub.center{margin:0 auto}
 
 /* ===== Live Stream Section ===== */
-#live-stream {
-  background: var(--navy2);
-  padding: 90px 5%;
-  position: relative;
-  z-index: 2;
-}
-.video-container {
-  max-width: 900px;
-  margin: 40px auto 0;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  border: 2px solid var(--glass-border);
-  background: #000;
-  position: relative;
-}
-.video-container::before {
-  content: 'جاري تحميل البث المباشر...';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--text2);
-  font-weight: 700;
-  z-index: 0;
-}
-#dijlahLiveVideo {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  display: block;
-  position: relative;
-  z-index: 1;
-  background: transparent;
-}
+#live-stream {background: var(--navy2);padding: 90px 5%;position: relative;z-index: 2;}
+.video-container {max-width: 900px;margin: 40px auto 0;border-radius: 20px;overflow: hidden;box-shadow: 0 20px 60px rgba(0,0,0,0.2);border: 2px solid var(--glass-border);background: #000;position: relative;}
+.video-container::before {content: 'جاري تحميل البث المباشر...';position: absolute;top: 50%; left: 50%;transform: translate(-50%, -50%);color: #fff;font-weight: 700;z-index: 0;}
+#dijlahLiveVideo {width: 100%;aspect-ratio: 16 / 9;display: block;position: relative;z-index: 1;background: transparent;}
 
 /* ===== 4 Platforms ===== */
 #platforms{background:var(--navy);padding:90px 5%}
 .platforms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:54px}
 .platform-card{position:relative;border-radius:24px;overflow:hidden;cursor:pointer;transition:all .4s;background:var(--card-bg);border:1px solid var(--glass-border);backdrop-filter:blur(20px)}
-.platform-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.platform-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,0.1)}
 .platform-card:hover .pc-glow{opacity:1}
 .pc-glow{position:absolute;inset:0;opacity:0;transition:opacity .4s;pointer-events:none}
 .pc-top{padding:32px 28px 24px;position:relative;z-index:1}
 .pc-icon{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px;position:relative}
 .pc-icon::after{content:'';position:absolute;inset:-4px;border-radius:22px;background:inherit;opacity:.15;filter:blur(10px)}
-.pc-num{position:absolute;top:20px;left:24px;font-size:48px;font-weight:900;opacity:.06;color:white;line-height:1}
+.pc-num{position:absolute;top:20px;left:24px;font-size:48px;font-weight:900;opacity:.06;color:var(--text);line-height:1}
 .pc-title{font-size:20px;font-weight:900;color:var(--text);margin-bottom:8px}
 .pc-sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px}
 .pc-features{display:flex;flex-direction:column;gap:8px}
-.pc-feat{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text2);padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+.pc-feat{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text2);padding:8px 12px;border-radius:10px;background:rgba(15,23,42,0.04);border:1px solid var(--glass-border)}
 .pc-feat i{font-size:12px;width:18px;text-align:center}
 .pc-bottom{padding:20px 28px;border-top:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
 .pc-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
 .pc-arrow{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .3s;cursor:pointer}
 .platform-card:hover .pc-arrow{transform:translateX(-4px)}
-.pc-admin .pc-icon{background:linear-gradient(135deg,#1c283d,#243447)}
+.pc-admin .pc-icon{background:linear-gradient(135deg,#1c283d,#243447);color:#fff}
 .pc-admin .pc-glow{background:radial-gradient(circle at 50% 0%,rgba(59,180,229,0.08) 0%,transparent 70%)}
 .pc-admin .pc-feat i{color:var(--blue)}
 .pc-admin .pc-badge{background:rgba(59,180,229,0.1);color:var(--blue)}
 .pc-admin .pc-arrow{background:rgba(59,180,229,0.1);color:var(--blue)}
-.pc-student .pc-icon{background:linear-gradient(135deg,#1a4f2e,#2a7a47)}
+.pc-student .pc-icon{background:linear-gradient(135deg,#1a4f2e,#2a7a47);color:#fff}
 .pc-student .pc-glow{background:radial-gradient(circle at 50% 0%,rgba(170,204,56,0.08) 0%,transparent 70%)}
 .pc-student .pc-feat i{color:var(--gold)}
 .pc-student .pc-badge{background:rgba(170,204,56,0.1);color:var(--gold)}
 .pc-student .pc-arrow{background:rgba(170,204,56,0.1);color:var(--gold)}
-.pc-faculty .pc-icon{background:linear-gradient(135deg,#4a1f0d,#7a3a1f)}
+.pc-faculty .pc-icon{background:linear-gradient(135deg,#4a1f0d,#7a3a1f);color:#fff}
 .pc-faculty .pc-glow{background:radial-gradient(circle at 50% 0%,rgba(249,115,22,0.08) 0%,transparent 70%)}
 .pc-faculty .pc-feat i{color:#fb923c}
 .pc-faculty .pc-badge{background:rgba(249,115,22,0.1);color:#fb923c}
 .pc-faculty .pc-arrow{background:rgba(249,115,22,0.1);color:#fb923c}
-.pc-parent .pc-icon{background:linear-gradient(135deg,#2d1a4a,#4a2a7a)}
+.pc-parent .pc-icon{background:linear-gradient(135deg,#2d1a4a,#4a2a7a);color:#fff}
 .pc-parent .pc-glow{background:radial-gradient(circle at 50% 0%,rgba(167,139,250,0.08) 0%,transparent 70%)}
 .pc-parent .pc-feat i{color:#a78bfa}
 .pc-parent .pc-badge{background:rgba(167,139,250,0.1);color:#a78bfa}
 .pc-parent .pc-arrow{background:rgba(167,139,250,0.1);color:#a78bfa}
 
+/* ===== University Departments & Tuition (NEW) ===== */
+#departments {background: var(--navy2);padding: 90px 5%;}
+.tuition-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));gap: 24px;margin-top: 50px;}
+.tuition-card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+  transition: transform 0.4s, border-color 0.4s;
+  cursor: zoom-in;
+  display: flex;
+  flex-direction: column;
+}
+.tuition-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--gold);
+}
+.tuition-img-wrapper {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff; /* خلفية بيضاء للصور لكي لا يظهر فراغ */
+}
+.tuition-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* لاقتصاص ذكي يحافظ على وضوح النص */
+  transition: transform 0.4s;
+}
+.tuition-card:hover .tuition-img-wrapper img {
+  transform: scale(1.05);
+}
+.tuition-info {
+  padding: 16px;
+  text-align: center;
+  border-top: 1px solid var(--glass-border);
+}
+.tuition-info h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.tuition-info p {
+  font-size: 11px;
+  color: var(--text2);
+  font-weight: 700;
+}
+
 /* ===== Executive Dashboard ===== */
-#exec-dashboard{background:var(--navy2);padding:90px 5%}
-.dashboard-container{margin-top:54px;background:var(--card-bg);border:1px solid var(--glass-border);border-radius:28px;overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 30px 80px rgba(0,0,0,0.4)}
+#exec-dashboard{background:var(--navy);padding:90px 5%}
+.dashboard-container{margin-top:54px;background:var(--card-bg);border:1px solid var(--glass-border);border-radius:28px;overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 30px 80px rgba(0,0,0,0.1)}
 .db-header{background:linear-gradient(135deg,var(--navy2),var(--navy3));padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--glass-border)}
 .db-dots{display:flex;gap:8px}
 .db-dot{width:12px;height:12px;border-radius:50%}
 .db-body{padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
-.db-card{border-radius:16px;padding:20px;position:relative;overflow:hidden}
+.db-card{border-radius:16px;padding:20px;position:relative;overflow:hidden;border:1px solid var(--glass-border)}
 .db-card h4{font-size:11px;font-weight:700;opacity:.65;margin-bottom:6px;color:var(--text)}
 .db-card .db-num{font-size:32px;font-weight:900;line-height:1;color:var(--text)}
 .db-card .db-sub{font-size:11px;margin-top:4px;font-weight:700}
-.db-card .db-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.08}
-.db-bar{height:4px;border-radius:2px;background:rgba(255,255,255,0.1);margin-top:8px}
+.db-card .db-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.05;color:var(--text)}
+.db-bar{height:4px;border-radius:2px;background:rgba(15,23,42,0.1);margin-top:8px}
 .db-fill{height:100%;border-radius:2px}
 .db-live{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#22c55e;margin-top:6px}
 .db-live::before{content:'';width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse2 1.5s infinite}
 @keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
-.db-alert{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;color:#fca5a5}
+.db-alert{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;color:#dc2626}
 .db-bottom{padding:20px 28px;border-top:1px solid var(--glass-border);display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.db-chart{background:rgba(255,255,255,0.03);border-radius:14px;padding:16px;height:100px;display:flex;align-items:flex-end;gap:6px;border:1px solid var(--glass-border)}
+.db-chart{background:rgba(15,23,42,0.03);border-radius:14px;padding:16px;height:100px;display:flex;align-items:flex-end;gap:6px;border:1px solid var(--glass-border)}
 .db-bar-item{flex:1;border-radius:4px 4px 0 0;transition:all .3s}
 .ai-response{background:rgba(59,180,229,0.06);border:1px solid rgba(59,180,229,0.15);border-radius:14px;padding:16px}
 .ai-query{font-size:12px;color:var(--text2);margin-bottom:8px}
@@ -325,7 +274,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .ai-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--blue);font-weight:700;margin-bottom:6px}
 
 /* ===== GALLERY ===== */
-#gallery{background:var(--navy);padding:90px 5%}
+#gallery{background:var(--navy2);padding:90px 5%}
 .gallery-mosaic{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:10px;margin-top:44px;grid-auto-flow: dense;}
 .gm{border-radius:16px;overflow:hidden;position:relative;cursor:pointer;background:var(--navy3);display:block;}
 .gm.tall{grid-row:span 2}
@@ -336,18 +285,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .gm-caption{position:absolute;bottom:0;left:0;right:0;padding:18px 16px;z-index:3;transform:translateY(12px);opacity:0;transition:transform .45s ease,opacity .45s ease;}
 .gm:hover .gm-caption{transform:translateY(0);opacity:1}
 .gm-caption h4{font-size:13px;font-weight:900;color:#fff;margin-bottom:3px}
-.gm-caption p{font-size:11px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:5px}
+.gm-caption p{font-size:11px;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:5px}
 .gm-caption p i{color:var(--gold);font-size:10px}
-.gm-shine{position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);transition:left .7s ease;z-index:4;pointer-events:none;skewX(-20deg);}
+.gm-shine{position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .7s ease;z-index:4;pointer-events:none;transform:skewX(-20deg);}
 .gm:hover .gm-shine{left:160%}
 .gm::after{content:'';position:absolute;inset:0;border-radius:16px;border:2px solid transparent;transition:border-color .4s;z-index:5;pointer-events:none;}
-.gm:hover::after{border-color:rgba(170,204,56,.4)}
+.gm:hover::after{border-color:rgba(170,204,56,.6)}
 
 /* ── Lightbox ── */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(8px);}
 .lightbox.open{display:flex}
-.lb-img-wrap{position:relative;display:flex;align-items:center;justify-content:center}
-.lightbox img{max-width:88vw;max-height:82vh;object-fit:contain;border-radius:10px;box-shadow:0 40px 100px rgba(0,0,0,.8);transition:opacity .3s;}
+.lb-img-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:80vh;}
+.lightbox img{max-width:90vw;max-height:80vh;object-fit:contain;border-radius:10px;box-shadow:0 40px 100px rgba(0,0,0,.8);transition:opacity .3s;}
 .lb-close{position:fixed;top:20px;left:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;z-index:10;}
 .lb-close:hover{background:rgba(239,68,68,.4);border-color:#ef4444}
 .lb-prev,.lb-next{position:fixed;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;z-index:10;}
@@ -359,7 +308,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .lb-title{color:#fff;font-size:14px;font-weight:900}
 
 /* ===== AI Section ===== */
-#ai-section{background:var(--navy2);padding:90px 5%}
+#ai-section{background:var(--navy);padding:90px 5%}
 .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:54px;align-items:center}
 .ai-chat{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:24px;padding:24px;backdrop-filter:blur(20px)}
 .ai-chat-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--glass-border)}
@@ -371,16 +320,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .msg.bot{align-items:flex-end}
 .msg-bubble{max-width:85%;padding:12px 16px;border-radius:16px;font-size:13px;line-height:1.6;font-weight:600}
 .msg.user .msg-bubble{background:rgba(59,180,229,0.12);border:1px solid rgba(59,180,229,0.2);color:var(--text);border-radius:16px 16px 16px 4px}
-.msg.bot .msg-bubble{background:linear-gradient(135deg,rgba(28,40,61,0.8),rgba(36,52,71,0.8));border:1px solid var(--glass-border);color:var(--text);border-radius:16px 16px 4px 16px}
+.msg.bot .msg-bubble{background:linear-gradient(135deg,rgba(28,40,61,0.05),rgba(36,52,71,0.1));border:1px solid var(--glass-border);color:var(--text);border-radius:16px 16px 4px 16px}
 .msg-meta{font-size:10px;color:var(--text2);margin-top:4px}
-.typing{display:flex;gap:4px;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.04);border-radius:12px;width:fit-content;margin-top:8px}
+.typing{display:flex;gap:4px;align-items:center;padding:12px 16px;background:rgba(15,23,42,0.04);border-radius:12px;width:fit-content;margin-top:8px}
 .typing span{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:typing 1.4s infinite}
 .typing span:nth-child(2){animation-delay:.2s}
 .typing span:nth-child(3){animation-delay:.4s}
 @keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
 .ai-features-list{display:flex;flex-direction:column;gap:16px}
 .ai-feat{display:flex;gap:16px;align-items:flex-start}
-.ai-feat-icon{width:48px;height:48px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px}
+.ai-feat-icon{width:48px;height:48px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--card-bg);border:1px solid var(--glass-border)}
 .ai-feat-title{font-weight:900;font-size:15px;color:var(--text);margin-bottom:4px}
 .ai-feat-desc{font-size:13px;color:var(--text2);line-height:1.6}
 
@@ -392,20 +341,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ===== Features Grid ===== */
-#features{background:var(--navy);padding:90px 5%}
+#features{background:var(--navy2);padding:90px 5%}
 .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:54px}
 .feat-card{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:20px;padding:26px;backdrop-filter:blur(15px);transition:all .3s}
-.feat-card:hover{transform:translateY(-5px);border-color:rgba(170,204,56,0.3)}
-.feat-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+.feat-card:hover{transform:translateY(-5px);border-color:rgba(170,204,56,0.5)}
+.feat-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;background:rgba(15,23,42,0.03)}
 .feat-title{font-size:15px;font-weight:900;color:var(--text);margin-bottom:8px}
 .feat-desc{font-size:13px;color:var(--text2);line-height:1.7}
 
 /* ===== Why Section ===== */
-#why{background:var(--navy2);padding:90px 5%}
+#why{background:var(--navy);padding:90px 5%}
 .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:54px;align-items:center}
 .why-points{display:flex;flex-direction:column;gap:18px}
 .why-point{display:flex;gap:16px;align-items:flex-start;padding:18px;border-radius:16px;background:var(--card-bg);border:1px solid var(--glass-border);backdrop-filter:blur(10px);transition:all .3s}
-.why-point:hover{border-color:rgba(170,204,56,0.3);transform:translateX(-4px)}
+.why-point:hover{border-color:rgba(170,204,56,0.4);transform:translateX(-4px)}
 .why-num{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold3));color:#1c283d;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .why-text h4{font-weight:900;font-size:14px;color:var(--text);margin-bottom:4px}
 .why-text p{font-size:12px;color:var(--text2);line-height:1.6}
@@ -420,9 +369,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .float-text{font-size:11px;color:var(--text2);font-weight:700}
 
 /* ===== CTA ===== */
-#cta{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:90px 5%;text-align:center}
-.cta-box{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:32px;padding:60px 40px;backdrop-filter:blur(20px);max-width:800px;margin:0 auto;position:relative;overflow:hidden}
-.cta-box::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(170,204,56,.08) 0%,transparent 70%);pointer-events:none}
+#cta{background:linear-gradient(135deg,var(--navy2),var(--navy3));padding:90px 5%;text-align:center}
+.cta-box{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:32px;padding:60px 40px;backdrop-filter:blur(20px);max-width:800px;margin:0 auto;position:relative;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.05)}
+.cta-box::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(170,204,56,.1) 0%,transparent 70%);pointer-events:none}
 .cta-title{font-size:clamp(24px,4vw,44px);font-weight:900;color:var(--text);margin-bottom:16px}
 .cta-sub{font-size:15px;color:var(--text2);margin-bottom:40px;line-height:1.7}
 .cta-checklist{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:right;margin-bottom:40px;max-width:600px;margin-left:auto;margin-right:auto}
@@ -431,12 +380,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
 /* ===== Footer ===== */
-footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:40px 5%;display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+footer{background:var(--navy);border-top:1px solid var(--glass-border);padding:40px 5%;display:grid;grid-template-columns:1.5fr 1fr 1fr 1.5fr;gap:40px}
 .footer-brand p{font-size:13px;color:var(--text2);margin-top:10px;line-height:1.7}
 .footer-col h5{font-weight:900;font-size:13px;color:var(--text);margin-bottom:12px}
 .footer-col a{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);text-decoration:none;margin-bottom:8px;transition:.2s}
 .footer-col a:hover{color:var(--gold)}
-.footer-bottom{background:var(--navy);padding:16px 5%;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text2);border-top:1px solid var(--glass-border)}
+.footer-bottom{background:var(--navy2);padding:16px 5%;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text2);border-top:1px solid var(--glass-border)}
 
 /* ===== Responsive ===== */
 @media(max-width:900px){
@@ -476,56 +425,26 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </a>
 <div class="nav-links">
-<!-- تم ربط زر البث المباشر بالقسم الداخلي في الموقع -->
 <a class="nav-link live-btn nav-cta" href="#live-stream">
   <i class="fas fa-circle"></i> البث المباشر
 </a>
+<a class="nav-link" href="#departments">الكليات والأقساط</a>
 <a class="nav-link" href="#platforms">المنصات</a>
 <a class="nav-link" href="#exec-dashboard">لوحة الإدارة</a>
 <a class="nav-link" href="#ai-section">الذكاء الاصطناعي</a>
-<a class="nav-link" href="#features">المميزات</a>
 <a class="nav-link nav-cta" href="#cta">احجز عرضًا</a>
 <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="تبديل الوضع">🌙</button>
-<button class="theme-toggle" id="starsBtn" onclick="toggleStars()" style="font-size:14px;margin-right:6px" title="نجوم متحركة">✨</button>
 </div>
 </nav>
+
 <!-- ===== HERO - CINEMATIC ===== -->
 <section id="hero">
-<!-- Flash overlay (brief on transition) -->
+<!-- Flash overlay -->
 <div class="hero-flash" id="heroFlash"></div>
-<!-- Slides -->
-<div class="hero-slides" id="heroSlides">
-<!-- 29 Slides to match the 29 images -->
-<div class="hero-slide active"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-<div class="hero-slide"><div class="slide-bg"></div></div>
-</div><!-- /hero-slides -->
+
+<!-- Slides (سيتم توليدها تلقائياً لاختيار 10 صور فقط) -->
+<div class="hero-slides" id="heroSlides"></div>
+
 <!-- Content -->
 <div class="hero-content">
 <div class="hero-badge">
@@ -539,7 +458,6 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
       منظومة متكاملة من 4 منصات رقمية ذكية - تُحوّل الجامعة من إدارة ورقية إلى تجربة رقمية استثنائية تليق بمكانة جامعة دجلة وطموحاتها المستقبلية.
     </p>
 <div class="hero-btns">
-<!-- زر البث المباشر ينقلك للقسم الداخلي -->
 <a class="btn-live" href="#live-stream"><i class="fas fa-broadcast-tower"></i> البث المباشر لجامعة دجلة</a>
 <a class="btn-primary" href="#platforms"><i class="fas fa-play-circle" style="margin-left:8px"></i>اكتشف المنصات الأربع</a>
 <a class="btn-secondary" href="system.html" target="_blank"><i class="fas fa-chart-line" style="margin-left:8px"></i>شاهد لوحة الإدارة</a>
@@ -556,9 +474,9 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="slide-counter" id="slideCounter">
 <div class="cur" id="curNum">01</div>
 <div class="sep"></div>
-<div class="tot" id="totNum">29</div>
+<div class="tot" id="totNum">10</div>
 </div>
-<!-- Caption overlay (bottom left) -->
+<!-- Caption overlay -->
 <div id="heroCaption">
 <div id="captionLabel" style="font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 2px">جامعة دجلة</div>
 <div id="captionTitle" style="font-size:18px;font-weight:900;color:#fff">تكريم الإبداع والتميز</div>
@@ -576,7 +494,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </section>
 
-<!-- ===== LIVE STREAM SECTION (NEW) ===== -->
+<!-- ===== LIVE STREAM SECTION ===== -->
 <section id="live-stream">
   <div class="text-center">
     <div class="section-tag"><i class="fas fa-satellite-dish"></i> بث حي ومباشر</div>
@@ -598,6 +516,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="stat-item"><h3 class="counter" data-target="4">0</h3><p>منصات رقمية</p></div>
 <div class="stat-item"><h3 class="counter" data-target="99">0</h3><p>% دقة الذكاء الاصطناعي</p></div>
 </div>
+
 <!-- ===== PLATFORMS ===== -->
 <section id="platforms">
 <div class="text-center">
@@ -611,7 +530,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="pc-glow"></div>
 <div class="pc-top">
 <div class="pc-num">01</div>
-<div class="pc-icon"><i class="fas fa-building-columns" style="color:#3bb4e5"></i></div>
+<div class="pc-icon"><i class="fas fa-building-columns"></i></div>
 <h3 class="pc-title">نظام الإدارة الرئيسي</h3>
 <p class="pc-sub">ERP جامعي متكامل للرئيس والعمداء ومديري الأقسام - يضم كل بيانات الجامعة في مكان واحد مع تقارير استراتيجية فورية.</p>
 <div class="pc-features">
@@ -633,7 +552,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="pc-glow"></div>
 <div class="pc-top">
 <div class="pc-num">02</div>
-<div class="pc-icon"><i class="fas fa-user-graduate" style="color:#aacc38"></i></div>
+<div class="pc-icon"><i class="fas fa-user-graduate"></i></div>
 <h3 class="pc-title">بوابة الطالب</h3>
 <p class="pc-sub">تطبيق شامل يمنح الطالب تجربة رقمية كاملة - من الدرجات والجدول والحضور حتى الدفع الإلكتروني والامتحانات.</p>
 <div class="pc-features">
@@ -655,7 +574,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="pc-glow"></div>
 <div class="pc-top">
 <div class="pc-num">03</div>
-<div class="pc-icon"><i class="fas fa-chalkboard-teacher" style="color:#fb923c"></i></div>
+<div class="pc-icon"><i class="fas fa-chalkboard-teacher"></i></div>
 <h3 class="pc-title">بوابة التدريسي</h3>
 <p class="pc-sub">منصة احترافية تمنح التدريسي أدوات رقمية متقدمة لإدارة مادته الدراسية، الحضور، الدرجات، والتواصل مع الطلبة.</p>
 <div class="pc-features">
@@ -677,7 +596,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="pc-glow"></div>
 <div class="pc-top">
 <div class="pc-num">04</div>
-<div class="pc-icon"><i class="fas fa-users" style="color:#a78bfa"></i></div>
+<div class="pc-icon"><i class="fas fa-users"></i></div>
 <h3 class="pc-title">تطبيق ولي الأمر</h3>
 <p class="pc-sub">نقطة تواصل شفافة وفورية بين ولي الأمر والجامعة - يتابع أداء ابنه الأكاديمي والمالي بضغطة زر.</p>
 <div class="pc-features">
@@ -696,6 +615,63 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </div>
 </section>
+
+<!-- ===== UNIVERSITY DEPARTMENTS & TUITION (NEW) ===== -->
+<section id="departments">
+  <div class="text-center">
+    <div class="section-tag"><i class="fas fa-university"></i> كليات وأقسام الجامعة</div>
+    <h2 class="section-title">التخصصات <span>والأقساط الدراسية</span></h2>
+    <p class="section-sub center">تعرف على كليات وأقسام جامعة دجلة ومعدلات القبول والأقساط الدراسية للعام الدراسي الجديد.</p>
+  </div>
+  <!-- البطاقات المحسّنة الجديدة لعرض صور الأقساط بشكل أنيق -->
+  <div class="tuition-grid">
+    <div class="tuition-card" onclick="openTuitionImage('1.jpg', 'كليات المجموعة الطبية')">
+      <div class="tuition-img-wrapper"><img src="1.jpg" alt="المجموعة الطبية"></div>
+      <div class="tuition-info"><h4>كليات المجموعة الطبية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('12.jpg', 'كلية التقنيات الطبية والصحية')">
+      <div class="tuition-img-wrapper"><img src="12.jpg" alt="كلية التقنيات الطبية والصحية"></div>
+      <div class="tuition-info"><h4>كلية التقنيات الطبية والصحية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('2.jpg', 'كلية الهندسة')">
+      <div class="tuition-img-wrapper"><img src="2.jpg" alt="كلية الهندسة"></div>
+      <div class="tuition-info"><h4>كلية الهندسة</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('9.jpg', 'الكلية التقنية الهندسية')">
+      <div class="tuition-img-wrapper"><img src="9.jpg" alt="الكلية التقنية الهندسية"></div>
+      <div class="tuition-info"><h4>الكلية التقنية الهندسية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('10.jpg', 'هندسة تقنيات التبريد والتكييف')">
+      <div class="tuition-img-wrapper"><img src="10.jpg" alt="هندسة تقنيات التبريد والتكييف"></div>
+      <div class="tuition-info"><h4>هندسة تقنيات التبريد والتكييف</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('3.jpg', 'كلية القانون')">
+      <div class="tuition-img-wrapper"><img src="3.jpg" alt="كلية القانون"></div>
+      <div class="tuition-info"><h4>كلية القانون</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('8.jpg', 'كلية الإعلام')">
+      <div class="tuition-img-wrapper"><img src="8.jpg" alt="كلية الإعلام"></div>
+      <div class="tuition-info"><h4>كلية الإعلام</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('7.jpg', 'كلية الإدارة والاقتصاد')">
+      <div class="tuition-img-wrapper"><img src="7.jpg" alt="كلية الإدارة والاقتصاد"></div>
+      <div class="tuition-info"><h4>كلية الإدارة والاقتصاد</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('4.jpg', 'كلية الفنون الجميلة')">
+      <div class="tuition-img-wrapper"><img src="4.jpg" alt="كلية الفنون الجميلة"></div>
+      <div class="tuition-info"><h4>كلية الفنون الجميلة</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('5.jpg', 'كلية التربية')">
+      <div class="tuition-img-wrapper"><img src="5.jpg" alt="كلية التربية"></div>
+      <div class="tuition-info"><h4>كلية التربية</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+    <div class="tuition-card" onclick="openTuitionImage('6.jpg', 'كلية العلوم')">
+      <div class="tuition-img-wrapper"><img src="6.jpg" alt="كلية العلوم"></div>
+      <div class="tuition-info"><h4>كلية العلوم</h4><p>اضغط للتكبير ومعرفة الأقساط</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== EXECUTIVE DASHBOARD ===== -->
 <section id="exec-dashboard">
 <div>
@@ -744,7 +720,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </div>
 <div>
-<div class="db-alert"><i class="fas fa-robot" style="color:#fca5a5"></i><span><strong>AI تحذير:</strong> كلية طب الأسنان - 45 طالباً تجاوزوا حد الغياب المسموح. يُنصح بالتدخل الفوري.</span></div>
+<div class="db-alert"><i class="fas fa-robot"></i><span><strong>AI تحذير:</strong> كلية طب الأسنان - 45 طالباً تجاوزوا حد الغياب المسموح. يُنصح بالتدخل الفوري.</span></div>
 <div class="db-alert" style="color: #fdba74"><i class="fas fa-door-open" style="color:#fdba74"></i><span><strong>إشعار القاعات:</strong> قاعة D401 تحت الصيانة - 3 مجموعات بلا قاعة يوم الثلاثاء.</span></div>
 </div>
 <div class="db-bottom">
@@ -774,277 +750,10 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <h2 class="section-title">بيئة جامعية<br/><span>تستحق الأفضل</span></h2>
 <p class="section-sub center">لقطات من فعاليات وتكريمات جامعة دجلة والحياة الأكاديمية.</p>
 </div>
-<!-- Mosaic grid -->
-<div class="gallery-mosaic">
-<!-- Row 1 -->
-<div class="gm tall" onclick="openLightbox(0)">
-<img alt="تكريم الإبداع والتميز" src="image_cf38e8.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>تكريم الإبداع والتميز</h4>
-<p><i class="fas fa-award"></i>رئاسة جامعة دجلة</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(1)">
-<img alt="حرم جامعي نابض بالحياة" src="image_cf38cb.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>حرم جامعي نابض بالحياة</h4>
-<p><i class="fas fa-leaf"></i>جامعة دجلة</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(2)">
-<img alt="صرح علمي شامخ" src="image_cf3b8f.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>صرح علمي شامخ</h4>
-<p><i class="fas fa-building"></i>مبنى الجامعة الرئيسي</p>
-</div>
-</div>
-<div class="gm tall" onclick="openLightbox(3)">
-<img alt="إضاءة واجهة الجامعة" src="image_cf3bb1.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>إضاءة واجهة الجامعة</h4>
-<p><i class="fas fa-lightbulb"></i>فعاليات مسائية</p>
-</div>
-</div>
-<!-- Row 2 -->
-<div class="gm" onclick="openLightbox(4)">
-<img alt="فكر لما بعد" src="image_cf3bcc.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>فكر لما بعد</h4>
-<p><i class="fas fa-eye"></i>رؤية جامعة دجلة</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(5)">
-<img alt="مخاطر التطرف على السلم الأهلي" src="image_cf38e4.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>مخاطر التطرف على السلم الأهلي</h4>
-<p><i class="fas fa-users"></i>ندوة علمية</p>
-</div>
-</div>
-<!-- Row 3 -->
-<div class="gm tall" onclick="openLightbox(6)">
-<img alt="قاعات مجهزة بأحدث التقنيات" src="image_cf3bd2.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>قاعات مجهزة بأحدث التقنيات</h4>
-<p><i class="fas fa-chalkboard-teacher"></i>محاضرات تفاعلية</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(7)">
-<img alt="توقيع مذكرات التفاهم" src="image_cf3bf1.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>توقيع مذكرات التفاهم</h4>
-<p><i class="fas fa-file-signature"></i>شراكات استراتيجية</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(8)">
-<img alt="كادر تدريسي وإداري متميز" src="image_cf3beb.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>كادر تدريسي وإداري متميز</h4>
-<p><i class="fas fa-user-tie"></i>خبرات أكاديمية</p>
-</div>
-</div>
-<div class="gm tall" onclick="openLightbox(9)">
-<img alt="قناة دجلة الفضائية" src="image_cf384d.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>قناة دجلة الفضائية</h4>
-<p><i class="fas fa-satellite-dish"></i>تردد القناة</p>
-</div>
-</div>
-<!-- Row 4 -->
-<div class="gm" onclick="openLightbox(10)">
-<img alt="مجتمع الطلبة" src="658309527_1398499625651694_8816427807301835863_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>مجتمع الطلبة</h4>
-<p><i class="fas fa-users"></i>روح الفريق</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(11)">
-<img alt="الأنشطة الرياضية" src="680134993_1421913266643663_8918523409866496429_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>الأنشطة الرياضية</h4>
-<p><i class="fas fa-futbol"></i>ملاعب الجامعة</p>
-</div>
-</div>
-<!-- Row 5 -->
-<div class="gm tall" onclick="openLightbox(12)">
-<img alt="قاعة المحاضرات الكبرى" src="691602021_1435764025258587_4517447480099574972_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>قاعة المحاضرات الكبرى</h4>
-<p><i class="fas fa-users-class"></i>بيئة تفاعلية</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(13)">
-<img alt="جو الدراسة الجامعية" src="693372346_1435763868591936_9161946611862580438_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>جو الدراسة الجامعية</h4>
-<p><i class="fas fa-book"></i>تركيز وإصرار</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(14)">
-<img alt="بيئة امتحانية منظمة" src="696429002_1435765301925126_2887835527564741738_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>بيئة امتحانية منظمة</h4>
-<p><i class="fas fa-shield-alt"></i>نزاهة وعدالة</p>
-</div>
-</div>
-<div class="gm tall" onclick="openLightbox(15)">
-<img alt="الطالبات المتميزات" src="693439674_1435765241925132_1309757349121582130_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>الطالبات المتميزات</h4>
-<p><i class="fas fa-star"></i>مستقبل واعد</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(16)">
-<img alt="قاعة الامتحانات" src="ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>قاعة الامتحانات</h4>
-<p><i class="fas fa-users-class"></i>استعداد وتركيز</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(17)">
-<img alt="إشراف امتحاني" src="5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>إشراف امتحاني</h4>
-<p><i class="fas fa-user-check"></i>مراقبة وتنظيم</p>
-</div>
-</div>
-<!-- الأقسام المضافة حديثاً -->
-<div class="gm tall" onclick="openLightbox(18)">
-<img alt="فعاليات وأعياد" src="170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>فعاليات وأعياد</h4>
-<p><i class="fas fa-calendar-alt"></i>الاحتفالات بالجامعة</p>
-</div>
-</div>
-<div class="gm tall" onclick="openLightbox(19)">
-<img alt="واجهة الجامعة" src="3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>واجهة الجامعة</h4>
-<p><i class="fas fa-building"></i>مبنى الجامعة الرئيسي</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(20)">
-<img alt="الاحتفالات المركزية" src="84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>الاحتفالات المركزية</h4>
-<p><i class="fas fa-music"></i>أجواء احتفالية</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(21)">
-<img alt="الطالبة المتميزة" src="663bda0a-b931-445d-8007-a167ca3a2a4a.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>الطالبة المتميزة</h4>
-<p><i class="fas fa-book-reader"></i>مثابرة ونجاح</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(22)">
-<img alt="ندوات وعروض" src="7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>ندوات وعروض</h4>
-<p><i class="fas fa-project-diagram"></i>مؤتمرات علمية</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(23)">
-<img alt="شخصيات أكاديمية" src="fb43df2e-401a-40fb-8a7f-798884a8a691.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>شخصيات أكاديمية</h4>
-<p><i class="fas fa-user-tie"></i>كادر الجامعة</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(24)">
-<img alt="توقيع اتفاقيات" src="51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>توقيع اتفاقيات</h4>
-<p><i class="fas fa-pen-nib"></i>شراكات جديدة</p>
-</div>
-</div>
-<div class="gm tall" onclick="openLightbox(25)">
-<img alt="القاعات الدراسية الكبرى" src="694521958_1435765291925127_3855133316545751472_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>القاعات الدراسية الكبرى</h4>
-<p><i class="fas fa-door-open"></i>بنية تحتية متطورة</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(26)">
-<img alt="تفاعل الطلاب" src="694716693_1435764115258578_762644510018286221_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>تفاعل الطلاب</h4>
-<p><i class="fas fa-users"></i>بيئة تفاعلية</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(27)">
-<img alt="تركيز واهتمام" src="702374821_1440315594803430_1443067916248024658_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>تركيز واهتمام</h4>
-<p><i class="fas fa-brain"></i>طموح بلا حدود</p>
-</div>
-</div>
-<div class="gm tall" onclick="openLightbox(28)">
-<img alt="الإشراف والتنظيم" src="702393513_1440315538136769_8077123225228303781_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>الإشراف والتنظيم</h4>
-<p><i class="fas fa-clipboard-check"></i>إدارة محكمة</p>
-</div>
-</div>
-</div><!-- /gallery-mosaic -->
+<!-- Mosaic grid (سيتم توليده تلقائياً بالجافاسكربت لحل مشكلة اختفاء الصور والفراغات) -->
+<div class="gallery-mosaic"></div>
 </section>
+
 <!-- ===== LIGHTBOX ===== -->
 <div class="lightbox" id="lightbox" onclick="closeLightboxOnBg(event)">
 <button class="lb-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
@@ -1054,10 +763,11 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <img alt="" id="lbImg" src=""/>
 </div>
 <div class="lb-info">
-<div class="lb-counter" id="lbCounter">1 / 29</div>
+<div class="lb-counter" id="lbCounter"></div>
 <div class="lb-title" id="lbTitle"></div>
 </div>
 </div>
+
 <!-- ===== AI SECTION ===== -->
 <section id="ai-section">
 <div class="text-center">
@@ -1257,8 +967,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 <div class="why-visual">
 <div class="why-img">
-<!-- هنا استخدمت صورة تجمع الطلبة كصورة معبرة -->
-<img alt="طلبة جامعة دجلة" src="658309527_1398499625651694_8816427807301835863_n.jpg"/>
+<img alt="طلبة جامعة دجلة" src="658309527_1398499625651694_8816427807301835863_n.jpg" onerror="this.onerror=null;this.src='image_cf38cb.jpg';"/>
 </div>
 <div class="why-float why-float-1">
 <div class="float-num">12,450</div>
@@ -1292,10 +1001,9 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="cta-check"><i class="fas fa-check-circle"></i>دعم فني مستمر</div>
 </div>
 <div class="cta-btns">
-<a class="btn-primary" href="https://t.me/EngSaif9" target="_blank"><i class="fab fa-telegram" style="margin-left:8px"></i>تواصل معنا الآن</a>
+<a class="btn-primary" href="tel:6006"><i class="fas fa-phone-alt" style="margin-left:8px"></i>اتصل بنا الآن</a>
 <a class="btn-secondary" href="system.html"><i class="fas fa-eye" style="margin-left:8px"></i>شاهد النظام الكامل</a>
 </div>
-<p style="font-size: 12px; color: var(--text2)"><i class="fab fa-telegram" style="color:#3bb4e5;margin-left:4px"></i>@EngSaif9 - متاح للتواصل على تيليغرام</p>
 </div>
 </section>
 <!-- ===== FOOTER ===== -->
@@ -1316,11 +1024,19 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <a href="#">تطبيق ولي الأمر</a>
 </div>
 <div class="footer-col">
+<h5>معلومات الاتصال</h5>
+<a href="https://maps.app.goo.gl/hiXajZ5ynd8SuZYC6?g_st=ic" target="_blank"><i class="fas fa-map-marker-alt" style="color:var(--gold)"></i> الدورة / نهاية جسر الطابقين</a>
+<a href="tel:6006"><i class="fas fa-phone-alt"></i> 6006 (الرقم المختصر)</a>
+<a href="tel:07838921105"><i class="fas fa-mobile-alt"></i> 07838921105</a>
+<a href="tel:07838302252"><i class="fas fa-mobile-alt"></i> 07838302252</a>
+<a href="tel:07838084819"><i class="fas fa-mobile-alt"></i> 07838084819</a>
+<a href="tel:07832185718"><i class="fas fa-mobile-alt"></i> 07832185718</a>
+</div>
+<div class="footer-col">
 <h5>تواصل معنا</h5>
 <a href="https://www.facebook.com/dijlamedia" target="_blank"><i class="fab fa-facebook"></i> فيسبوك</a>
 <a href="https://www.instagram.com/duc.edu.iq" target="_blank"><i class="fab fa-instagram"></i> انستغرام</a>
 <a href="mailto:info@duc.edu.iq"><i class="fas fa-envelope"></i> info@duc.edu.iq</a>
-<a href="https://t.me/EngSaif9" target="_blank"><i class="fab fa-telegram"></i> @EngSaif9 تيليغرام</a>
 </div>
 </footer>
 <div class="footer-bottom">
@@ -1332,239 +1048,170 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
      ==================================================== -->
 <script>
 // ─────────────────────────────────────────────
-//  Stars Canvas
+//  Theme Management
 // ─────────────────────────────────────────────
-const canvas = document.getElementById('starsCanvas');
-const ctx = canvas.getContext('2d');
-let stars = [];
-let starsEnabled = true;
+let isDark = false; // الوضع الأساسي أبيض (Light)
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', () => { resizeCanvas(); initStars(); });
-
-function initStars() {
-  stars = [];
-  const count = Math.floor((canvas.width * canvas.height) / 3000);
-  for (let i = 0; i < count; i++) {
-    stars.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.5 + 0.2,
-      alpha: Math.random(),
-      speed: Math.random() * 0.008 + 0.002,
-      phase: Math.random() * Math.PI * 2
-    });
+function initTheme() {
+  const savedTheme = localStorage.getItem('dijlahTheme');
+  if (savedTheme === 'dark') {
+    isDark = true;
   }
-}
-initStars();
-
-let shootingStars = [];
-function spawnShootingStar() {
-  shootingStars.push({
-    x: Math.random() * canvas.width * 0.7,
-    y: Math.random() * canvas.height * 0.3,
-    vx: Math.random() * 4 + 3,
-    vy: Math.random() * 2 + 1,
-    len: Math.random() * 80 + 40,
-    alpha: 1,
-    life: 1
-  });
+  applyTheme();
 }
 
-let lastShoot = 0;
-let lastTime = 0;
-
-function drawStars(timestamp) {
-  if (!starsEnabled) { requestAnimationFrame(drawStars); return; }
-  const dt = Math.min((timestamp - lastTime) / 16.67, 3);
-  lastTime = timestamp;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  for (let s of stars) {
-    s.phase += s.speed * dt;
-    s.alpha = 0.3 + 0.6 * (Math.sin(s.phase) * 0.5 + 0.5);
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
-    ctx.fill();
-  }
-
-  if (timestamp - lastShoot > 3000 + Math.random() * 4000) {
-    spawnShootingStar();
-    lastShoot = timestamp;
-  }
-
-  shootingStars = shootingStars.filter(ss => ss.alpha > 0.01);
-  for (let ss of shootingStars) {
-    ss.x += ss.vx * dt;
-    ss.y += ss.vy * dt;
-    ss.life -= 0.012 * dt;
-    ss.alpha = Math.max(0, ss.life);
-    const grad = ctx.createLinearGradient(ss.x, ss.y, ss.x - ss.len * ss.vx / 5, ss.y - ss.len * ss.vy / 5);
-    grad.addColorStop(0, `rgba(255,255,200,${ss.alpha})`);
-    grad.addColorStop(0.3, `rgba(170,204,56,${ss.alpha * 0.5})`);
-    grad.addColorStop(1, 'rgba(170,204,56,0)');
-    ctx.beginPath();
-    ctx.moveTo(ss.x, ss.y);
-    ctx.lineTo(ss.x - ss.len * ss.vx / 5, ss.y - ss.len * ss.vy / 5);
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(ss.x, ss.y, 2, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,220,${ss.alpha})`;
-    ctx.fill();
-  }
-  requestAnimationFrame(drawStars);
-}
-requestAnimationFrame(drawStars);
-
-function toggleStars() {
-  starsEnabled = !starsEnabled;
-  canvas.style.opacity = starsEnabled ? '1' : '0';
-}
-
-// ─────────────────────────────────────────────
-//  Theme Toggle
-// ─────────────────────────────────────────────
-let isDark = true;
 function toggleTheme() {
   isDark = !isDark;
+  localStorage.setItem('dijlahTheme', isDark ? 'dark' : 'light');
+  applyTheme();
+}
+
+function applyTheme() {
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
-  canvas.style.opacity = isDark && starsEnabled ? '1' : '0';
+  document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+  const nav = document.querySelector('nav');
+  nav.style.background = window.scrollY > 80
+    ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(255,255,255,0.97)')
+    : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(255,255,255,0.8)');
 }
 
 // ─────────────────────────────────────────────
-//  HERO - Cinematic Slideshow (استخدام الأسماء المباشرة)
+//  Dynamic Image Generation (Hero & Gallery)
 // ─────────────────────────────────────────────
-(function() {
-  const heroURLs = [
-    "image_cf38e8.jpg",
-    "image_cf38cb.jpg",
-    "image_cf3b8f.jpg",
-    "image_cf3bb1.jpg",
-    "image_cf3bcc.jpg",
-    "image_cf38e4.jpg",
-    "image_cf3bd2.jpg",
-    "image_cf3bf1.jpg",
-    "image_cf3beb.jpg",
-    "image_cf384d.jpg",
-    "658309527_1398499625651694_8816427807301835863_n.jpg",
-    "680134993_1421913266643663_8918523409866496429_n.jpg",
-    "691602021_1435764025258587_4517447480099574972_n.jpg",
-    "693372346_1435763868591936_9161946611862580438_n.jpg",
-    "696429002_1435765301925126_2887835527564741738_n.jpg",
-    "693439674_1435765241925132_1309757349121582130_n.jpg",
-    "ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif",
-    "5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif",
-    "170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif",
-    "3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif",
-    "84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif",
-    "663bda0a-b931-445d-8007-a167ca3a2a4a.jfif",
-    "7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif",
-    "fb43df2e-401a-40fb-8a7f-798884a8a691.jfif",
-    "51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif",
-    "694521958_1435765291925127_3855133316545751472_n.jpg",
-    "694716693_1435764115258578_762644510018286221_n.jpg",
-    "702374821_1440315594803430_1443067916248024658_n.jpg",
-    "702393513_1440315538136769_8077123225228303781_n.jpg"
-  ];
-  
-  document.querySelectorAll('.slide-bg').forEach(function(el, i) {
-    if (heroURLs[i]) {
-      el.style.backgroundImage = "url('" + heroURLs[i] + "')";
-    }
-  });
-})();
+const allMasterImages = [
+  // 1. صور عريضة وواضحة (يُسمح بظهورها في السلايدر الرئيسي والمعرض)
+  { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', fixed: true, isTall: false },
+  { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', fixed: true, isTall: false },
+  { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', fixed: true, isTall: false },
+  { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', isTall: false },
+  { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', isTall: false },
+  { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', isTall: false },
+  { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', isTall: false },
+  { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', isTall: false },
+  { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', isTall: false },
+  { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', isTall: false },
+  { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', isTall: false },
+  { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', isTall: false },
+  { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', isTall: false },
+  { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', isTall: false },
+  { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', isTall: false },
+  { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', isTall: false },
+  { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', isTall: false },
+  { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', isTall: false },
+  { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', isTall: false },
+  { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', isTall: false },
 
-const slides      = document.querySelectorAll('.hero-slide');
-const dotsContainer = document.getElementById('heroDots');
-const progressFill  = document.getElementById('progressFill');
-const curNumEl      = document.getElementById('curNum');
-const heroCaption   = document.getElementById('heroCaption');
-const captionLabel  = document.getElementById('captionLabel');
-const captionTitle  = document.getElementById('captionTitle');
-const heroFlash     = document.getElementById('heroFlash');
-
-let currentSlide = 0;
-let slideInterval;
-const SLIDE_DURATION = 5000; // ms
-
-// 29 كابشن تتوافق مع الـ 29 صورة بالضبط
-const captions = [
-  { label: 'تكريم', title: 'تكريم الإبداع والتميز' },
-  { label: 'الجامعة', title: 'حرم جامعي نابض بالحياة' },
-  { label: 'الجامعة', title: 'صرح علمي شامخ' },
-  { label: 'الفعاليات', title: 'إضاءة واجهة الجامعة' },
-  { label: 'رؤية', title: 'فكر لما بعد' },
-  { label: 'ندوة علمية', title: 'مخاطر التطرف على السلم الأهلي' },
-  { label: 'محاضرات', title: 'قاعات مجهزة بأحدث التقنيات' },
-  { label: 'اتفاقيات', title: 'توقيع مذكرات التفاهم' },
-  { label: 'الكوادر', title: 'كادر تدريسي وإداري متميز' },
-  { label: 'تردد القناة', title: 'قناة دجلة الفضائية' },
-  { label: 'المجتمع', title: 'مجتمع الطلبة' },
-  { label: 'الأنشطة', title: 'الأنشطة الرياضية' },
-  { label: 'القاعات', title: 'قاعة المحاضرات الكبرى' },
-  { label: 'البيئة الجامعية', title: 'جو الدراسة الجامعية' },
-  { label: 'الامتحانات', title: 'بيئة امتحانية منظمة' },
-  { label: 'التميز', title: 'الطالبات المتميزات' },
-  { label: 'الامتحانات', title: 'قاعة الامتحانات' },
-  { label: 'المراقبة', title: 'إشراف امتحاني' },
-  { label: 'الاحتفالات', title: 'فعاليات وأعياد' },
-  { label: 'الجامعة', title: 'واجهة الجامعة' },
-  { label: 'الفعاليات', title: 'الاحتفالات المركزية' },
-  { label: 'التميز', title: 'الطالبة المتميزة' },
-  { label: 'المؤتمرات', title: 'ندوات وعروض' },
-  { label: 'الكوادر', title: 'شخصيات أكاديمية' },
-  { label: 'اتفاقيات', title: 'توقيع اتفاقيات' },
-  { label: 'القاعات', title: 'القاعات الدراسية الكبرى' },
-  { label: 'تفاعل', title: 'تفاعل الطلاب' },
-  { label: 'الدراسة', title: 'تركيز واهتمام' },
-  { label: 'المراقبة', title: 'الإشراف والتنظيم' }
+  // 2. صور طولانية (لن تظهر بالواجهة الرئيسية لكي لا تخرب السلايدر، ستظهر في معرض الصور فقط)
+  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات', desc: 'استعداد وتركيز', isTall: true },
+  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني', desc: 'مراقبة وتنظيم', isTall: true },
+  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'فعاليات وأعياد', desc: 'الاحتفالات بالجامعة', isTall: true },
+  { src: '3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif', title: 'واجهة الجامعة', desc: 'مبنى الجامعة الرئيسي', isTall: true },
+  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية', desc: 'أجواء احتفالية', isTall: true },
+  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', isTall: true },
+  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض', desc: 'مؤتمرات علمية', isTall: true },
+  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', isTall: true },
+  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', isTall: true },
+  { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', isTall: true },
+  { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', isTall: true },
+  { src: '2df68a43-a9c2-4351-ab93-cc3eb5e09385.jfif', title: 'جانب من الندوة', desc: 'مشاركة فعالة', isTall: true }
 ];
 
-// Build dots
-slides.forEach((_, i) => {
-  const dot = document.createElement('div');
-  dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
-  dot.onclick = () => goToSlide(i);
-  dotsContainer.appendChild(dot);
-});
+let finalHeroImages = [];
+let currentSlide = 0;
+let slideInterval;
+const SLIDE_DURATION = 5000;
 
-// Update counter
-function updateCounter(n) {
-  curNumEl.textContent = String(n + 1).padStart(2, '0');
+function buildDynamicImages() {
+  const currentHour = new Date().getHours();
+  
+  // اختيار الصور العريضة فقط للواجهة الرئيسية (تجنباً للصور الطولانية التي تخرب الشكل)
+  const fixedImages = allMasterImages.filter(img => img.fixed && !img.isTall);
+  let variableWideImages = allMasterImages.filter(img => !img.fixed && !img.isTall);
+  
+  // اختيار 10 صور فقط للسلايدر يتم تغييرها كل ساعة بناء على وقت المتصفح
+  let selectedVariables = [];
+  const needed = 10 - fixedImages.length;
+  
+  for(let i=0; i < needed; i++) {
+    if(variableWideImages.length === 0) break;
+    let idx = (currentHour * 3 + i * 5) % variableWideImages.length;
+    selectedVariables.push(variableWideImages[idx]);
+    variableWideImages.splice(idx, 1);
+  }
+  
+  finalHeroImages = [...fixedImages, ...selectedVariables];
+  
+  // 1. بناء واجهة السلايدر برمجياً
+  const heroContainer = document.getElementById('heroSlides');
+  const dotsContainer = document.getElementById('heroDots');
+  heroContainer.innerHTML = '';
+  dotsContainer.innerHTML = '';
+  
+  finalHeroImages.forEach((img, i) => {
+    heroContainer.innerHTML += `
+      <div class="hero-slide ${i === 0 ? 'active' : ''}">
+        <div class="slide-bg" style="background-image:url('${img.src}')"></div>
+      </div>
+    `;
+    const dot = document.createElement('div');
+    dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+  });
+  
+  document.getElementById('totNum').textContent = finalHeroImages.length.toString().padStart(2, '0');
+  
+  // 2. بناء معرض الصور (Gallery) بذكاء
+  const galleryContainer = document.querySelector('.gallery-mosaic');
+  galleryContainer.innerHTML = '';
+  
+  allMasterImages.forEach((img, i) => {
+    // إذا كانت الصورة طولانية، يتم إعطاؤها مساحة مضاعفة لتظهر بشكل أنيق كالمجلات
+    let tallClass = img.isTall ? 'tall' : '';
+    galleryContainer.innerHTML += `
+      <div class="gm ${tallClass}" onclick="openLightbox(${i})">
+        <img alt="${img.title}" src="${img.src}" onerror="this.parentElement.style.display='none';"/>
+        <div class="gm-overlay"></div>
+        <div class="gm-shine"></div>
+        <div class="gm-caption">
+          <h4>${img.title}</h4>
+          <p><i class="fas fa-camera"></i> ${img.desc}</p>
+        </div>
+      </div>
+    `;
+  });
 }
 
-// Animate progress bar
-let progTimeout;
+// ─────────────────────────────────────────────
+//  Hero Slider Controls
+// ─────────────────────────────────────────────
+function updateCounter(n) {
+  document.getElementById('curNum').textContent = String(n + 1).padStart(2, '0');
+}
+
 function startProgress() {
+  const progressFill = document.getElementById('progressFill');
   progressFill.style.transition = 'none';
   progressFill.style.width = '0%';
-  void progressFill.offsetWidth; // force reflow
+  void progressFill.offsetWidth; 
   progressFill.style.transition = `width ${SLIDE_DURATION}ms linear`;
   progressFill.style.width = '100%';
 }
 
-// Update caption
 function updateCaption(n) {
+  const heroCaption = document.getElementById('heroCaption');
   heroCaption.style.opacity = '0';
   heroCaption.style.transform = 'translateY(14px)';
   setTimeout(() => {
-    captionLabel.textContent = captions[n].label;
-    captionTitle.textContent = captions[n].title;
+    document.getElementById('captionLabel').textContent = finalHeroImages[n].desc;
+    document.getElementById('captionTitle').textContent = finalHeroImages[n].title;
     heroCaption.style.opacity = '1';
     heroCaption.style.transform = 'translateY(0)';
   }, 300);
 }
 
-// Flash transition effect
 function doFlash() {
+  const heroFlash = document.getElementById('heroFlash');
   heroFlash.style.transition = 'none';
   heroFlash.style.opacity = '0.18';
   setTimeout(() => {
@@ -1574,13 +1221,17 @@ function doFlash() {
 }
 
 function goToSlide(n) {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  if(slides.length === 0) return;
+  
   slides[currentSlide].classList.remove('active');
-  document.querySelectorAll('.hero-dot')[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
 
   currentSlide = (n + slides.length) % slides.length;
 
   slides[currentSlide].classList.add('active');
-  document.querySelectorAll('.hero-dot')[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
 
   updateCounter(currentSlide);
   updateCaption(currentSlide);
@@ -1591,118 +1242,55 @@ function goToSlide(n) {
 function nextSlide() { goToSlide(currentSlide + 1); }
 function prevSlide() { goToSlide(currentSlide - 1); }
 
-function startAutoplay() {
-  slideInterval = setInterval(nextSlide, SLIDE_DURATION);
-}
-function stopAutoplay() {
-  clearInterval(slideInterval);
-}
+function startAutoplay() { slideInterval = setInterval(nextSlide, SLIDE_DURATION); }
+function stopAutoplay() { clearInterval(slideInterval); }
 
-// Initialise
-updateCounter(0);
-updateCaption(0);
-startProgress();
-startAutoplay();
+document.getElementById('heroPrev').addEventListener('click', () => { stopAutoplay(); prevSlide(); startAutoplay(); });
+document.getElementById('heroNext').addEventListener('click', () => { stopAutoplay(); nextSlide(); startAutoplay(); });
 
-// Arrows
-document.getElementById('heroPrev').addEventListener('click', () => {
-  stopAutoplay(); prevSlide(); startAutoplay();
-});
-document.getElementById('heroNext').addEventListener('click', () => {
-  stopAutoplay(); nextSlide(); startAutoplay();
-});
-
-// Pause on hover
 const heroSection = document.getElementById('hero');
 heroSection.addEventListener('mouseenter', stopAutoplay);
 heroSection.addEventListener('mouseleave', startAutoplay);
 
-// Touch / Swipe support
 let touchStartX = 0;
 heroSection.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
 heroSection.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 50) {
-    stopAutoplay();
-    if (dx > 0) prevSlide(); else nextSlide();
-    startAutoplay();
-  }
-});
-
-// Keyboard support
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') { stopAutoplay(); nextSlide(); startAutoplay(); }
-  if (e.key === 'ArrowLeft')  { stopAutoplay(); prevSlide(); startAutoplay(); }
-  if (e.key === 'Escape') closeLightbox();
+  if (Math.abs(dx) > 50) { stopAutoplay(); if (dx > 0) prevSlide(); else nextSlide(); startAutoplay(); }
 });
 
 // ─────────────────────────────────────────────
-//  LIVE STREAM (HLS.JS)
+//  LIGHTBOX (المعرض والأقسام)
 // ─────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", function() {
-  var video = document.getElementById('dijlahLiveVideo');
-  var videoSrc = 'https://stream.addresses-sat.com/ANA_DEJLAH/index.m3u8?fbclid=IwY2xjawR4BHdleHRuA2FlbQIxMABicmlkETE5UWx0MWhGdG9yQmNuMmtTc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHulbH_7babATCeZORhWoqdwEz50vg9_m7VXygetr-msLBbOORNGPZ0qjXQm8_aem_f8Onr8RgHluHlQVQUBL9KA';
-  
-  if (Hls.isSupported()) {
-    var hls = new Hls();
-    hls.loadSource(videoSrc);
-    hls.attachMedia(video);
-    // لإخفاء الخطأ والتشغيل تلقائياً إن أمكن
-    hls.on(Hls.Events.MANIFEST_PARSED, function() {
-      video.play().catch(function(e) {
-        console.log("التبويب يتطلب تفاعل المستخدم للتشغيل التلقائي");
-      });
-    });
-  }
-  // للعمل على متصفحات ابل (سفاري) التي تدعم الصيغة مباشرة
-  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = videoSrc;
-    video.addEventListener('loadedmetadata', function() {
-      video.play().catch(function(e){});
-    });
-  }
-});
-
-// ─────────────────────────────────────────────
-//  LIGHTBOX (الأسماء المباشرة فقط)
-// ─────────────────────────────────────────────
-const galleryImages = [
-  { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز' },
-  { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة' },
-  { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ' },
-  { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة' },
-  { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد' },
-  { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي' },
-  { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات' },
-  { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم' },
-  { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز' },
-  { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية' },
-  { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة' },
-  { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية' },
-  { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى' },
-  { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية' },
-  { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة' },
-  { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات' },
-  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات' },
-  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني' },
-  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'فعاليات وأعياد' },
-  { src: '3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif', title: 'واجهة الجامعة' },
-  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية' },
-  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة' },
-  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض' },
-  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية' },
-  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات' },
-  { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى' },
-  { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب' },
-  { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام' },
-  { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم' }
-];
-
 let lbCurrent = 0;
+let isGallery = true; 
 
 function openLightbox(idx) {
+  isGallery = true;
   lbCurrent = idx;
+  document.querySelector('.lb-prev').style.display = 'flex';
+  document.querySelector('.lb-next').style.display = 'flex';
+  document.getElementById('lbCounter').style.display = 'block';
   updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openTuitionImage(src, title) {
+  isGallery = false;
+  const img = document.getElementById('lbImg');
+  img.style.opacity = '0';
+  setTimeout(() => { 
+    img.src = src; 
+    img.onload = () => img.style.opacity = '1'; 
+    img.onerror = () => { img.src = ''; img.alt = 'الصورة غير متوفرة حالياً'; img.style.opacity = '1'; }
+  }, 150);
+  
+  document.querySelector('.lb-prev').style.display = 'none';
+  document.querySelector('.lb-next').style.display = 'none';
+  document.getElementById('lbCounter').style.display = 'none';
+  document.getElementById('lbTitle').textContent = title;
+  
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1717,32 +1305,83 @@ function closeLightboxOnBg(e) {
 }
 
 function updateLightbox() {
-  const item = galleryImages[lbCurrent];
+  const item = allMasterImages[lbCurrent];
   const img  = document.getElementById('lbImg');
   img.style.opacity = '0';
   
   img.src = item.src;
   img.alt = item.title;
   img.onload = function() { img.style.opacity = '1'; };
+  img.onerror = function() { img.src = ''; img.alt = 'الصورة غير متوفرة'; img.style.opacity = '1'; };
   
-  document.getElementById('lbCounter').textContent = `${lbCurrent + 1} / ${galleryImages.length}`;
+  document.getElementById('lbCounter').textContent = `${lbCurrent + 1} / ${allMasterImages.length}`;
   document.getElementById('lbTitle').textContent = item.title;
 }
 
-function lbPrev() { lbCurrent = (lbCurrent - 1 + galleryImages.length) % galleryImages.length; updateLightbox(); }
-function lbNext() { lbCurrent = (lbCurrent + 1) % galleryImages.length; updateLightbox(); }
+function lbPrev() { lbCurrent = (lbCurrent - 1 + allMasterImages.length) % allMasterImages.length; updateLightbox(); }
+function lbNext() { lbCurrent = (lbCurrent + 1) % allMasterImages.length; updateLightbox(); }
 
-// Lightbox touch
 let lbTouchX = 0;
 document.getElementById('lightbox').addEventListener('touchstart', e => { lbTouchX = e.touches[0].clientX; }, { passive: true });
 document.getElementById('lightbox').addEventListener('touchend', e => {
+  if (!isGallery) return; 
   const dx = e.changedTouches[0].clientX - lbTouchX;
   if (Math.abs(dx) > 50) { if (dx > 0) lbPrev(); else lbNext(); }
 });
 
+document.addEventListener('keydown', e => {
+  const isLbOpen = document.getElementById('lightbox').classList.contains('open');
+  if (isLbOpen) {
+    if (e.key === 'ArrowRight' && isGallery) lbNext();
+    if (e.key === 'ArrowLeft' && isGallery) lbPrev();
+    if (e.key === 'Escape') closeLightbox();
+  } else {
+    if (e.key === 'ArrowRight') { stopAutoplay(); nextSlide(); startAutoplay(); }
+    if (e.key === 'ArrowLeft')  { stopAutoplay(); prevSlide(); startAutoplay(); }
+  }
+});
+
 // ─────────────────────────────────────────────
-//  Counter Animation
+//  Stars & Main Init
 // ─────────────────────────────────────────────
+window.onload = () => {
+  initTheme();
+  buildDynamicImages();
+  
+  if(finalHeroImages.length > 0) {
+    updateCounter(0);
+    updateCaption(0);
+    startProgress();
+    startAutoplay();
+  }
+  
+  // HLS Stream
+  var video = document.getElementById('dijlahLiveVideo');
+  var videoSrc = 'https://stream.addresses-sat.com/ANA_DEJLAH/index.m3u8?fbclid=IwY2xjawR4BHdleHRuA2FlbQIxMABicmlkETE5UWx0MWhGdG9yQmNuMmtTc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHulbH_7babATCeZORhWoqdwEz50vg9_m7VXygetr-msLBbOORNGPZ0qjXQm8_aem_f8Onr8RgHluHlQVQUBL9KA';
+  
+  if (Hls.isSupported()) {
+    var hls = new Hls();
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+      video.play().catch(e => console.log("Auto-play prevented"));
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = videoSrc;
+    video.addEventListener('loadedmetadata', function() {
+      video.play().catch(e => {});
+    });
+  }
+};
+
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  nav.style.background = window.scrollY > 80
+    ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(255,255,255,0.97)')
+    : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(255,255,255,0.8)');
+});
+
+// Animations
 function animateCounter(el) {
   const target = parseInt(el.getAttribute('data-target'));
   const duration = 2000;
@@ -1768,9 +1407,6 @@ const counterObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 document.querySelector('.stats-bar') && counterObserver.observe(document.querySelector('.stats-bar'));
 
-// ─────────────────────────────────────────────
-//  Scroll Animations
-// ─────────────────────────────────────────────
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -1780,22 +1416,14 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.platform-card,.feat-card,.why-point,.ai-feat,.gm').forEach((el, i) => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(28px)';
-  el.style.transition = `opacity .6s ease ${i * 0.05}s, transform .6s ease ${i * 0.05}s`;
-  observer.observe(el);
-});
-
-// ─────────────────────────────────────────────
-//  Navbar Scroll Effect
-// ─────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  const nav = document.querySelector('nav');
-  nav.style.background = window.scrollY > 80
-    ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(240,246,255,0.97)')
-    : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(240,246,255,0.9)');
-});
+setTimeout(() => {
+  document.querySelectorAll('.platform-card,.feat-card,.why-point,.ai-feat,.gm,.tuition-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(28px)';
+    el.style.transition = `opacity .6s ease ${i * 0.05}s, transform .6s ease ${i * 0.05}s`;
+    observer.observe(el);
+  });
+}, 500);
 
 // ─────────────────────────────────────────────
 //  AI Chat Typing Animation
