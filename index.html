@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- تم تعيين data-theme إلى dark ليكون الوضع الليلي هو الافتراضي -->
 <html dir="rtl" lang="ar" data-theme="dark">
 <head>
 <meta charset="utf-8"/>
@@ -509,10 +508,8 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <!-- Flash overlay -->
 <div class="hero-flash" id="heroFlash"></div>
 
-<!-- Slides (سيتم توليدها تلقائياً بالجافاسكريبت لحل مشكلة اختفاء الصور) -->
-<div class="hero-slides" id="heroSlides">
-  <div class="hero-slide active"><div class="slide-bg"></div></div>
-</div>
+<!-- السلايدر الرئيسي: حاوية فارغة سيتم ملؤها فوراً بالكود المباشر لتجنب أي تأخير -->
+<div class="hero-slides" id="heroSlides"></div>
 
 <!-- Content -->
 <div class="hero-content">
@@ -543,7 +540,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="slide-counter" id="slideCounter">
 <div class="cur" id="curNum">01</div>
 <div class="sep"></div>
-<div class="tot" id="totNum">10</div>
+<div class="tot" id="totNum">15</div>
 </div>
 <!-- Caption overlay -->
 <div id="heroCaption">
@@ -562,6 +559,60 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <div class="hero-progress-fill" id="progressFill"></div>
 </div>
 </section>
+
+<!-- ===== الحقن المباشر للسلايدر (Zero Delay) ===== -->
+<script>
+  // نضع هذا السكريبت مباشرة تحت قسم الهيرو لكي يملأ الصور بدون أي انتظار (يمنع الشاشة السوداء)
+  (function buildHeroInstantly() {
+    const heroWideImages = [
+      { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', fixed: true },
+      { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', fixed: true },
+      { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', fixed: false },
+      { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', fixed: false },
+      { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', fixed: false },
+      { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', fixed: false },
+      { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', fixed: false },
+      { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', fixed: false },
+      { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', fixed: false },
+      { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', fixed: false },
+      { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', fixed: false },
+      { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', fixed: false },
+      { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', fixed: false },
+      { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', fixed: false },
+      { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', fixed: false },
+      { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', fixed: false },
+      { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', fixed: false },
+      { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', fixed: false },
+      { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', fixed: false },
+      { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', fixed: false }
+    ];
+
+    const fixedImgs = heroWideImages.filter(img => img.fixed);
+    const variableImgs = heroWideImages.filter(img => !img.fixed);
+    
+    const hr = new Date().getHours();
+    let seed = hr + new Date().getDate();
+    function rnd() { let x = Math.sin(seed++) * 10000; return x - Math.floor(x); }
+    
+    // خلط الصور العشوائية
+    variableImgs.sort(() => rnd() - 0.5);
+    
+    // أخذ 15 صورة كحد أقصى (2 ثابتة + 13 عشوائية)
+    window.finalHeroImages = [...fixedImgs, ...variableImgs.slice(0, 13)];
+    
+    let slidesHTML = '';
+    let dotsHTML = '';
+    
+    window.finalHeroImages.forEach((img, i) => {
+      slidesHTML += `<div class="hero-slide ${i === 0 ? 'active' : ''}"><div class="slide-bg" style="background-image:url('${img.src}')"></div></div>`;
+      dotsHTML += `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`;
+    });
+    
+    document.getElementById('heroSlides').innerHTML = slidesHTML;
+    document.getElementById('heroDots').innerHTML = dotsHTML;
+    document.getElementById('totNum').textContent = window.finalHeroImages.length.toString().padStart(2, '0');
+  })();
+</script>
 
 <!-- ===== LIVE STREAM SECTION ===== -->
 <section id="live-stream">
@@ -740,7 +791,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
   </div>
 </section>
 
-<!-- ===== KILLER FEATURES SECTION (NEW) ===== -->
+<!-- ===== KILLER FEATURES SECTION ===== -->
 <section id="killer-features">
   <div class="text-center">
     <div class="section-tag"><i class="fas fa-magic"></i> مزايا حصرية غير مسبوقة</div>
@@ -808,7 +859,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
   </div>
 </section>
 
-<!-- ===== SMART TEST MODAL (NEW) ===== -->
+<!-- ===== SMART TEST MODAL ===== -->
 <div class="smart-modal" id="smartModal">
   <div class="smart-box">
     <button class="sm-close" onclick="closeSmartTest()"><i class="fas fa-times"></i></button>
@@ -911,9 +962,8 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </div>
 </section>
-<!-- ========================================
-     GALLERY - CINEMATIC MOSAIC
-     ======================================== -->
+
+<!-- ===== GALLERY - CINEMATIC MOSAIC ===== -->
 <section id="gallery">
 <div class="text-center">
 <div class="section-tag"><i class="fas fa-images"></i>صور حقيقية</div>
@@ -1212,12 +1262,10 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 // ─────────────────────────────────────────────
 //  Theme Management
 // ─────────────────────────────────────────────
-// الآن الوضع الأساسي هو الوضع الليلي (Dark Mode)
-let isDark = true; 
+let isDark = true;
 
 function initTheme() {
   const savedTheme = localStorage.getItem('dijlahTheme');
-  // إذا كان المستخدم قد اختار الوضع الفاتح سابقاً نقوم بتطبيقه، غير ذلك يبقى ليلياً
   if (savedTheme === 'light') {
     isDark = false;
   } else {
@@ -1234,134 +1282,94 @@ function toggleTheme() {
 
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+  const themeBtn = document.getElementById('themeBtn');
+  if(themeBtn) themeBtn.textContent = isDark ? '☀️' : '🌙';
   const nav = document.querySelector('nav');
-  nav.style.background = window.scrollY > 80
-    ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(255,255,255,0.97)')
-    : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(255,255,255,0.8)');
+  if(nav) {
+    nav.style.background = window.scrollY > 80
+      ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(255,255,255,0.97)')
+      : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(255,255,255,0.8)');
+  }
 }
 
 // ─────────────────────────────────────────────
-//  Dynamic Image Generation (Hero & Gallery)
+//  الصور الأساسية والمخصصة بالأسماء الصحيحة والمباشرة
 // ─────────────────────────────────────────────
-const allMasterImages = [
-  // 1. صور عريضة وواضحة (يُسمح بظهورها في السلايدر الرئيسي والمعرض)
-  { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', fixed: true, isTall: false },
-  { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', fixed: false, isTall: false },
-  { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', fixed: true, isTall: false },
-  { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', fixed: false, isTall: false },
-  { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', fixed: false, isTall: false },
-  { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', fixed: false, isTall: false },
-  { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', fixed: false, isTall: false },
-  { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', fixed: false, isTall: false },
-  { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', fixed: false, isTall: false },
-  { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', fixed: false, isTall: false },
-  { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', fixed: false, isTall: false },
-  { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', fixed: false, isTall: false },
-  { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', fixed: false, isTall: false },
-  { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', fixed: false, isTall: false },
-  { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', fixed: false, isTall: false },
-  { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', fixed: false, isTall: false },
-  { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', fixed: false, isTall: false },
-  { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', fixed: false, isTall: false },
-  { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', fixed: false, isTall: false },
-  { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', fixed: false, isTall: false },
-
-  // 2. صور طولانية (لن تظهر بالواجهة الرئيسية لكي لا تخرب السلايدر، ستظهر في معرض الصور فقط)
-  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات', desc: 'استعداد وتركيز', fixed: false, isTall: true },
-  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني', desc: 'مراقبة وتنظيم', fixed: false, isTall: true },
-  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'فعاليات وأعياد', desc: 'الاحتفالات بالجامعة', fixed: false, isTall: true },
-  { src: '3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif', title: 'واجهة الجامعة', desc: 'مبنى الجامعة الرئيسي', fixed: false, isTall: true },
-  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية', desc: 'أجواء احتفالية', fixed: false, isTall: true },
-  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', fixed: false, isTall: true },
-  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض', desc: 'مؤتمرات علمية', fixed: false, isTall: true },
-  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', fixed: false, isTall: true },
-  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', fixed: false, isTall: true },
-  { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', fixed: false, isTall: true },
-  { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', fixed: false, isTall: true },
-  { src: '2df68a43-a9c2-4351-ab93-cc3eb5e09385.jfif', title: 'جانب من الندوة', desc: 'مشاركة فعالة', fixed: false, isTall: true }
+// قمنا ببناء المصفوفة الخاصة بالمعرض لتعمل بشكل منفصل وتركنا الواجهة للمولد الفوري بالأسفل
+const galleryMasterImages = [
+  // العريضة
+  { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', isTall: false },
+  { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', isTall: false },
+  { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', isTall: false },
+  { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', isTall: false },
+  { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', isTall: false },
+  { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', isTall: false },
+  { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', isTall: false },
+  { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', isTall: false },
+  { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', isTall: false },
+  { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', isTall: false },
+  { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', isTall: false },
+  { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', isTall: false },
+  { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', isTall: false },
+  { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', isTall: false },
+  { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', isTall: false },
+  { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', isTall: false },
+  { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', isTall: false },
+  { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', isTall: false },
+  { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', isTall: false },
+  { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', isTall: false },
+  
+  // الطولانية
+  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات', desc: 'استعداد وتركيز', isTall: true },
+  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني', desc: 'مراقبة وتنظيم', isTall: true },
+  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'فعاليات وأعياد', desc: 'الاحتفالات بالجامعة', isTall: true },
+  { src: '3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif', title: 'واجهة الجامعة', desc: 'مبنى الجامعة الرئيسي', isTall: true },
+  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية', desc: 'أجواء احتفالية', isTall: true },
+  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', isTall: true },
+  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض', desc: 'مؤتمرات علمية', isTall: true },
+  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', isTall: true },
+  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', isTall: true },
+  { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', isTall: true },
+  { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', isTall: true },
+  { src: '2df68a43-a9c2-4351-ab93-cc3eb5e09385.jfif', title: 'جانب من الندوة', desc: 'مشاركة فعالة', isTall: true }
 ];
 
-let finalHeroImages = [];
 let currentSlide = 0;
 let slideInterval;
 const SLIDE_DURATION = 6000;
 
-function buildDynamicImages() {
-  const currentHour = new Date().getHours();
-  
-  const fixedImages = allMasterImages.filter(img => img.fixed && !img.isTall);
-  let variableWideImages = allMasterImages.filter(img => !img.fixed && !img.isTall);
-  
-  // Seed random with current hour to pick same random images for the entire hour
-  let hourSeed = currentHour + new Date().getDate(); 
-  function random() {
-    let x = Math.sin(hourSeed++) * 10000;
-    return x - Math.floor(x);
-  }
-
-  // shuffle array based on hour seed
-  variableWideImages.sort((a, b) => random() - 0.5);
-  
-  let selectedVariables = [];
-  const needed = 10 - fixedImages.length;
-  
-  for(let i=0; i < needed; i++) {
-    if(variableWideImages.length === 0) break;
-    selectedVariables.push(variableWideImages[i]);
-  }
-  
-  finalHeroImages = [...fixedImages, ...selectedVariables];
-  
-  // 1. بناء واجهة السلايدر برمجياً
-  const heroContainer = document.getElementById('heroSlides');
-  const dotsContainer = document.getElementById('heroDots');
-  heroContainer.innerHTML = '';
-  dotsContainer.innerHTML = '';
-  
-  finalHeroImages.forEach((img, i) => {
-    heroContainer.innerHTML += `
-      <div class="hero-slide ${i === 0 ? 'active' : ''}">
-        <div class="slide-bg" style="background-image:url('${img.src}')"></div>
-      </div>
-    `;
-    const dot = document.createElement('div');
-    dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
-    dot.onclick = () => goToSlide(i);
-    dotsContainer.appendChild(dot);
-  });
-  
-  document.getElementById('totNum').textContent = finalHeroImages.length.toString().padStart(2, '0');
-  
-  // 2. بناء معرض الصور (Gallery) بذكاء
+function buildGallery() {
   const galleryContainer = document.querySelector('.gallery-mosaic');
-  galleryContainer.innerHTML = '';
-  
-  allMasterImages.forEach((img, i) => {
-    let tallClass = img.isTall ? 'tall' : '';
-    galleryContainer.innerHTML += `
-      <div class="gm ${tallClass}" onclick="openLightbox(${i})">
-        <img alt="${img.title}" src="${img.src}" onerror="this.parentElement.style.display='none';"/>
-        <div class="gm-overlay"></div>
-        <div class="gm-shine"></div>
-        <div class="gm-caption">
-          <h4>${img.title}</h4>
-          <p><i class="fas fa-camera"></i> ${img.desc}</p>
+  if(galleryContainer) {
+    galleryContainer.innerHTML = '';
+    galleryMasterImages.forEach((img, i) => {
+      let tallClass = img.isTall ? 'tall' : '';
+      galleryContainer.innerHTML += `
+        <div class="gm ${tallClass}" onclick="openLightbox(${i})">
+          <img alt="${img.title}" src="${img.src}" onerror="this.parentElement.style.display='none';"/>
+          <div class="gm-overlay"></div>
+          <div class="gm-shine"></div>
+          <div class="gm-caption">
+            <h4>${img.title}</h4>
+            <p><i class="fas fa-camera"></i> ${img.desc}</p>
+          </div>
         </div>
-      </div>
-    `;
-  });
+      `;
+    });
+  }
 }
 
 // ─────────────────────────────────────────────
 //  Hero Slider Controls
 // ─────────────────────────────────────────────
 function updateCounter(n) {
-  document.getElementById('curNum').textContent = String(n + 1).padStart(2, '0');
+  const curEl = document.getElementById('curNum');
+  if(curEl) curEl.textContent = String(n + 1).padStart(2, '0');
 }
 
 function startProgress() {
   const progressFill = document.getElementById('progressFill');
+  if(!progressFill) return;
   progressFill.style.transition = 'none';
   progressFill.style.width = '0%';
   void progressFill.offsetWidth; 
@@ -1371,12 +1379,13 @@ function startProgress() {
 
 function updateCaption(n) {
   const heroCaption = document.getElementById('heroCaption');
-  if(!heroCaption || !finalHeroImages[n]) return;
+  // الوصول للمصفوفة التي ولدت صور الهيرو من المتغير العام
+  if(!heroCaption || !window.finalHeroImages || !window.finalHeroImages[n]) return;
   heroCaption.style.opacity = '0';
   heroCaption.style.transform = 'translateY(14px)';
   setTimeout(() => {
-    document.getElementById('captionLabel').textContent = finalHeroImages[n].desc;
-    document.getElementById('captionTitle').textContent = finalHeroImages[n].title;
+    document.getElementById('captionLabel').textContent = window.finalHeroImages[n].desc;
+    document.getElementById('captionTitle').textContent = window.finalHeroImages[n].title;
     heroCaption.style.opacity = '1';
     heroCaption.style.transform = 'translateY(0)';
   }, 300);
@@ -1384,6 +1393,7 @@ function updateCaption(n) {
 
 function doFlash() {
   const heroFlash = document.getElementById('heroFlash');
+  if(!heroFlash) return;
   heroFlash.style.transition = 'none';
   heroFlash.style.opacity = '0.18';
   setTimeout(() => {
@@ -1398,12 +1408,12 @@ function goToSlide(n) {
   if(slides.length === 0) return;
   
   slides[currentSlide].classList.remove('active');
-  dots[currentSlide].classList.remove('active');
+  if(dots[currentSlide]) dots[currentSlide].classList.remove('active');
 
   currentSlide = (n + slides.length) % slides.length;
 
   slides[currentSlide].classList.add('active');
-  dots[currentSlide].classList.add('active');
+  if(dots[currentSlide]) dots[currentSlide].classList.add('active');
 
   updateCounter(currentSlide);
   updateCaption(currentSlide);
@@ -1417,19 +1427,24 @@ function prevSlide() { goToSlide(currentSlide - 1); }
 function startAutoplay() { slideInterval = setInterval(nextSlide, SLIDE_DURATION); }
 function stopAutoplay() { clearInterval(slideInterval); }
 
-document.getElementById('heroPrev').addEventListener('click', () => { stopAutoplay(); prevSlide(); startAutoplay(); });
-document.getElementById('heroNext').addEventListener('click', () => { stopAutoplay(); nextSlide(); startAutoplay(); });
+const prevBtn = document.getElementById('heroPrev');
+if(prevBtn) prevBtn.addEventListener('click', () => { stopAutoplay(); prevSlide(); startAutoplay(); });
+
+const nextBtn = document.getElementById('heroNext');
+if(nextBtn) nextBtn.addEventListener('click', () => { stopAutoplay(); nextSlide(); startAutoplay(); });
 
 const heroSection = document.getElementById('hero');
-heroSection.addEventListener('mouseenter', stopAutoplay);
-heroSection.addEventListener('mouseleave', startAutoplay);
+if(heroSection) {
+  heroSection.addEventListener('mouseenter', stopAutoplay);
+  heroSection.addEventListener('mouseleave', startAutoplay);
 
-let touchStartX = 0;
-heroSection.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-heroSection.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 50) { stopAutoplay(); if (dx > 0) prevSlide(); else nextSlide(); startAutoplay(); }
-});
+  let touchStartX = 0;
+  heroSection.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  heroSection.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { stopAutoplay(); if (dx > 0) prevSlide(); else nextSlide(); startAutoplay(); }
+  });
+}
 
 // ─────────────────────────────────────────────
 //  LIGHTBOX (المعرض والأقسام)
@@ -1477,7 +1492,7 @@ function closeLightboxOnBg(e) {
 }
 
 function updateLightbox() {
-  const item = allMasterImages[lbCurrent];
+  const item = galleryMasterImages[lbCurrent];
   const img  = document.getElementById('lbImg');
   img.style.opacity = '0';
   
@@ -1486,23 +1501,27 @@ function updateLightbox() {
   img.onload = function() { img.style.opacity = '1'; };
   img.onerror = function() { img.src = ''; img.alt = 'الصورة غير متوفرة'; img.style.opacity = '1'; };
   
-  document.getElementById('lbCounter').textContent = `${lbCurrent + 1} / ${allMasterImages.length}`;
+  document.getElementById('lbCounter').textContent = `${lbCurrent + 1} / ${galleryMasterImages.length}`;
   document.getElementById('lbTitle').textContent = item.title;
 }
 
-function lbPrev() { lbCurrent = (lbCurrent - 1 + allMasterImages.length) % allMasterImages.length; updateLightbox(); }
-function lbNext() { lbCurrent = (lbCurrent + 1) % allMasterImages.length; updateLightbox(); }
+function lbPrev() { lbCurrent = (lbCurrent - 1 + galleryMasterImages.length) % galleryMasterImages.length; updateLightbox(); }
+function lbNext() { lbCurrent = (lbCurrent + 1) % galleryMasterImages.length; updateLightbox(); }
 
-let lbTouchX = 0;
-document.getElementById('lightbox').addEventListener('touchstart', e => { lbTouchX = e.touches[0].clientX; }, { passive: true });
-document.getElementById('lightbox').addEventListener('touchend', e => {
-  if (!isGallery) return; 
-  const dx = e.changedTouches[0].clientX - lbTouchX;
-  if (Math.abs(dx) > 50) { if (dx > 0) lbPrev(); else lbNext(); }
-});
+const lightboxEl = document.getElementById('lightbox');
+if(lightboxEl) {
+  let lbTouchX = 0;
+  lightboxEl.addEventListener('touchstart', e => { lbTouchX = e.touches[0].clientX; }, { passive: true });
+  lightboxEl.addEventListener('touchend', e => {
+    if (!isGallery) return; 
+    const dx = e.changedTouches[0].clientX - lbTouchX;
+    if (Math.abs(dx) > 50) { if (dx > 0) lbPrev(); else lbNext(); }
+  });
+}
 
 document.addEventListener('keydown', e => {
-  const isLbOpen = document.getElementById('lightbox').classList.contains('open');
+  const lightbox = document.getElementById('lightbox');
+  const isLbOpen = lightbox && lightbox.classList.contains('open');
   if (isLbOpen) {
     if (e.key === 'ArrowRight' && isGallery) lbNext();
     if (e.key === 'ArrowLeft' && isGallery) lbPrev();
@@ -1562,9 +1581,9 @@ setInterval(updateIoTData, 3000);
 // ─────────────────────────────────────────────
 window.onload = () => {
   initTheme();
-  buildDynamicImages();
+  buildGallery();
   
-  if(finalHeroImages.length > 0) {
+  if(window.finalHeroImages && window.finalHeroImages.length > 0) {
     updateCounter(0);
     updateCaption(0);
     startProgress();
@@ -1573,28 +1592,32 @@ window.onload = () => {
   
   // HLS Stream
   var video = document.getElementById('dijlahLiveVideo');
-  var videoSrc = 'https://stream.addresses-sat.com/ANA_DEJLAH/index.m3u8?fbclid=IwY2xjawR4BHdleHRuA2FlbQIxMABicmlkETE5UWx0MWhGdG9yQmNuMmtTc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHulbH_7babATCeZORhWoqdwEz50vg9_m7VXygetr-msLBbOORNGPZ0qjXQm8_aem_f8Onr8RgHluHlQVQUBL9KA';
-  
-  if (Hls.isSupported()) {
-    var hls = new Hls();
-    hls.loadSource(videoSrc);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, function() {
-      video.play().catch(e => console.log("Auto-play prevented"));
-    });
-  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = videoSrc;
-    video.addEventListener('loadedmetadata', function() {
-      video.play().catch(e => {});
-    });
+  if (video) {
+    var videoSrc = 'https://stream.addresses-sat.com/ANA_DEJLAH/index.m3u8?fbclid=IwY2xjawR4BHdleHRuA2FlbQIxMABicmlkETE5UWx0MWhGdG9yQmNuMmtTc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHulbH_7babATCeZORhWoqdwEz50vg9_m7VXygetr-msLBbOORNGPZ0qjXQm8_aem_f8Onr8RgHluHlQVQUBL9KA';
+    
+    if (Hls.isSupported()) {
+      var hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        video.play().catch(e => console.log("Auto-play prevented"));
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
+      video.addEventListener('loadedmetadata', function() {
+        video.play().catch(e => {});
+      });
+    }
   }
 };
 
 window.addEventListener('scroll', () => {
   const nav = document.querySelector('nav');
-  nav.style.background = window.scrollY > 80
-    ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(255,255,255,0.97)')
-    : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(255,255,255,0.8)');
+  if(nav) {
+    nav.style.background = window.scrollY > 80
+      ? (isDark ? 'rgba(13,27,46,0.97)' : 'rgba(255,255,255,0.97)')
+      : (isDark ? 'rgba(13,27,46,0.85)' : 'rgba(255,255,255,0.8)');
+  }
 });
 
 // Animations
@@ -1613,15 +1636,18 @@ function animateCounter(el) {
   requestAnimationFrame(update);
 }
 
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.querySelectorAll('.counter').forEach(el => animateCounter(el));
-      counterObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelector('.stats-bar') && counterObserver.observe(document.querySelector('.stats-bar'));
+const statsBar = document.querySelector('.stats-bar');
+if(statsBar) {
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.counter').forEach(el => animateCounter(el));
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  counterObserver.observe(statsBar);
+}
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -1652,8 +1678,8 @@ const aiAnswers = [
 let aiIdx = 0;
 const typingEl = document.querySelector('.typing');
 
-setInterval(() => {
-  if (typingEl) {
+if(typingEl) {
+  setInterval(() => {
     setTimeout(() => {
       const newMsg = document.createElement('div');
       newMsg.className = 'msg bot';
@@ -1663,8 +1689,8 @@ setInterval(() => {
       const msgs = document.querySelectorAll('.ai-chat .msg');
       if (msgs.length > 8) msgs[2].remove();
     }, 1500);
-  }
-}, 8000);
+  }, 8000);
+}
 </script>
 </body>
 </html>
