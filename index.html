@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html dir="rtl" lang="ar">
@@ -60,6 +59,26 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .nav-link:hover{color:var(--gold);background:rgba(170,204,56,0.08)}
 .nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#1c283d!important;padding:8px 22px!important;border-radius:25px!important;font-weight:900!important;box-shadow:0 4px 15px rgba(170,204,56,0.35)}
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(170,204,56,0.5)!important}
+
+/* --- Live Button Styling --- */
+.live-btn {
+  background: #ef4444 !important;
+  color: #fff !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: pulse-red 2s infinite;
+  box-shadow: 0 0 15px rgba(239,68,68,0.4);
+}
+.live-btn i { font-size: 10px; animation: blink 1.5s infinite; }
+.live-btn:hover { background: #dc2626 !important; transform: translateY(-2px); }
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
 .theme-toggle{width:40px;height:40px;border-radius:50%;border:2px solid rgba(170,204,56,0.4);background:rgba(170,204,56,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;color:var(--gold)}
 .theme-toggle:hover{background:rgba(170,204,56,0.2);transform:rotate(20deg)}
 
@@ -131,6 +150,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .btn-secondary{background:rgba(255,255,255,0.08);color:var(--text);padding:14px 36px;border-radius:30px;font-weight:800;font-size:15px;text-decoration:none;border:2px solid rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;backdrop-filter:blur(10px)}
 .btn-secondary:hover{background:rgba(255,255,255,0.15);border-color:var(--gold);color:var(--gold)}
 
+.btn-live {
+  background: #ef4444; color: #fff; padding: 14px 36px; border-radius: 30px; font-weight: 900; font-size: 15px; text-decoration: none; border: none; cursor: pointer; transition: all .3s;
+  animation: pulse-red 2s infinite; box-shadow: 0 6px 25px rgba(239,68,68,0.4); display: flex; align-items: center; gap: 8px;
+}
+.btn-live:hover { transform: translateY(-3px); background: #dc2626; box-shadow: 0 10px 35px rgba(239,68,68,0.6); }
+
 /* ── Progress Bar ── */
 .hero-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.08);z-index:10;overflow:hidden}
 .hero-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:0 2px 2px 0}
@@ -168,7 +193,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .hero-slide.active ~ .slide-caption{opacity:1;transform:translateY(0)}
 .s-cap-label{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
 .s-cap-title{font-size:18px;font-weight:900;color:#fff}
-/* We'll drive this from JS */
 
 /* ── Dots ── */
 .hero-dots{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:6px}
@@ -457,7 +481,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:40px 5%;display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
 .footer-brand p{font-size:13px;color:var(--text2);margin-top:10px;line-height:1.7}
 .footer-col h5{font-weight:900;font-size:13px;color:var(--text);margin-bottom:12px}
-.footer-col a{display:block;font-size:12px;color:var(--text2);text-decoration:none;margin-bottom:8px;transition:.2s}
+.footer-col a{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);text-decoration:none;margin-bottom:8px;transition:.2s}
 .footer-col a:hover{color:var(--gold)}
 .footer-bottom{background:var(--navy);padding:16px 5%;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text2);border-top:1px solid var(--glass-border)}
 
@@ -468,7 +492,7 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
   footer{grid-template-columns:1fr}
   .gallery-mosaic{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px}
   .cta-checklist{grid-template-columns:1fr}
-  nav .nav-links .nav-link:not(.nav-cta){display:none}
+  nav .nav-links .nav-link:not(.nav-cta):not(.live-btn){display:none}
   .db-bottom{grid-template-columns:1fr}
   .db-body{grid-template-columns:1fr 1fr}
   .hero-prev{right:10px}
@@ -499,6 +523,10 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 </div>
 </a>
 <div class="nav-links">
+<!-- زر البث المباشر في النافبار -->
+<a class="nav-link live-btn nav-cta" href="https://stream.addresses-sat.com/ANA_DEJLAH/index.m3u8?fbclid=IwY2xjawR4BHdleHRuA2FlbQIxMABicmlkETE5UWx0MWhGdG9yQmNuMmtTc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHulbH_7babATCeZORhWoqdwEz50vg9_m7VXygetr-msLBbOORNGPZ0qjXQm8_aem_f8Onr8RgHluHlQVQUBL9KA" target="_blank">
+  <i class="fas fa-circle"></i> البث المباشر
+</a>
 <a class="nav-link" href="#platforms">المنصات</a>
 <a class="nav-link" href="#exec-dashboard">لوحة الإدارة</a>
 <a class="nav-link" href="#ai-section">الذكاء الاصطناعي</a>
@@ -514,42 +542,17 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 <div class="hero-flash" id="heroFlash"></div>
 <!-- Slides -->
 <div class="hero-slides" id="heroSlides">
-<div class="hero-slide active">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
-<div class="hero-slide">
-<div class="slide-bg"></div>
-</div>
+<!-- 10 Slides to match the 10 images -->
+<div class="hero-slide active"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
+<div class="hero-slide"><div class="slide-bg"></div></div>
 </div><!-- /hero-slides -->
 <!-- Content -->
 <div class="hero-content">
@@ -564,8 +567,10 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
       منظومة متكاملة من 4 منصات رقمية ذكية - تُحوّل الجامعة من إدارة ورقية إلى تجربة رقمية استثنائية تليق بمكانة جامعة دجلة وطموحاتها المستقبلية.
     </p>
 <div class="hero-btns">
+<!-- زر البث المباشر البارز في الهيرو -->
+<a class="btn-live" href="https://stream.addresses-sat.com/ANA_DEJLAH/index.m3u8?fbclid=IwY2xjawR4BHdleHRuA2FlbQIxMABicmlkETE5UWx0MWhGdG9yQmNuMmtTc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHulbH_7babATCeZORhWoqdwEz50vg9_m7VXygetr-msLBbOORNGPZ0qjXQm8_aem_f8Onr8RgHluHlQVQUBL9KA" target="_blank"><i class="fas fa-broadcast-tower"></i> البث المباشر لجامعة دجلة</a>
 <a class="btn-primary" href="#platforms"><i class="fas fa-play-circle" style="margin-left:8px"></i>اكتشف المنصات الأربع</a>
-<a class="btn-secondary" href="#exec-dashboard"><i class="fas fa-chart-line" style="margin-left:8px"></i>شاهد لوحة الإدارة</a>
+<a class="btn-secondary" href="system.pdf" target="_blank"><i class="fas fa-chart-line" style="margin-left:8px"></i>شاهد لوحة الإدارة</a>
 </div>
 </div>
 <!-- Navigation arrows -->
@@ -579,12 +584,12 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 <div class="slide-counter" id="slideCounter">
 <div class="cur" id="curNum">01</div>
 <div class="sep"></div>
-<div class="tot" id="totNum">12</div>
+<div class="tot" id="totNum">10</div>
 </div>
 <!-- Caption overlay (bottom left) -->
 <div id="heroCaption">
 <div id="captionLabel" style="font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 2px">جامعة دجلة</div>
-<div id="captionTitle" style="font-size:18px;font-weight:900;color:#fff">قاعة الامتحانات الكبرى</div>
+<div id="captionTitle" style="font-size:18px;font-weight:900;color:#fff">تكريم الإبداع والتميز</div>
 </div>
 <!-- Scroll hint -->
 <div class="scroll-hint">
@@ -616,7 +621,7 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 </div>
 <div class="platforms-grid">
 <!-- Admin ERP -->
-<div class="platform-card pc-admin">
+<div class="platform-card pc-admin" onclick="window.open('system.pdf', '_blank')">
 <div class="pc-glow"></div>
 <div class="pc-top">
 <div class="pc-num">01</div>
@@ -634,7 +639,7 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 </div>
 <div class="pc-bottom">
 <span class="pc-badge">Admin ERP</span>
-<a class="pc-arrow" href="/Documents/un dijlah web site - Complete.html"><i class="fas fa-arrow-left"></i></a>
+<a class="pc-arrow" href="system.pdf" target="_blank"><i class="fas fa-arrow-left"></i></a>
 </div>
 </div>
 <!-- Student Portal -->
@@ -787,116 +792,98 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 <div class="gallery-mosaic">
 <!-- Row 1 -->
 <div class="gm tall" onclick="openLightbox(0)">
-<img alt="قاعة الامتحانات" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/694716693_1435764115258578_762644510018286221_n.jpg"/>
+<img alt="تكريم الإبداع والتميز" loading="lazy" src="image_cf38e8.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>قاعة الامتحانات الكبرى</h4>
-<p><i class="fas fa-map-marker-alt"></i>جامعة دجلة - بغداد</p>
+<h4>تكريم الإبداع والتميز</h4>
+<p><i class="fas fa-award"></i>رئاسة جامعة دجلة</p>
 </div>
 </div>
 <div class="gm" onclick="openLightbox(1)">
-<img alt="طالبة متميزة" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/696512383_1435764055258584_8253520068821710749_n.jpg"/>
+<img alt="حرم جامعي نابض بالحياة" loading="lazy" src="image_cf38cb.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>التركيز والتميز</h4>
-<p><i class="fas fa-graduation-cap"></i>قاعة المحاضرات</p>
+<h4>حرم جامعي نابض بالحياة</h4>
+<p><i class="fas fa-leaf"></i>جامعة دجلة</p>
 </div>
 </div>
 <div class="gm" onclick="openLightbox(2)">
-<img alt="طالبة في القاعة" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/693372346_1435763868591936_9161946611862580438_n.jpg"/>
+<img alt="صرح علمي شامخ" loading="lazy" src="image_cf3b8f.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>جو الدراسة الجامعية</h4>
-<p><i class="fas fa-book"></i>تركيز وإصرار</p>
+<h4>صرح علمي شامخ</h4>
+<p><i class="fas fa-building"></i>مبنى الجامعة الرئيسي</p>
 </div>
 </div>
 <div class="gm tall" onclick="openLightbox(3)">
-<img alt="القاعة الكاملة" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/691602021_1435764025258587_4517447480099574972_n.jpg"/>
+<img alt="إضاءة واجهة الجامعة" loading="lazy" src="image_cf3bb1.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>قاعة المحاضرات الكبرى</h4>
-<p><i class="fas fa-chalkboard"></i>سعة عالية</p>
+<h4>إضاءة واجهة الجامعة</h4>
+<p><i class="fas fa-lightbulb"></i>فعاليات مسائية</p>
 </div>
 </div>
 <!-- Row 2 -->
 <div class="gm" onclick="openLightbox(4)">
-<img alt="الأنشطة الرياضية" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/680134993_1421913266643663_8918523409866496429_n.jpg"/>
+<img alt="فكر لما بعد" loading="lazy" src="image_cf3bcc.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>الأنشطة الرياضية</h4>
-<p><i class="fas fa-futbol"></i>ملعب الجامعة</p>
+<h4>فكر لما بعد</h4>
+<p><i class="fas fa-eye"></i>رؤية جامعة دجلة</p>
 </div>
 </div>
 <div class="gm" onclick="openLightbox(5)">
-<img alt="يوميات جامعة دجلة" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/657364563_1398499675651689_2046441645857008473_n.jpg"/>
+<img alt="مخاطر التطرف على السلم الأهلي" loading="lazy" src="image_cf38e4.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>يوميات جامعة دجلة</h4>
-<p><i class="fas fa-users"></i>الحياة الجامعية</p>
+<h4>مخاطر التطرف على السلم الأهلي</h4>
+<p><i class="fas fa-users"></i>ندوة علمية</p>
 </div>
 </div>
 <!-- Row 3 -->
 <div class="gm tall" onclick="openLightbox(6)">
-<img alt="مجتمع الطلبة" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/658309527_1398499625651694_8816427807301835863_n.jpg"/>
+<img alt="قاعات مجهزة بأحدث التقنيات" loading="lazy" src="image_cf3bd2.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>مجتمع الطلبة</h4>
-<p><i class="fas fa-handshake"></i>تواصل وتفاعل</p>
+<h4>قاعات مجهزة بأحدث التقنيات</h4>
+<p><i class="fas fa-chalkboard-teacher"></i>محاضرات تفاعلية</p>
 </div>
 </div>
 <div class="gm" onclick="openLightbox(7)">
-<img alt="الإشراف الأكاديمي" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/702393513_1440315538136769_8077123225228303781_n.jpg"/>
+<img alt="توقيع مذكرات التفاهم" loading="lazy" src="image_cf3bf1.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>الإشراف الأكاديمي</h4>
-<p><i class="fas fa-user-tie"></i>كادر متمرس</p>
+<h4>توقيع مذكرات التفاهم</h4>
+<p><i class="fas fa-file-signature"></i>شراكات استراتيجية</p>
 </div>
 </div>
 <div class="gm" onclick="openLightbox(8)">
-<img alt="طالب في الامتحان" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/702374821_1440315594803430_1443067916248024658_n.jpg"/>
+<img alt="كادر تدريسي وإداري متميز" loading="lazy" src="image_cf3beb.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>اختبار الإرادة</h4>
-<p><i class="fas fa-pen"></i>لحظة التحدي</p>
+<h4>كادر تدريسي وإداري متميز</h4>
+<p><i class="fas fa-user-tie"></i>خبرات أكاديمية</p>
 </div>
 </div>
 <div class="gm tall" onclick="openLightbox(9)">
-<img alt="الأكاديمية الكبرى" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/694521958_1435765291925127_3855133316545751472_n.jpg"/>
+<img alt="قناة دجلة الفضائية" loading="lazy" src="image_cf384d.jpg"/>
 <div class="gm-overlay"></div>
 <div class="gm-shine"></div>
 <div class="gm-caption">
-<h4>قاعة الأكاديمية الكبرى</h4>
-<p><i class="fas fa-university"></i>امتحانات مركزية</p>
+<h4>قناة دجلة الفضائية</h4>
+<p><i class="fas fa-satellite-dish"></i>تردد القناة</p>
 </div>
 </div>
-<!-- Row 4 -->
-<div class="gm" onclick="openLightbox(10)">
-<img alt="بيئة منظمة" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/696429002_1435765301925126_2887835527564741738_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>بيئة امتحانية منظمة</h4>
-<p><i class="fas fa-shield-alt"></i>نزاهة وعدالة</p>
-</div>
-</div>
-<div class="gm" onclick="openLightbox(11)">
-<img alt="الطالبات المتميزات" loading="lazy" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/693439674_1435765241925132_1309757349121582130_n.jpg"/>
-<div class="gm-overlay"></div>
-<div class="gm-shine"></div>
-<div class="gm-caption">
-<h4>الطالبات المتميزات</h4>
-<p><i class="fas fa-star"></i>مستقبل واعد</p>
-</div>
-</div>
+
 </div><!-- /gallery-mosaic -->
 </section>
 <!-- ===== LIGHTBOX ===== -->
@@ -908,7 +895,7 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 <img alt="" id="lbImg" src=""/>
 </div>
 <div class="lb-info">
-<div class="lb-counter" id="lbCounter">1 / 12</div>
+<div class="lb-counter" id="lbCounter">1 / 10</div>
 <div class="lb-title" id="lbTitle"></div>
 </div>
 </div>
@@ -1111,7 +1098,7 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 </div>
 <div class="why-visual">
 <div class="why-img">
-<img alt="طلبة جامعة دجلة" src="https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/657364563_1398499675651689_2046441645857008473_n.jpg"/>
+<img alt="طلبة جامعة دجلة" src="image_cf38cb.jpg"/>
 </div>
 <div class="why-float why-float-1">
 <div class="float-num">12,450</div>
@@ -1146,7 +1133,7 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 </div>
 <div class="cta-btns">
 <a class="btn-primary" href="https://t.me/EngSaif9" target="_blank"><i class="fab fa-telegram" style="margin-left:8px"></i>تواصل معنا الآن</a>
-<a class="btn-secondary" href="/Documents/un dijlah web site - Complete.html"><i class="fas fa-eye" style="margin-left:8px"></i>شاهد النظام الكامل</a>
+<a class="btn-secondary" href="system.pdf"><i class="fas fa-eye" style="margin-left:8px"></i>شاهد النظام الكامل</a>
 </div>
 <p style="font-size: 12px; color: var(--text2)"><i class="fab fa-telegram" style="color:#3bb4e5;margin-left:4px"></i>@EngSaif9 - متاح للتواصل على تيليغرام</p>
 </div>
@@ -1170,9 +1157,10 @@ footer{background:var(--navy2);border-top:1px solid var(--glass-border);padding:
 </div>
 <div class="footer-col">
 <h5>تواصل معنا</h5>
-<a href="https://t.me/EngSaif9">@EngSaif9 تيليغرام</a>
-<a href="#">بغداد، العراق</a>
-<a href="#">dijlah.edu.iq</a>
+<a href="https://www.facebook.com/dijlamedia" target="_blank"><i class="fab fa-facebook"></i> فيسبوك</a>
+<a href="https://www.instagram.com/duc.edu.iq" target="_blank"><i class="fab fa-instagram"></i> انستغرام</a>
+<a href="mailto:info@duc.edu.iq"><i class="fas fa-envelope"></i> info@duc.edu.iq</a>
+<a href="https://t.me/EngSaif9" target="_blank"><i class="fab fa-telegram"></i> @EngSaif9 تيليغرام</a>
 </div>
 </footer>
 <div class="footer-bottom">
@@ -1297,44 +1285,19 @@ function toggleTheme() {
 // ─── Assign background images to hero slides via JS ───
 (function() {
   const heroURLs = [
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/694716693_1435764115258578_762644510018286221_n.jpg?t=1778970491629385",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/657364563_1398499675651689_2046441645857008473_n.jpg?t=1778970491727199",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/691602021_1435764025258587_4517447480099574972_n.jpg?t=1778970491620520",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/702393513_1440315538136769_8077123225228303781_n.jpg?t=1778970491709373",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/680134993_1421913266643663_8918523409866496429_n.jpg?t=1778970491626265",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/696512383_1435764055258584_8253520068821710749_n.jpg?t=1778970491634651",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/694521958_1435765291925127_3855133316545751472_n.jpg?t=1778970491717814",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/693372346_1435763868591936_9161946611862580438_n.jpg?t=1778970491643900",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/702374821_1440315594803430_1443067916248024658_n.jpg?t=1778970491737478",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/658309527_1398499625651694_8816427807301835863_n.jpg?t=1778970491730327",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/696429002_1435765301925126_2887835527564741738_n.jpg?t=1778970491727267",
-    "https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/693439674_1435765241925132_1309757349121582130_n.jpg?t=1778970491720672"
+    "image_cf38e8.jpg", // الأولى: التكريم
+    "image_cf38cb.jpg",
+    "image_cf3b8f.jpg",
+    "image_cf3bb1.jpg",
+    "image_cf3bcc.jpg",
+    "image_cf38e4.jpg",
+    "image_cf3bd2.jpg",
+    "image_cf3bf1.jpg",
+    "image_cf3beb.jpg",
+    "image_cf384d.jpg"  // الأخيرة: تردد القناة
   ];
   document.querySelectorAll('.slide-bg').forEach(function(el, i) {
     if (heroURLs[i]) el.style.backgroundImage = "url('" + heroURLs[i] + "')";
-  });
-  // Fix gallery + why section img URLs
-  var urlFix = {
-    '694716693_1435764115258578_762644510018286221_n.jpg': '?t=1778970491629385',
-    '696512383_1435764055258584_8253520068821710749_n.jpg': '?t=1778970491634651',
-    '693372346_1435763868591936_9161946611862580438_n.jpg': '?t=1778970491643900',
-    '691602021_1435764025258587_4517447480099574972_n.jpg': '?t=1778970491620520',
-    '680134993_1421913266643663_8918523409866496429_n.jpg': '?t=1778970491626265',
-    '657364563_1398499675651689_2046441645857008473_n.jpg': '?t=1778970491727199',
-    '658309527_1398499625651694_8816427807301835863_n.jpg': '?t=1778970491730327',
-    '702393513_1440315538136769_8077123225228303781_n.jpg': '?t=1778970491709373',
-    '702374821_1440315594803430_1443067916248024658_n.jpg': '?t=1778970491737478',
-    '694521958_1435765291925127_3855133316545751472_n.jpg': '?t=1778970491717814',
-    '696429002_1435765301925126_2887835527564741738_n.jpg': '?t=1778970491727267',
-    '693439674_1435765241925132_1309757349121582130_n.jpg': '?t=1778970491720672'
-  };
-  document.querySelectorAll('img').forEach(function(img) {
-    var src = img.getAttribute('src') || '';
-    if (src.includes('storage.googleapis.com') && !src.includes('?t=')) {
-      for (var file in urlFix) {
-        if (src.includes(file)) { img.setAttribute('src', src + urlFix[file]); break; }
-      }
-    }
   });
 })();
 
@@ -1352,18 +1315,16 @@ let slideInterval;
 const SLIDE_DURATION = 5000; // ms
 
 const captions = [
-  { label: 'الامتحانات', title: 'قاعة الامتحانات الكبرى' },
-  { label: 'الحياة الجامعية', title: 'يوميات جامعة دجلة' },
-  { label: 'قاعة المحاضرات', title: 'القاعة الأكاديمية الكبرى' },
-  { label: 'الإشراف', title: 'الإشراف الأكاديمي الرفيع' },
-  { label: 'الأنشطة', title: 'النشاط الرياضي في الجامعة' },
-  { label: 'الدراسة', title: 'التركيز والتميز' },
-  { label: 'الامتحانات', title: 'بيئة امتحانية محكمة' },
-  { label: 'البيئة الجامعية', title: 'جو الدراسة الجامعية' },
-  { label: 'عزيمة الطلبة', title: 'اختبار الإرادة والتحدي' },
-  { label: 'المجتمع', title: 'مجتمع الطلبة في دجلة' },
-  { label: 'المنظومة', title: 'بيئة امتحانية منظمة' },
-  { label: 'التميز', title: 'الطالبات المتميزات' }
+  { label: 'تكريم', title: 'تكريم الإبداع والتميز' },
+  { label: 'الجامعة', title: 'حرم جامعي نابض بالحياة' },
+  { label: 'الجامعة', title: 'صرح علمي شامخ' },
+  { label: 'الفعاليات', title: 'إضاءة واجهة الجامعة' },
+  { label: 'رؤية', title: 'فكر لما بعد' },
+  { label: 'ندوة علمية', title: 'مخاطر التطرف على السلم الأهلي' },
+  { label: 'محاضرات', title: 'قاعات مجهزة بأحدث التقنيات' },
+  { label: 'اتفاقيات', title: 'توقيع مذكرات التفاهم' },
+  { label: 'الكوادر', title: 'كادر تدريسي وإداري متميز' },
+  { label: 'تردد القناة', title: 'قناة دجلة الفضائية' }
 ];
 
 // Build dots
@@ -1478,18 +1439,16 @@ document.addEventListener('keydown', e => {
 //  LIGHTBOX
 // ─────────────────────────────────────────────
 const galleryImages = [
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/694716693_1435764115258578_762644510018286221_n.jpg?t=1778970491629385', title: 'قاعة الامتحانات الكبرى' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/696512383_1435764055258584_8253520068821710749_n.jpg?t=1778970491634651', title: 'التركيز والتميز' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/693372346_1435763868591936_9161946611862580438_n.jpg?t=1778970491643900', title: 'جو الدراسة الجامعية' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/691602021_1435764025258587_4517447480099574972_n.jpg?t=1778970491620520', title: 'قاعة المحاضرات الكبرى' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/680134993_1421913266643663_8918523409866496429_n.jpg?t=1778970491626265', title: 'الأنشطة الرياضية' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/657364563_1398499675651689_2046441645857008473_n.jpg?t=1778970491727199', title: 'يوميات جامعة دجلة' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/658309527_1398499625651694_8816427807301835863_n.jpg?t=1778970491730327', title: 'مجتمع الطلبة' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/702393513_1440315538136769_8077123225228303781_n.jpg?t=1778970491709373', title: 'الإشراف الأكاديمي' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/702374821_1440315594803430_1443067916248024658_n.jpg?t=1778970491737478', title: 'اختبار الإرادة' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/694521958_1435765291925127_3855133316545751472_n.jpg?t=1778970491717814', title: 'قاعة الأكاديمية الكبرى' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/696429002_1435765301925126_2887835527564741738_n.jpg?t=1778970491727267', title: 'بيئة امتحانية منظمة' },
-  { src: 'https://storage.googleapis.com/flik-bucket/projects/proj_0f08e70dcf5c/Uploads/693439674_1435765241925132_1309757349121582130_n.jpg?t=1778970491720672', title: 'الطالبات المتميزات' }
+  { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز' },
+  { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة' },
+  { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ' },
+  { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة' },
+  { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد' },
+  { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي' },
+  { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات' },
+  { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم' },
+  { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز' },
+  { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية' }
 ];
 
 let lbCurrent = 0;
