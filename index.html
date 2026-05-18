@@ -87,7 +87,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#1c283d!important;padding:8px 22px!important;border-radius:25px!important;font-weight:900!important;box-shadow:0 4px 15px rgba(170,204,56,0.35)}
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(170,204,56,0.5)!important}
 
-/* إصلاح زر البث المباشر في النافبار والواجهة */
 .live-btn-nav {
   background: #ef4444 !important; color: #fff !important; display: flex; align-items: center; gap: 6px; animation: pulse-red 2s infinite; box-shadow: 0 0 15px rgba(239,68,68,0.4);
   border-radius: 20px !important; padding: 8px 18px !important; font-weight: 800 !important; border:none; outline:none; text-decoration: none !important;
@@ -560,10 +559,10 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <!-- Flash overlay -->
 <div class="hero-flash" id="heroFlash"></div>
 
-<!-- السلايدر الرئيسي: حقن مباشر لـ 10 صور عريضة لتجنب التأخير والخطأ -->
+<!-- السلايدر الرئيسي: حقن مباشر لـ 10 صور عريضة بصيغة jpg لتجنب التأخير والخطأ -->
 <div class="hero-slides" id="heroSlides">
-  <div class="hero-slide active"><div class="slide-bg" style="background-image:url('image_cf38e8.jpg')"></div></div>
-  <div class="hero-slide"><div class="slide-bg" style="background-image:url('image_cf384d.jpg')"></div></div>
+  <div class="hero-slide active"><div class="slide-bg" style="background-image:url('44.jpg')"></div></div>
+  <div class="hero-slide"><div class="slide-bg" style="background-image:url('55.jpg')"></div></div>
   <div class="hero-slide"><div class="slide-bg" style="background-image:url('680134993_1421913266643663_8918523409866496429_n.jpg')"></div></div>
   <div class="hero-slide"><div class="slide-bg" style="background-image:url('691602021_1435764025258587_4517447480099574972_n.jpg')"></div></div>
   <div class="hero-slide"><div class="slide-bg" style="background-image:url('693372346_1435763868591936_9161946611862580438_n.jpg')"></div></div>
@@ -608,7 +607,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <!-- Caption overlay -->
 <div id="heroCaption">
 <div id="captionLabel" style="font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 2px">جامعة دجلة</div>
-<div id="captionTitle" style="font-size:18px;font-weight:900;color:#fff">تكريم الإبداع والتميز</div>
+<div id="captionTitle" style="font-size:18px;font-weight:900;color:#fff">التميز الأكاديمي</div>
 </div>
 <!-- Scroll hint -->
 <div class="scroll-hint">
@@ -634,6 +633,22 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 </section>
 
+<script>
+  // لضمان التناسق، نحتفظ ببيانات الـ 10 صور العريضة التي تم حقنها في الـ HTML مباشرة
+  window.finalHeroImages = [
+    { src: '44.jpg', title: 'التميز الأكاديمي', desc: 'جامعة دجلة', fixed: true },
+    { src: '55.jpg', title: 'بيئة تعليمية حديثة', desc: 'التحول الرقمي', fixed: true },
+    { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', fixed: false },
+    { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', fixed: false },
+    { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', fixed: false },
+    { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', fixed: false },
+    { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', fixed: false },
+    { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', fixed: false },
+    { src: '696512383_1435764055258584_8253520068821710749_n.jpg', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', fixed: false },
+    { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', fixed: false }
+  ];
+</script>
+
 <!-- ===== LIVE STREAM SECTION ===== -->
 <section id="live-stream">
   <div class="text-center">
@@ -643,7 +658,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
   </div>
   
   <div class="video-container">
-    <video id="dijlahLiveVideo" controls playsinline poster="image_cf384d.jpg"></video>
+    <video id="dijlahLiveVideo" controls playsinline poster="image_de9e1e.jpg"></video>
   </div>
 </section>
 
@@ -990,7 +1005,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <h2 class="section-title">بيئة جامعية<br/><span>تستحق الأفضل</span></h2>
 <p class="section-sub center">لقطات من فعاليات وتكريمات جامعة دجلة والحياة الأكاديمية.</p>
 </div>
-<!-- Mosaic grid (يتم توليده برمجياً) -->
+<!-- Mosaic grid -->
 <div class="gallery-mosaic"></div>
 </section>
 
@@ -1199,7 +1214,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 </div>
 <div class="why-visual">
 <div class="why-img">
-<img alt="طلبة جامعة دجلة" src="image_cf38cb.jpg" onerror="this.onerror=null;this.parentElement.style.display='none';"/>
+<img alt="طلبة جامعة دجلة" src="658309527_1398499625651694_8816427807301835863_n.jpg" onerror="this.onerror=null;this.parentElement.style.display='none';"/>
 </div>
 <div class="why-float why-float-1">
 <div class="float-num">12,450</div>
@@ -1280,36 +1295,38 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
      ==================================================== -->
 <script>
 // ─────────────────────────────────────────────
-//  الصور الأساسية للواجهة وللمعرض
+//  الصور الأساسية للمعرض
 // ─────────────────────────────────────────────
-const galleryMasterImages = [
-  { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', isTall: false },
-  { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', isTall: false },
-  { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', isTall: false },
-  { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', isTall: false },
-  { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', isTall: false },
-  { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', isTall: false },
-  { src: '696512383_1435764055258584_8253520068821710749_n.jpg', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', isTall: false },
-  { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', isTall: false },
-  { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', isTall: false },
-  { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', isTall: false },
-  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات', desc: 'استعداد وتركيز', isTall: true },
-  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني', desc: 'مراقبة وتنظيم', isTall: true },
-  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'فعاليات وأعياد', desc: 'الاحتفالات بالجامعة', isTall: true },
-  { src: '3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif', title: 'واجهة الجامعة', desc: 'مبنى الجامعة الرئيسي', isTall: true },
-  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية', desc: 'أجواء احتفالية', isTall: true },
-  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', isTall: true },
-  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض', desc: 'مؤتمرات علمية', isTall: true },
-  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', isTall: true },
-  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', isTall: true },
-  { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', isTall: true },
-  { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', isTall: true },
-  { src: '2df68a43-a9c2-4351-ab93-cc3eb5e09385.jfif', title: 'جانب من الندوة', desc: 'مشاركة فعالة', isTall: true }
-];
-
-function buildGallery() {
+function initDynamicContent() {
   const galleryContainer = document.querySelector('.gallery-mosaic');
   if(galleryContainer) {
+    const galleryMasterImages = [
+      { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', isTall: false },
+      { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', isTall: false },
+      { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', isTall: false },
+      { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', isTall: false },
+      { src: '693372346_1435763868591936_9161946611862580438_n.jpg', title: 'جو الدراسة الجامعية', desc: 'تركيز وإصرار', isTall: false },
+      { src: '694521958_1435765291925127_3855133316545751472_n.jpg', title: 'القاعات الدراسية الكبرى', desc: 'بنية تحتية متطورة', isTall: false },
+      { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', isTall: false },
+      { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', isTall: false },
+      { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', isTall: false },
+      { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', isTall: false },
+      { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', isTall: false },
+      { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', isTall: false },
+      { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', isTall: false },
+      { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', isTall: false },
+      { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', isTall: false },
+      { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', isTall: false },
+      { src: '696429002_1435765301925126_2887835527564741738_n.jpg', title: 'بيئة امتحانية منظمة', desc: 'نزاهة وعدالة', isTall: false },
+      { src: '693439674_1435765241925132_1309757349121582130_n.jpg', title: 'الطالبات المتميزات', desc: 'مستقبل واعد', isTall: false },
+      { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', isTall: false },
+      { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', isTall: false },
+      { src: 'image_db67ce.png', title: 'بيئة تعليمية', desc: 'إشراف مباشر', isTall: true },
+      { src: 'image_db6842.png', title: 'التميز الأكاديمي', desc: 'تطوير مستمر', isTall: true }
+    ];
+
+    window.galleryImagesGlobal = galleryMasterImages;
+
     galleryContainer.innerHTML = '';
     galleryMasterImages.forEach((img, i) => {
       let tallClass = img.isTall ? 'tall' : '';
@@ -1464,7 +1481,8 @@ function closeLightboxOnBg(e) {
 }
 
 function updateLightbox() {
-  const item = galleryMasterImages[lbCurrent];
+  if(!window.galleryImagesGlobal) return;
+  const item = window.galleryImagesGlobal[lbCurrent];
   const img  = document.getElementById('lbImg');
   img.style.opacity = '0';
   
@@ -1473,12 +1491,12 @@ function updateLightbox() {
   img.onload = function() { img.style.opacity = '1'; };
   img.onerror = function() { img.src = ''; img.alt = 'الصورة غير متوفرة'; img.style.opacity = '1'; };
   
-  document.getElementById('lbCounter').textContent = `${lbCurrent + 1} / ${galleryMasterImages.length}`;
+  document.getElementById('lbCounter').textContent = `${lbCurrent + 1} / ${window.galleryImagesGlobal.length}`;
   document.getElementById('lbTitle').textContent = item.title;
 }
 
-function lbPrev() { lbCurrent = (lbCurrent - 1 + galleryMasterImages.length) % galleryMasterImages.length; updateLightbox(); }
-function lbNext() { lbCurrent = (lbCurrent + 1) % galleryMasterImages.length; updateLightbox(); }
+function lbPrev() { if(!window.galleryImagesGlobal) return; lbCurrent = (lbCurrent - 1 + window.galleryImagesGlobal.length) % window.galleryImagesGlobal.length; updateLightbox(); }
+function lbNext() { if(!window.galleryImagesGlobal) return; lbCurrent = (lbCurrent + 1) % window.galleryImagesGlobal.length; updateLightbox(); }
 
 const lightboxEl = document.getElementById('lightbox');
 if(lightboxEl) {
@@ -1552,7 +1570,7 @@ setInterval(updateIoTData, 3000);
 //  Stars & Main Init
 // ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  buildGallery();
+  initDynamicContent();
   
   if(window.finalHeroImages && window.finalHeroImages.length > 0) {
     updateCounter(0);
