@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar" data-theme="light">
+<!-- تم تعيين data-theme إلى dark ليكون الوضع الليلي هو الافتراضي -->
+<html dir="rtl" lang="ar" data-theme="dark">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -75,59 +76,67 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 /* ===== HERO - CINEMATIC SLIDESHOW ===== */
 #hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .hero-slides{position:absolute;inset:0;z-index:1}
-.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 2s ease-in-out;}
 .hero-slide.active{opacity:1}
-.slide-bg{position:absolute;inset:-8%;background-size:cover;background-position:center;will-change:transform;}
-.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(160deg, rgba(13,27,46,.92) 0%, rgba(13,27,46,.55) 45%, rgba(13,27,46,.75) 100%);z-index:1;}
-.hero-slide::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,transparent 35%,rgba(0,0,0,.45) 100%);z-index:2;pointer-events:none;}
+.slide-bg{
+  position:absolute;
+  inset:-8%;
+  background-size: cover; 
+  background-position: center; 
+  will-change:transform;
+}
 
-@keyframes kb1{from{transform:scale(1) translate(0%,0%)}to{transform:scale(1.12) translate(-2.5%,-1.5%)}}
-@keyframes kb2{from{transform:scale(1.1) translate(-2%,0%)}to{transform:scale(1) translate(2.5%,1.5%)}}
-@keyframes kb3{from{transform:scale(1) translate(2%,1.5%)}to{transform:scale(1.1) translate(-1.5%,-2%)}}
-@keyframes kb4{from{transform:scale(1.08) translate(1.5%,2%)}to{transform:scale(1) translate(-2.5%,-1%)}}
+@media (max-width: 768px) {
+  .slide-bg {
+    background-size: cover;
+    background-position: top center; 
+  }
+}
 
-.hero-slide:nth-child(4n+1) .slide-bg{animation:kb1 14s ease-in-out infinite alternate}
-.hero-slide:nth-child(4n+2) .slide-bg{animation:kb2 14s ease-in-out infinite alternate}
-.hero-slide:nth-child(4n+3) .slide-bg{animation:kb3 14s ease-in-out infinite alternate}
-.hero-slide:nth-child(4n+0) .slide-bg{animation:kb4 14s ease-in-out infinite alternate}
+.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(160deg, rgba(13,27,46,.8) 0%, rgba(13,27,46,.4) 45%, rgba(13,27,46,.6) 100%);z-index:1;}
+.hero-slide::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,transparent 35%,rgba(0,0,0,.3) 100%);z-index:2;pointer-events:none;}
+
+@keyframes kb1{from{transform:scale(1) translate(0%,0%)}to{transform:scale(1.05) translate(-1%,-1%)}}
+@keyframes kb2{from{transform:scale(1.05) translate(-1%,0%)}to{transform:scale(1) translate(1%,1%)}}
+@keyframes kb3{from{transform:scale(1) translate(1%,1%)}to{transform:scale(1.05) translate(-1%,-1%)}}
+@keyframes kb4{from{transform:scale(1.05) translate(1%,1%)}to{transform:scale(1) translate(-1%,-1%)}}
+
+.hero-slide:nth-child(4n+1) .slide-bg{animation:kb1 20s ease-in-out infinite alternate}
+.hero-slide:nth-child(4n+2) .slide-bg{animation:kb2 20s ease-in-out infinite alternate}
+.hero-slide:nth-child(4n+3) .slide-bg{animation:kb3 20s ease-in-out infinite alternate}
+.hero-slide:nth-child(4n+0) .slide-bg{animation:kb4 20s ease-in-out infinite alternate}
 
 /* ── Hero Content ── */
 .hero-content{position:relative;z-index:3;text-align:center;padding:0 20px;max-width:1000px}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(170,204,56,0.12);border:1px solid rgba(170,204,56,0.35);border-radius:30px;padding:6px 18px;font-size:12px;font-weight:700;color:var(--gold);margin-bottom:24px;backdrop-filter:blur(10px)}
-.hero-title{font-size:clamp(32px,6vw,72px);font-weight:900;line-height:1.2;margin-bottom:16px;color:#fff}
-.hero-title span{background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:clamp(14px,2vw,20px);color:#cbd5e1;margin-bottom:36px;line-height:1.7;max-width:700px;margin-left:auto;margin-right:auto}
+.hero-title{font-size:clamp(32px,6vw,72px);font-weight:900;line-height:1.2;margin-bottom:16px;color:#fff; text-shadow: 0 4px 10px rgba(0,0,0,0.5);}
+.hero-title span{background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; text-shadow: none;}
+.hero-sub{font-size:clamp(14px,2vw,20px);color:#f1f5f9;margin-bottom:36px;line-height:1.7;max-width:700px;margin-left:auto;margin-right:auto; text-shadow: 0 2px 5px rgba(0,0,0,0.5);}
 .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#1c283d;padding:14px 36px;border-radius:30px;font-weight:900;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:all .3s;box-shadow:0 6px 25px rgba(170,204,56,0.4)}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 35px rgba(170,204,56,0.55)}
-.btn-secondary{background:rgba(255,255,255,0.08);color:#fff;padding:14px 36px;border-radius:30px;font-weight:800;font-size:15px;text-decoration:none;border:2px solid rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;backdrop-filter:blur(10px)}
-.btn-secondary:hover{background:rgba(255,255,255,0.15);border-color:var(--gold);color:var(--gold)}
-
-.btn-live {
-  background: #ef4444; color: #fff; padding: 14px 36px; border-radius: 30px; font-weight: 900; font-size: 15px; text-decoration: none; border: none; cursor: pointer; transition: all .3s;
-  animation: pulse-red 2s infinite; box-shadow: 0 6px 25px rgba(239,68,68,0.4); display: flex; align-items: center; gap: 8px;
-}
-.btn-live:hover { transform: translateY(-3px); background: #dc2626; box-shadow: 0 10px 35px rgba(239,68,68,0.6); }
+.btn-secondary{background:rgba(255,255,255,0.15);color:#fff;padding:14px 36px;border-radius:30px;font-weight:800;font-size:15px;text-decoration:none;border:2px solid rgba(255,255,255,0.4);cursor:pointer;transition:all .3s;backdrop-filter:blur(10px)}
+.btn-secondary:hover{background:rgba(255,255,255,0.25);border-color:var(--gold);color:var(--gold)}
 
 /* ── Navigation Arrows & Dots ── */
-.hero-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(14px);transition:all .3s;}
-.hero-nav:hover{background:rgba(170,204,56,0.28);border-color:var(--gold);transform:translateY(-50%) scale(1.1)}
+.hero-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(14px);transition:all .3s;}
+.hero-nav:hover{background:rgba(170,204,56,0.4);border-color:var(--gold);transform:translateY(-50%) scale(1.1)}
 .hero-prev{right:28px}
 .hero-next{left:28px}
 .slide-counter{position:absolute;bottom:84px;right:5%;z-index:5;display:flex;flex-direction:column;align-items:flex-end;}
 .slide-counter .cur{font-size:32px;font-weight:900;color:var(--gold);line-height:1}
-.slide-counter .sep{width:36px;height:2px;background:rgba(255,255,255,.25);margin:4px 0;border-radius:2px}
-.slide-counter .tot{font-size:13px;font-weight:700;color:rgba(255,255,255,0.5)}
-.slide-caption{position:absolute;bottom:84px;left:5%;z-index:5;opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease;}
+.slide-counter .sep{width:36px;height:2px;background:rgba(255,255,255,.4);margin:4px 0;border-radius:2px}
+.slide-counter .tot{font-size:13px;font-weight:700;color:rgba(255,255,255,0.8)}
+.slide-caption{position:absolute;bottom:84px;left:5%;z-index:5;opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease; text-shadow: 0 2px 4px rgba(0,0,0,0.8);}
 .hero-slide.active ~ .slide-caption{opacity:1;transform:translateY(0)}
 .hero-dots{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:6px}
-.hero-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.28);cursor:pointer;transition:all .35s}
+.hero-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:all .35s}
 .hero-dot.active{background:var(--gold);width:22px;border-radius:4px}
-.hero-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.08);z-index:10;overflow:hidden}
+.hero-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.1);z-index:10;overflow:hidden}
 .hero-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:0 2px 2px 0}
 .scroll-hint{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--gold);font-size:11px;font-weight:700;animation:bounce2 2s infinite}
 @keyframes bounce2{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
-.hero-flash{position:absolute;inset:0;z-index:9;pointer-events:none;background:var(--gold);opacity:0;transition:opacity .25s}
+.hero-flash{position:absolute;inset:0;z-index:9;pointer-events:none;background:var(--navy);opacity:0;transition:opacity .4s}
 
 /* ===== Stats Bar ===== */
 .stats-bar{background:linear-gradient(135deg,var(--gold),var(--gold3));padding:22px 5%;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;position:relative;z-index:5}
@@ -244,7 +253,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
   font-weight: 700;
 }
 
-/* ===== KILLER FEATURES SECTION (NEW) ===== */
+/* ===== KILLER FEATURES SECTION ===== */
 #killer-features {background: var(--navy);padding: 90px 5%;}
 .kf-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));gap: 24px;margin-top: 50px;}
 .kf-card {
@@ -273,7 +282,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:70px;di
 .iot-value.alert {color: #ef4444;animation: flash .8s infinite;}
 @keyframes flash {0%,100%{opacity:1}50%{opacity:.5}}
 
-/* ===== Compatibility Modal (NEW) ===== */
+/* ===== Compatibility Modal ===== */
 .smart-modal {
   position: fixed;inset: 0;background: rgba(0,0,0,0.8);backdrop-filter: blur(10px);
   z-index: 9999;display: none;align-items: center;justify-content: center;
@@ -491,7 +500,7 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 <a class="nav-link" href="#exec-dashboard">لوحة الإدارة</a>
 <a class="nav-link" href="#ai-section">الذكاء الاصطناعي</a>
 <a class="nav-link nav-cta" href="#cta">احجز عرضًا</a>
-<button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="تبديل الوضع">🌙</button>
+<button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="تبديل الوضع">☀️</button>
 </div>
 </nav>
 
@@ -1203,11 +1212,15 @@ footer{background:var(--navy3);border-top:1px solid var(--glass-border);padding:
 // ─────────────────────────────────────────────
 //  Theme Management
 // ─────────────────────────────────────────────
-let isDark = false; // الوضع الأساسي أبيض (Light)
+// الآن الوضع الأساسي هو الوضع الليلي (Dark Mode)
+let isDark = true; 
 
 function initTheme() {
   const savedTheme = localStorage.getItem('dijlahTheme');
-  if (savedTheme === 'dark') {
+  // إذا كان المستخدم قد اختار الوضع الفاتح سابقاً نقوم بتطبيقه، غير ذلك يبقى ليلياً
+  if (savedTheme === 'light') {
+    isDark = false;
+  } else {
     isDark = true;
   }
   applyTheme();
@@ -1232,11 +1245,17 @@ function applyTheme() {
 //  Dynamic Image Generation (Hero & Gallery)
 // ─────────────────────────────────────────────
 const allMasterImages = [
-  // صور أساسية (تظهر دائما في السلايدر)
-  { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', fixed: true, isTall: false },
-  { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', fixed: true, isTall: false },
-
-  // صور متغيرة عريضة
+  // 1. صور عريضة وواضحة (يُسمح بظهورها في السلايدر الرئيسي والمعرض)
+  { src: 'image_cf38e8.jpg', title: 'تكريم الإبداع والتميز', desc: 'رئاسة جامعة دجلة', fixed: true, isTall: false },
+  { src: 'image_cf38cb.jpg', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', fixed: false, isTall: false },
+  { src: 'image_cf384d.jpg', title: 'قناة دجلة الفضائية', desc: 'تردد القناة', fixed: true, isTall: false },
+  { src: 'image_cf3b8f.jpg', title: 'صرح علمي شامخ', desc: 'مبنى الجامعة الرئيسي', fixed: false, isTall: false },
+  { src: 'image_cf3bb1.jpg', title: 'إضاءة واجهة الجامعة', desc: 'فعاليات مسائية', fixed: false, isTall: false },
+  { src: 'image_cf3bcc.jpg', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', fixed: false, isTall: false },
+  { src: 'image_cf38e4.jpg', title: 'مخاطر التطرف على السلم الأهلي', desc: 'ندوة علمية', fixed: false, isTall: false },
+  { src: 'image_cf3bd2.jpg', title: 'قاعات مجهزة بأحدث التقنيات', desc: 'محاضرات تفاعلية', fixed: false, isTall: false },
+  { src: 'image_cf3bf1.jpg', title: 'توقيع مذكرات التفاهم', desc: 'شراكات استراتيجية', fixed: false, isTall: false },
+  { src: 'image_cf3beb.jpg', title: 'كادر تدريسي وإداري متميز', desc: 'خبرات أكاديمية', fixed: false, isTall: false },
   { src: '658309527_1398499625651694_8816427807301835863_n.jpg', title: 'مجتمع الطلبة', desc: 'روح الفريق', fixed: false, isTall: false },
   { src: '680134993_1421913266643663_8918523409866496429_n.jpg', title: 'الأنشطة الرياضية', desc: 'ملاعب الجامعة', fixed: false, isTall: false },
   { src: '691602021_1435764025258587_4517447480099574972_n.jpg', title: 'قاعة المحاضرات الكبرى', desc: 'بيئة تفاعلية', fixed: false, isTall: false },
@@ -1247,25 +1266,26 @@ const allMasterImages = [
   { src: '694716693_1435764115258578_762644510018286221_n.jpg', title: 'تفاعل الطلاب', desc: 'بيئة تفاعلية', fixed: false, isTall: false },
   { src: '702374821_1440315594803430_1443067916248024658_n.jpg', title: 'تركيز واهتمام', desc: 'طموح بلا حدود', fixed: false, isTall: false },
   { src: '702393513_1440315538136769_8077123225228303781_n.jpg', title: 'الإشراف والتنظيم', desc: 'إدارة محكمة', fixed: false, isTall: false },
-  { src: '696512383_1435764055258584_8253520068821710749_n.jpg', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', fixed: false, isTall: false },
-  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', fixed: false, isTall: false },
-  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', fixed: false, isTall: false },
-  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني', desc: 'مراقبة وتنظيم', fixed: false, isTall: false },
-  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات', desc: 'استعداد وتركيز', fixed: false, isTall: false },
-  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية', desc: 'أجواء احتفالية', fixed: false, isTall: false },
-  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض', desc: 'مؤتمرات علمية', fixed: false, isTall: false },
-  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', fixed: false, isTall: false },
 
-  // صور طولانية (لن تظهر بالواجهة الرئيسية، ستظهر في المعرض فقط)
+  // 2. صور طولانية (لن تظهر بالواجهة الرئيسية لكي لا تخرب السلايدر، ستظهر في معرض الصور فقط)
+  { src: 'ccd7ab0c-27ea-4189-b4be-b7ebefe85100.jfif', title: 'قاعة الامتحانات', desc: 'استعداد وتركيز', fixed: false, isTall: true },
+  { src: '5f4e51c8-ac1d-456c-a2ab-b0b01813405c.jfif', title: 'إشراف امتحاني', desc: 'مراقبة وتنظيم', fixed: false, isTall: true },
+  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'فعاليات وأعياد', desc: 'الاحتفالات بالجامعة', fixed: false, isTall: true },
   { src: '3a3ac7a5-7811-4d3c-a4fc-632ade7183c4.jfif', title: 'واجهة الجامعة', desc: 'مبنى الجامعة الرئيسي', fixed: false, isTall: true },
-  { src: '170e97cc-a289-4f13-a249-a7ef89adf5b0.jfif', title: 'حرم جامعي نابض بالحياة', desc: 'جامعة دجلة', fixed: false, isTall: true },
-  { src: '2df68a43-a9c2-4351-ab93-cc3eb5e09385.jfif', title: 'فكر لما بعد', desc: 'رؤية جامعة دجلة', fixed: false, isTall: true }
+  { src: '84c0bf38-9500-45d8-ad7b-55aff1bf0f00.jfif', title: 'الاحتفالات المركزية', desc: 'أجواء احتفالية', fixed: false, isTall: true },
+  { src: '663bda0a-b931-445d-8007-a167ca3a2a4a.jfif', title: 'الطالبة المتميزة', desc: 'مثابرة ونجاح', fixed: false, isTall: true },
+  { src: '7f05c4ed-2ea6-4b26-8e21-e82733eebaff.jfif', title: 'ندوات وعروض', desc: 'مؤتمرات علمية', fixed: false, isTall: true },
+  { src: 'fb43df2e-401a-40fb-8a7f-798884a8a691.jfif', title: 'شخصيات أكاديمية', desc: 'كادر الجامعة', fixed: false, isTall: true },
+  { src: '51d96a66-2558-4a7b-8ad5-601a7d3c8afc.jfif', title: 'توقيع اتفاقيات', desc: 'شراكات جديدة', fixed: false, isTall: true },
+  { src: 'baa712ff-a77c-4624-b5ba-e92c32d4d4f3.jfif', title: 'تكريم أكاديمي', desc: 'نجاح وتفوق', fixed: false, isTall: true },
+  { src: 'dd7ea5c8-0de8-4786-b3d9-c93607cb1880.jfif', title: 'ندوة علمية موسعة', desc: 'تطوير مستمر', fixed: false, isTall: true },
+  { src: '2df68a43-a9c2-4351-ab93-cc3eb5e09385.jfif', title: 'جانب من الندوة', desc: 'مشاركة فعالة', fixed: false, isTall: true }
 ];
 
 let finalHeroImages = [];
 let currentSlide = 0;
 let slideInterval;
-const SLIDE_DURATION = 5000;
+const SLIDE_DURATION = 6000;
 
 function buildDynamicImages() {
   const currentHour = new Date().getHours();
