@@ -1,0 +1,2224 @@
+
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>نظام إدارة جامعة دجلة - البوابة الإلكترونية الشاملة</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Cairo', 'sans-serif'] },
+                    colors: {
+                        dijlahDark: '#1c283d',
+                        dijlahBlue: '#3bb4e5',
+                        dijlahGold: '#aacc38',
+                        dijlahGoldLight: '#d2eb7c',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Cairo', sans-serif; background-color: #f0f4f8; }
+        .sidebar-link { transition: all 0.25s ease; position: relative; }
+        .sidebar-link:hover { background-color: rgba(170,204,56,0.1); color: #aacc38; padding-right: 1.5rem; }
+        .sidebar-link.active { background-color: rgba(170,204,56,0.18); color: #aacc38; border-right: 4px solid #aacc38; font-weight: bold; }
+        .glass-card { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .glass-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.09); }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(15px); } to { opacity:1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        #toast { visibility:hidden; min-width:260px; background:#10b981; color:#fff; text-align:center; border-radius:10px; padding:14px 20px; position:fixed; z-index:9999; left:50%; bottom:30px; transform:translateX(-50%); font-size:16px; font-weight:700; box-shadow:0 6px 20px rgba(0,0,0,0.2); }
+        #toast.show { visibility:visible; animation: fadein .4s, fadeout .5s 2.3s; }
+        #toast.error { background:#ef4444; }
+        @keyframes fadein { from{bottom:0;opacity:0} to{bottom:30px;opacity:1} }
+        @keyframes fadeout { from{bottom:30px;opacity:1} to{bottom:0;opacity:0} }
+        .stat-card { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; position: relative; overflow: hidden; }
+        .hall-card { border-radius: 14px; overflow: hidden; transition: all 0.3s ease; }
+        .hall-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .badge-available { background: #dcfce7; color: #16a34a; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+        .badge-occupied { background: #fee2e2; color: #dc2626; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+        .badge-maintenance { background: #fef9c3; color: #b45309; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+        .timeline-slot { border-radius: 8px; padding: 6px 10px; margin-bottom: 4px; font-size: 12px; font-weight: 700; }
+        .slot-free { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
+        .slot-booked { background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c; }
+        .slot-my { background: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; }
+        .calendar-day { min-height: 110px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; background: white; }
+        .calendar-day.today { border-color: #aacc38; background: #f9ffe6; }
+        .calendar-event { font-size: 11px; background: #1c283d; color: white; border-radius: 4px; padding: 2px 6px; margin-bottom: 2px; }
+        .schedule-table th { background: #1c283d; color: white; padding: 10px 14px; font-weight: 700; font-size: 13px; text-align: center; }
+        .schedule-table td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; text-align: center; font-size: 13px; }
+        .schedule-cell { border-radius: 8px; padding: 8px; font-size: 12px; font-weight: 700; min-height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .schedule-cell:hover { transform: scale(1.02); }
+        .nav-group-title { padding: 14px 16px 6px; font-size: 10px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: 1.2px; }
+        @media print {
+            body * { visibility: hidden; }
+            .print-active, .print-active * { visibility: visible !important; }
+            .print-active { position: absolute !important; left: 0; top: 0; width: 100%; margin: 0; padding: 0; box-shadow: none !important; background: white !important; display: block !important; }
+            .no-print { display: none !important; }
+        }
+        .request-card { border-radius: 12px; border: 1px solid #e2e8f0; padding: 16px; transition: all 0.2s; background: white; }
+        .request-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+        .progress-bar { height: 6px; border-radius: 3px; background: #e2e8f0; }
+        .progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+    </style>
+</head>
+<body class="text-gray-800 overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- ========== القائمة الجانبية ========== -->
+<aside class="w-72 bg-dijlahDark text-gray-300 hidden md:flex flex-col shadow-2xl z-30 relative" id="sidebar">
+<div class="p-5 text-center border-b border-gray-700/50 flex flex-col items-center">
+<div class="w-28 h-28 mb-2 flex items-center justify-center">
+<svg class="w-full h-full drop-shadow-xl" viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<circle cx="100" cy="100" fill="#1c283d" r="95" stroke="#ffffff" stroke-width="2"></circle>
+<rect fill="#0a192f" height="40" width="40" x="80" y="55"></rect>
+<path d="M 80 55 L 80 15 L 120 15 A 40 40 0 0 1 120 95 L 120 55 Z" fill="#3bb4e5"></path>
+<path d="M 120 95 L 120 135 L 80 135 A 40 40 0 0 1 80 55 L 80 95 Z" fill="#aacc38"></path>
+<text fill="#ffffff" font-family="'Cairo', sans-serif" font-size="24" font-weight="900" text-anchor="middle" x="100" y="160">جامعة دجلة</text>
+<text fill="#ffffff" font-family="'Cairo', sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="100" y="178">Dijlah University</text>
+</svg>
+</div>
+<h1 class="text-xl font-black text-white">جامعة دجلة</h1>
+<p class="text-xs text-dijlahGold font-semibold mt-0.5">بوابة الإدارة الإلكترونية الشاملة</p>
+</div>
+<nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+<a class="sidebar-link active flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('dashboard',this)">
+<i class="fas fa-th-large w-5 text-center"></i> لوحة القيادة
+            </a>
+<p class="nav-group-title">الشؤون الأكاديمية</p>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('faculties',this)">
+<i class="fas fa-university w-5 text-center"></i> الكليات والأقسام
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('students',this)">
+<i class="fas fa-user-graduate w-5 text-center"></i> شؤون الطلبة والتسجيل
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" id="link_grades" onclick="showSection('grades',this)">
+<i class="fas fa-star w-5 text-center"></i> الدرجات والمواد الدراسية
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('schedule',this)">
+<i class="fas fa-calendar-alt w-5 text-center"></i> الجداول الدراسية
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('elearn',this)">
+<i class="fas fa-laptop-code w-5 text-center"></i> التعليم الإلكتروني
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('exams',this)">
+<i class="fas fa-file-alt w-5 text-center"></i> الامتحانات والنتائج
+            </a>
+<p class="nav-group-title">الموارد والمرافق</p>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('halls',this)">
+<i class="fas fa-door-open w-5 text-center"></i> القاعات وحجوزاتها
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('library',this)">
+<i class="fas fa-book-open w-5 text-center"></i> المكتبة الإلكترونية
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('research',this)">
+<i class="fas fa-flask w-5 text-center"></i> البحوث والنشر العلمي
+            </a>
+<p class="nav-group-title">الشؤون الإدارية والمالية</p>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('staff',this)">
+<i class="fas fa-chalkboard-teacher w-5 text-center"></i> الهيئة التدريسية (HR)
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('finance',this)">
+<i class="fas fa-file-invoice-dollar w-5 text-center"></i> الحسابات والأقساط
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('requests',this)">
+<i class="fas fa-inbox w-5 text-center"></i> الطلبات والمعاملات
+                <span class="mr-auto bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">7</span>
+</a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('documents',this)">
+<i class="fas fa-stamp w-5 text-center"></i> الوثائق والكتب الرسمية
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('reports',this)">
+<i class="fas fa-chart-bar w-5 text-center"></i> التقارير والإحصاءات
+            </a>
+<p class="nav-group-title">النظام</p>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('announcements',this)">
+<i class="fas fa-bullhorn w-5 text-center"></i> الإعلانات والتعاميم
+            </a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm" href="#" onclick="showSection('settings',this)">
+<i class="fas fa-cog w-5 text-center"></i> إعدادات النظام
+            </a>
+</nav>
+<div class="p-3 border-t border-gray-700/50 m-2 bg-gray-800/60 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-dijlahGold text-dijlahDark flex items-center justify-center font-black text-sm">م.ع</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-white">مدير النظام</p>
+<p class="text-xs text-dijlahGold">متصل الآن</p>
+</div>
+<button class="text-gray-400 hover:text-red-400 transition" onclick="showToast('تم تسجيل الخروج')" title="خروج">
+<i class="fas fa-sign-out-alt"></i>
+</button>
+</div>
+</div>
+</aside>
+<!-- ========== المحتوى الرئيسي ========== -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- الهيدر -->
+<header class="h-18 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 flex items-center justify-between px-6 z-20 py-3">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-gray-600 hover:text-dijlahGold transition" onclick="toggleSidebar()">
+<i class="fas fa-bars text-xl"></i>
+</button>
+<div>
+<h2 class="text-xl font-bold text-gray-800" id="page-title">لوحة القيادة والمؤشرات</h2>
+<p class="text-xs text-gray-500" id="page-subtitle">نظام إدارة جامعة دجلة الشامل - العام الدراسي 2025-2026</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-gray-100 rounded-full px-4 py-2 w-56 border border-transparent focus-within:border-dijlahGold focus-within:bg-white transition">
+<i class="fas fa-search text-gray-400 text-sm"></i>
+<input class="bg-transparent border-none outline-none text-sm w-full mr-2" id="globalSearch" onkeyup="globalSearchFn()" placeholder="بحث سريع..." type="text"/>
+</div>
+<div class="hidden absolute top-16 left-1/2 transform -translate-x-1/2 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 w-80 max-h-64 overflow-y-auto" id="searchResults"></div>
+<div class="relative cursor-pointer hover:text-dijlahGold transition" onclick="showSection('requests', document.querySelector('[onclick*=requests]'))">
+<i class="fas fa-bell text-lg text-gray-600"></i>
+<span class="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center border-2 border-white">7</span>
+</div>
+<div class="hidden md:flex items-center gap-2 bg-gray-50 rounded-full px-3 py-1.5 border border-gray-200 cursor-pointer hover:bg-gray-100">
+<div class="w-7 h-7 rounded-full bg-dijlahDark text-dijlahGold flex items-center justify-center font-bold text-xs">م.ع</div>
+<span class="text-sm font-bold text-gray-700">مدير النظام</span>
+<i class="fas fa-chevron-down text-xs text-gray-400"></i>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50 relative" id="main-content">
+<!-- ======= 1. لوحة القيادة ======= -->
+<section class="fade-in space-y-6" id="dashboard">
+<!-- إحصاءات سريعة -->
+<div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4">
+<div class="stat-card border-b-4 border-dijlahBlue col-span-1">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-gray-500 font-semibold">إجمالي الطلبة</p>
+<h3 class="text-3xl font-black text-gray-800 mt-1">12,450</h3>
+<p class="text-xs text-green-500 font-bold mt-1"><i class="fas fa-arrow-up"></i> +8%</p>
+</div>
+<div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+<i class="fas fa-user-graduate text-dijlahBlue"></i>
+</div>
+</div>
+</div>
+<div class="stat-card border-b-4 border-dijlahGold">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-gray-500 font-semibold">الكليات والأقسام</p>
+<h3 class="text-3xl font-black text-gray-800 mt-1">18</h3>
+<p class="text-xs text-gray-400 font-bold mt-1">قسم معتمد</p>
+</div>
+<div class="w-10 h-10 bg-yellow-50 rounded-full flex items-center justify-center">
+<i class="fas fa-university text-dijlahGold"></i>
+</div>
+</div>
+</div>
+<div class="stat-card border-b-4 border-purple-500">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-gray-500 font-semibold">الهيئة التدريسية</p>
+<h3 class="text-3xl font-black text-gray-800 mt-1">640</h3>
+<p class="text-xs text-purple-500 font-bold mt-1">ملاك ومحاضرين</p>
+</div>
+<div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center">
+<i class="fas fa-chalkboard-teacher text-purple-500"></i>
+</div>
+</div>
+</div>
+<div class="stat-card border-b-4 border-green-500">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-gray-500 font-semibold">نسبة تسديد الأقساط</p>
+<h3 class="text-3xl font-black text-gray-800 mt-1">78%</h3>
+<div class="progress-bar mt-2 w-full"><div class="progress-fill bg-green-500"></div></div>
+</div>
+<div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+<i class="fas fa-money-bill-wave text-green-500"></i>
+</div>
+</div>
+</div>
+<div class="stat-card border-b-4 border-orange-500">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-gray-500 font-semibold">القاعات المتاحة</p>
+<h3 class="text-3xl font-black text-gray-800 mt-1">12</h3>
+<p class="text-xs text-orange-500 font-bold mt-1">من أصل 20</p>
+</div>
+<div class="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center">
+<i class="fas fa-door-open text-orange-500"></i>
+</div>
+</div>
+</div>
+<div class="stat-card border-b-4 border-red-500">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-gray-500 font-semibold">طلبات معلقة</p>
+<h3 class="text-3xl font-black text-gray-800 mt-1">7</h3>
+<p class="text-xs text-red-500 font-bold mt-1">تحتاج موافقة</p>
+</div>
+<div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
+<i class="fas fa-inbox text-red-500"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+<!-- كثافة الطلاب -->
+<div class="glass-card p-5 lg:col-span-2">
+<h3 class="text-base font-bold text-dijlahDark mb-4 flex items-center gap-2">
+<i class="fas fa-chart-bar text-dijlahGold"></i> الكثافة الطلابية لأبرز الكليات
+                        </h3>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-sm mb-1"><span class="font-bold">كلية الهندسة</span><span class="text-gray-500">3,200 طالب</span></div>
+<div class="progress-bar w-full"><div class="progress-fill bg-dijlahGold"></div></div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1"><span class="font-bold">التقنيات الطبية والصحية</span><span class="text-gray-500">2,500 طالب</span></div>
+<div class="progress-bar w-full"><div class="progress-fill bg-green-500"></div></div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1"><span class="font-bold">كلية طب الأسنان</span><span class="text-gray-500">2,100 طالب</span></div>
+<div class="progress-bar w-full"><div class="progress-fill bg-dijlahBlue"></div></div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1"><span class="font-bold">كلية الصيدلة</span><span class="text-gray-500">1,850 طالب</span></div>
+<div class="progress-bar w-full"><div class="progress-fill bg-indigo-500"></div></div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1"><span class="font-bold">كلية القانون</span><span class="text-gray-500">1,500 طالب</span></div>
+<div class="progress-bar w-full"><div class="progress-fill bg-red-400"></div></div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1"><span class="font-bold">كلية الإدارة والاقتصاد</span><span class="text-gray-500">1,300 طالب</span></div>
+<div class="progress-bar w-full"><div class="progress-fill bg-purple-400"></div></div>
+</div>
+</div>
+</div>
+<!-- التعاميم والقرارات -->
+<div class="glass-card p-5">
+<h3 class="text-base font-bold text-dijlahDark mb-4 flex items-center gap-2">
+<i class="fas fa-bullhorn text-red-500"></i> آخر التعاميم والقرارات
+                        </h3>
+<ul class="space-y-3">
+<li class="p-3 bg-red-50 border-r-4 border-red-500 rounded-lg text-xs">
+<strong class="block text-red-700 mb-1">وزارة التعليم العالي</strong>
+                                تحديد موعد الامتحانات النهائية التحريرية يوم 25/5/2026.
+                            </li>
+<li class="p-3 bg-blue-50 border-r-4 border-dijlahBlue rounded-lg text-xs">
+<strong class="block text-dijlahBlue mb-1">رئاسة الجامعة</strong>
+                                إيقاف ترويج معاملات النقل والاستضافة بين الجامعات الأسبوع القادم.
+                            </li>
+<li class="p-3 bg-yellow-50 border-r-4 border-yellow-500 rounded-lg text-xs">
+<strong class="block text-yellow-700 mb-1">القسم المالي</strong>
+                                ضرورة تبليغ طلبة المرحلة الرابعة بتسديد القسط قبل تسليم وثيقة التخرج.
+                            </li>
+<li class="p-3 bg-green-50 border-r-4 border-green-500 rounded-lg text-xs">
+<strong class="block text-green-700 mb-1">إدارة القاعات</strong>
+                                تم استلام قاعة المؤتمرات الكبرى بعد الصيانة. متاحة للحجز الآن.
+                            </li>
+</ul>
+<button class="mt-4 w-full text-center text-xs text-dijlahBlue font-bold hover:underline" onclick="showSection('announcements',document.querySelector('[onclick*=announcements]'))">
+                            عرض جميع التعاميم <i class="fas fa-arrow-left"></i>
+</button>
+</div>
+</div>
+<!-- نشاطات اليوم -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+<div class="glass-card p-5">
+<h4 class="font-bold text-sm text-dijlahDark mb-3 flex items-center gap-2"><i class="fas fa-calendar-check text-dijlahBlue"></i> حجوزات القاعات اليوم</h4>
+<ul class="space-y-2 text-xs">
+<li class="flex justify-between items-center bg-gray-50 rounded-lg p-2"><span class="font-bold">قاعة A101 - محاضرة</span><span class="text-gray-500">08:00 - 10:00</span></li>
+<li class="flex justify-between items-center bg-orange-50 rounded-lg p-2"><span class="font-bold text-orange-700">قاعة B205 - اجتماع</span><span class="text-gray-500">11:00 - 12:00</span></li>
+<li class="flex justify-between items-center bg-blue-50 rounded-lg p-2"><span class="font-bold text-blue-700">قاعة المؤتمرات - ندوة</span><span class="text-gray-500">14:00 - 17:00</span></li>
+</ul>
+<button class="mt-3 w-full text-center text-xs text-dijlahBlue font-bold hover:underline" onclick="showSection('halls',document.querySelector('[onclick*=halls]'))">إدارة القاعات →</button>
+</div>
+<div class="glass-card p-5">
+<h4 class="font-bold text-sm text-dijlahDark mb-3 flex items-center gap-2"><i class="fas fa-inbox text-red-500"></i> طلبات تحتاج مراجعة</h4>
+<ul class="space-y-2 text-xs">
+<li class="flex justify-between items-center bg-red-50 rounded-lg p-2"><span class="font-bold text-red-700">طلب تأجيل امتحان - أحمد كاظم</span><span class="bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold">معلق</span></li>
+<li class="flex justify-between items-center bg-yellow-50 rounded-lg p-2"><span class="font-bold text-yellow-700">طلب انتساب - زهراء علي</span><span class="bg-yellow-100 text-yellow-600 px-2 py-0.5 rounded font-bold">قيد الدراسة</span></li>
+<li class="flex justify-between items-center bg-gray-50 rounded-lg p-2"><span class="font-bold">طلب وثيقة تخرج - 3 طلاب</span><span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-bold">جديد</span></li>
+</ul>
+<button class="mt-3 w-full text-center text-xs text-red-500 font-bold hover:underline" onclick="showSection('requests',document.querySelector('[onclick*=requests]'))">عرض كل الطلبات →</button>
+</div>
+<div class="glass-card p-5">
+<h4 class="font-bold text-sm text-dijlahDark mb-3 flex items-center gap-2"><i class="fas fa-chart-line text-green-500"></i> الأداء المالي الشهري</h4>
+<div class="space-y-2">
+<div class="flex justify-between text-xs"><span class="text-gray-500">المحصّل هذا الشهر</span><span class="font-bold text-green-600">182,500,000 د.ع</span></div>
+<div class="flex justify-between text-xs"><span class="text-gray-500">المتوقع إجمالاً</span><span class="font-bold text-gray-700">235,000,000 د.ع</span></div>
+<div class="flex justify-between text-xs border-t pt-2 mt-2"><span class="text-gray-500">المتبقي للتحصيل</span><span class="font-bold text-red-500">52,500,000 د.ع</span></div>
+<div class="progress-bar w-full mt-2"><div class="progress-fill bg-green-500"></div></div>
+<p class="text-center text-xs text-gray-400">78% من الهدف الشهري</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ======= 2. الكليات والأقسام ======= -->
+<section class="hidden fade-in" id="faculties">
+<div class="flex flex-wrap justify-between items-center mb-5 gap-3">
+<h3 class="text-lg font-bold text-gray-800">التشكيلات الأكاديمية (الكليات والأقسام)</h3>
+<button class="bg-dijlahGold text-white px-4 py-2 rounded-lg font-bold hover:bg-yellow-600 transition shadow text-sm" onclick="openModal('addFacultyModal')"><i class="fas fa-plus ml-1"></i> استحداث تشكيل</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="facultiesGrid">
+<div class="glass-card p-5 border-t-4 border-dijlahBlue flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-blue-50 text-dijlahBlue rounded-full flex items-center justify-center text-2xl mb-3"><i class="fas fa-tooth"></i></div>
+<h4 class="text-lg font-black text-gray-800 mb-1">كلية طب الأسنان</h4>
+<p class="text-xs text-gray-500 mb-3">العميد: أ.د. محمد القيسي</p>
+<div class="w-full grid grid-cols-3 gap-2 text-xs border-t pt-3">
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">2,100</span>طالب</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">45</span>تدريسي</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">5</span>مراحل</div>
+</div>
+</div>
+<div class="glass-card p-5 border-t-4 border-indigo-600 flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center text-2xl mb-3"><i class="fas fa-pills"></i></div>
+<h4 class="text-lg font-black text-gray-800 mb-1">كلية الصيدلة</h4>
+<p class="text-xs text-gray-500 mb-3">العميد: أ.م.د. لمى حسن</p>
+<div class="w-full grid grid-cols-3 gap-2 text-xs border-t pt-3">
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">1,850</span>طالب</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">38</span>تدريسي</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">5</span>مراحل</div>
+</div>
+</div>
+<div class="glass-card p-5 border-t-4 border-green-600 flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center text-2xl mb-3"><i class="fas fa-microscope"></i></div>
+<h4 class="text-lg font-black text-gray-800 mb-1">التقنيات الطبية والصحية</h4>
+<p class="text-xs text-gray-500 mb-3">قسم التحليلات - قسم التخدير</p>
+<div class="w-full grid grid-cols-3 gap-2 text-xs border-t pt-3">
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">3,400</span>طالب</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">60</span>تدريسي</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">4</span>مراحل</div>
+</div>
+</div>
+<div class="glass-card p-5 border-t-4 border-dijlahGold flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-yellow-50 text-dijlahGold rounded-full flex items-center justify-center text-2xl mb-3"><i class="fas fa-hard-hat"></i></div>
+<h4 class="text-lg font-black text-gray-800 mb-1">كلية الهندسة</h4>
+<p class="text-xs text-gray-500 mb-3">مدني - معماري - حاسبات - كهربائي</p>
+<div class="w-full grid grid-cols-3 gap-2 text-xs border-t pt-3">
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">3,200</span>طالب</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">75</span>تدريسي</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">4</span>مراحل</div>
+</div>
+</div>
+<div class="glass-card p-5 border-t-4 border-red-600 flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center text-2xl mb-3"><i class="fas fa-balance-scale"></i></div>
+<h4 class="text-lg font-black text-gray-800 mb-1">كلية القانون</h4>
+<p class="text-xs text-gray-500 mb-3">العميد: أ.د. علي الشمري</p>
+<div class="w-full grid grid-cols-3 gap-2 text-xs border-t pt-3">
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">1,500</span>طالب</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">25</span>تدريسي</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">4</span>مراحل</div>
+</div>
+</div>
+<div class="glass-card p-5 border-t-4 border-teal-600 flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-2xl mb-3"><i class="fas fa-chart-line"></i></div>
+<h4 class="text-lg font-black text-gray-800 mb-1">الإدارة والاقتصاد</h4>
+<p class="text-xs text-gray-500 mb-3">إدارة أعمال - محاسبة - اقتصاد</p>
+<div class="w-full grid grid-cols-3 gap-2 text-xs border-t pt-3">
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">1,300</span>طالب</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">30</span>تدريسي</div>
+<div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">4</span>مراحل</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ======= 3. شؤون الطلبة ======= -->
+<section class="hidden fade-in" id="students">
+<div class="glass-card p-5">
+<div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+<h3 class="text-lg font-bold text-dijlahDark">سجل الطلبة المركزي</h3>
+<button class="bg-dijlahDark text-white px-5 py-2 rounded-lg shadow hover:bg-dijlahBlue transition font-bold text-sm" onclick="openModal('addStudentModal')"><i class="fas fa-user-plus ml-1"></i> تسجيل طالب جديد</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5 bg-gray-50 p-4 rounded-lg border border-gray-100">
+<input class="p-2 border rounded outline-none focus:border-dijlahGold text-sm" placeholder="رقم الطالب أو الاسم..." type="text"/>
+<select class="p-2 border rounded outline-none text-sm">
+<option>جميع الكليات</option>
+<option>طب الأسنان</option><option>الصيدلة</option><option>الهندسة</option><option>القانون</option>
+</select>
+<select class="p-2 border rounded outline-none text-sm">
+<option>جميع المراحل</option><option>الأولى</option><option>الثانية</option><option>الثالثة</option><option>الرابعة</option><option>الخامسة</option>
+</select>
+<button class="bg-dijlahDark text-white font-bold rounded hover:bg-dijlahBlue transition py-2 text-sm"><i class="fas fa-filter ml-1"></i> تصفية</button>
+</div>
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+<table class="w-full text-right text-sm">
+<thead class="bg-dijlahDark text-white">
+<tr>
+<th class="p-3 font-semibold">الرقم الجامعي</th>
+<th class="p-3 font-semibold">اسم الطالب الرباعي</th>
+<th class="p-3 font-semibold">الكلية والقسم</th>
+<th class="p-3 font-semibold">المرحلة</th>
+<th class="p-3 font-semibold">نوع الدراسة</th>
+<th class="p-3 font-semibold">الحالة</th>
+<th class="p-3 font-semibold text-center">إجراءات</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white" id="studentsTbody">
+<tr class="hover:bg-gray-50 transition">
+<td class="p-3 text-gray-500 font-mono text-xs">2023010452</td>
+<td class="p-3 font-bold text-gray-800">أحمد محمود سلمان كاظم</td>
+<td class="p-3 text-gray-600 text-xs">هندسة تقنيات الحاسوب</td>
+<td class="p-3"><span class="bg-gray-100 px-2 py-0.5 rounded text-xs font-bold">الثالثة</span></td>
+<td class="p-3 text-xs">صباحي</td>
+<td class="p-3"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">مستمر</span></td>
+<td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5" title="تعديل"><i class="fas fa-edit text-xs"></i></button><button class="text-gray-600 bg-gray-100 w-7 h-7 rounded-full mx-0.5" onclick="goToGrades('هندسة تقنيات الحاسوب')" title="الدرجات"><i class="fas fa-graduation-cap text-xs"></i></button><button class="text-red-500 bg-red-50 w-7 h-7 rounded-full mx-0.5" onclick="this.closest('tr').remove();showToast('تم حذف الطالب');" title="حذف"><i class="fas fa-trash text-xs"></i></button></td>
+</tr>
+<tr class="hover:bg-gray-50 transition">
+<td class="p-3 text-gray-500 font-mono text-xs">2024099112</td>
+<td class="p-3 font-bold text-gray-800">غيث محمد علي</td>
+<td class="p-3 text-gray-600 text-xs">هندسة تقنيات الحاسوب</td>
+<td class="p-3"><span class="bg-gray-100 px-2 py-0.5 rounded text-xs font-bold">الأولى</span></td>
+<td class="p-3 text-xs">صباحي</td>
+<td class="p-3"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">مستمر</span></td>
+<td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-edit text-xs"></i></button><button class="text-gray-600 bg-gray-100 w-7 h-7 rounded-full mx-0.5" onclick="goToGrades('هندسة تقنيات الحاسوب')"><i class="fas fa-graduation-cap text-xs"></i></button><button class="text-red-500 bg-red-50 w-7 h-7 rounded-full mx-0.5" onclick="this.closest('tr').remove();showToast('تم حذف الطالب');"><i class="fas fa-trash text-xs"></i></button></td>
+</tr>
+<tr class="hover:bg-gray-50 transition">
+<td class="p-3 text-gray-500 font-mono text-xs">2021050881</td>
+<td class="p-3 font-bold text-gray-800">زهراء علي حسن محمد</td>
+<td class="p-3 text-gray-600 text-xs">طب الأسنان</td>
+<td class="p-3"><span class="bg-gray-100 px-2 py-0.5 rounded text-xs font-bold">الخامسة</span></td>
+<td class="p-3 text-xs">صباحي</td>
+<td class="p-3"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">مستمر</span></td>
+<td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-edit text-xs"></i></button><button class="text-gray-600 bg-gray-100 w-7 h-7 rounded-full mx-0.5" onclick="goToGrades('طب الأسنان')"><i class="fas fa-graduation-cap text-xs"></i></button><button class="text-red-500 bg-red-50 w-7 h-7 rounded-full mx-0.5" onclick="this.closest('tr').remove();showToast('تم حذف الطالب');"><i class="fas fa-trash text-xs"></i></button></td>
+</tr>
+<tr class="hover:bg-gray-50 transition">
+<td class="p-3 text-gray-500 font-mono text-xs">2022030112</td>
+<td class="p-3 font-bold text-gray-800">مصطفى جاسم عبد الرضا</td>
+<td class="p-3 text-gray-600 text-xs">القانون</td>
+<td class="p-3"><span class="bg-gray-100 px-2 py-0.5 rounded text-xs font-bold">الثانية</span></td>
+<td class="p-3 text-xs">مسائي</td>
+<td class="p-3"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-bold">مرقن قيده</span></td>
+<td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-edit text-xs"></i></button><button class="text-gray-600 bg-gray-100 w-7 h-7 rounded-full mx-0.5" onclick="goToGrades('القانون')"><i class="fas fa-graduation-cap text-xs"></i></button><button class="text-red-500 bg-red-50 w-7 h-7 rounded-full mx-0.5" onclick="this.closest('tr').remove();showToast('تم حذف الطالب');"><i class="fas fa-trash text-xs"></i></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 flex justify-between items-center text-sm text-gray-500">
+<span>عرض 1-4 من 12,450 طالب</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border rounded hover:bg-gray-50">السابق</button>
+<button class="px-3 py-1 bg-dijlahDark text-white rounded">1</button>
+<button class="px-3 py-1 border rounded hover:bg-gray-50">2</button>
+<button class="px-3 py-1 border rounded hover:bg-gray-50">3</button>
+<button class="px-3 py-1 border rounded hover:bg-gray-50">التالي</button>
+</div>
+</div>
+</div>
+</section>
+<!-- ======= 4. الدرجات والمواد ======= -->
+<section class="hidden fade-in" id="grades">
+<div class="glass-card p-5 border-t-4 border-dijlahGold">
+<div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+<h3 class="text-lg font-bold text-dijlahDark"><i class="fas fa-star text-dijlahGold ml-2"></i>سجل الدرجات وإدارة المواد</h3>
+<button class="bg-dijlahDark text-white px-4 py-2 rounded-lg shadow hover:bg-dijlahBlue transition font-bold text-sm" onclick="openManageSubjectsModal()"><i class="fas fa-book-open ml-1"></i>إضافة وإدارة المواد</button>
+</div>
+<div class="mb-4 bg-gray-50 p-3 rounded-lg border flex flex-wrap items-center gap-3">
+<label class="font-bold text-gray-700 text-sm">اختر القسم:</label>
+<select class="p-2 border rounded outline-none focus:border-dijlahGold text-sm font-bold" id="grades_dept_select" onchange="renderGradesTable()">
+<option value="هندسة تقنيات الحاسوب">هندسة تقنيات الحاسوب</option>
+<option value="طب الأسنان">طب الأسنان</option>
+<option value="الصيدلة">الصيدلة</option>
+<option value="الهندسة">الهندسة</option>
+<option value="القانون">القانون</option>
+</select>
+</div>
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+<table class="w-full text-right text-sm" id="grades_table">
+<thead class="bg-dijlahDark text-white"><tr id="grades_thead_tr"></tr></thead>
+<tbody class="divide-y divide-gray-100 bg-white" id="grades_tbody"></tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ======= 5. الجداول الدراسية ======= -->
+<section class="hidden fade-in" id="schedule">
+<div class="glass-card p-5 border-t-4 border-dijlahBlue">
+<div class="flex flex-wrap justify-between items-center mb-5 gap-3">
+<h3 class="text-lg font-bold text-dijlahDark"><i class="fas fa-calendar-alt text-dijlahBlue ml-2"></i>الجداول الدراسية الأسبوعية</h3>
+<div class="flex gap-2 flex-wrap">
+<select class="p-2 border rounded outline-none text-sm font-bold focus:border-dijlahBlue" onchange="renderSchedule(this.value)">
+<option value="cs">هندسة تقنيات الحاسوب - الأولى</option>
+<option value="dentistry">طب الأسنان - الثالثة</option>
+<option value="law">القانون - الثانية</option>
+</select>
+<button class="bg-dijlahDark text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-dijlahBlue transition" onclick="showToast('تم تصدير الجدول')"><i class="fas fa-file-pdf ml-1"></i>تصدير</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full schedule-table rounded-lg overflow-hidden border border-gray-200">
+<thead>
+<tr>
+<th class="w-24">الوقت</th>
+<th>الأحد</th><th>الاثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th>
+</tr>
+</thead>
+<tbody id="scheduleBody">
+</tbody>
+</table>
+</div>
+<div class="mt-4 flex flex-wrap gap-3 text-xs">
+<span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-blue-100 border border-blue-300"></span> محاضرة نظرية</span>
+<span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-green-100 border border-green-300"></span> مختبر عملي</span>
+<span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-yellow-100 border border-yellow-300"></span> سيمينار</span>
+<span class="flex items-center gap-1"><span class="w-4 h-4 rounded bg-gray-100 border border-gray-300"></span> فراغ</span>
+</div>
+</div>
+</section>
+<!-- ======= 6. التعليم الإلكتروني ======= -->
+<section class="hidden fade-in" id="elearn">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-5">
+<div class="stat-card border-b-4 border-dijlahBlue"><p class="text-xs text-gray-500">المقررات المنشورة</p><h3 class="text-3xl font-black mt-1">142</h3></div>
+<div class="stat-card border-b-4 border-green-500"><p class="text-xs text-gray-500">المحاضرات المرفوعة</p><h3 class="text-3xl font-black mt-1">1,840</h3></div>
+<div class="stat-card border-b-4 border-purple-500"><p class="text-xs text-gray-500">الاختبارات الإلكترونية</p><h3 class="text-3xl font-black mt-1">68</h3></div>
+<div class="stat-card border-b-4 border-orange-500"><p class="text-xs text-gray-500">المستخدمون النشطون</p><h3 class="text-3xl font-black mt-1">9,320</h3></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+<div class="lg:col-span-2">
+<div class="glass-card p-5 mb-5">
+<h3 class="text-base font-bold text-dijlahDark mb-4"><i class="fas fa-book text-dijlahBlue ml-2"></i>المقررات الدراسية الإلكترونية</h3>
+<div class="space-y-3" id="eCoursesList">
+<div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+<div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl font-bold">CS</div>
+<div class="flex-1">
+<h4 class="font-bold text-sm">هياكل البيانات والخوارزميات</h4>
+<p class="text-xs text-gray-500">أ.م.د. سعد الجبوري | 32 محاضرة | 280 طالب</p>
+</div>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">نشط</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+<div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-xl font-bold">LAW</div>
+<div class="flex-1">
+<h4 class="font-bold text-sm">القانون المدني - الالتزامات</h4>
+<p class="text-xs text-gray-500">أ.د. علي الشمري | 28 محاضرة | 380 طالب</p>
+</div>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">نشط</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+<div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center text-xl font-bold">DEN</div>
+<div class="flex-1">
+<h4 class="font-bold text-sm">التشريح الرأسي والرقبي</h4>
+<p class="text-xs text-gray-500">أ.د. محمد القيسي | 40 محاضرة | 420 طالب</p>
+</div>
+<span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs font-bold">قيد التحديث</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+<div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center text-xl font-bold">PH</div>
+<div class="flex-1">
+<h4 class="font-bold text-sm">صيدلانيات 1 - الأشكال الصيدلانية</h4>
+<p class="text-xs text-gray-500">أ.م.د. لمى حسن | 36 محاضرة | 185 طالب</p>
+</div>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">نشط</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="glass-card p-5 mb-4">
+<h4 class="font-bold text-sm text-dijlahDark mb-3"><i class="fas fa-tasks text-orange-500 ml-2"></i>الواجبات والاختبارات النشطة</h4>
+<ul class="space-y-2 text-xs">
+<li class="p-2 bg-orange-50 border-r-4 border-orange-400 rounded"><strong>اختبار قصير - هياكل البيانات</strong><br/><span class="text-gray-500">ينتهي: 20/5/2026 | 45 لم يؤدوه</span></li>
+<li class="p-2 bg-blue-50 border-r-4 border-blue-400 rounded"><strong>واجب - القانون المدني</strong><br/><span class="text-gray-500">ينتهي: 22/5/2026 | 120 لم يرسلوه</span></li>
+<li class="p-2 bg-green-50 border-r-4 border-green-400 rounded"><strong>تقرير مختبر - الصيدلانيات</strong><br/><span class="text-gray-500">ينتهي: 25/5/2026 | 30 لم يرسلوه</span></li>
+</ul>
+</div>
+<div class="glass-card p-5">
+<h4 class="font-bold text-sm text-dijlahDark mb-3"><i class="fas fa-plus-circle text-dijlahGold ml-2"></i>رفع محتوى جديد</h4>
+<div class="space-y-2">
+<select class="w-full border rounded p-2 text-xs focus:border-dijlahGold outline-none"><option>اختر المادة</option></select>
+<select class="w-full border rounded p-2 text-xs focus:border-dijlahGold outline-none">
+<option>محاضرة فيديو</option><option>ملف PDF</option><option>واجب</option><option>اختبار</option>
+</select>
+<input class="w-full border rounded p-2 text-xs focus:border-dijlahGold outline-none" placeholder="عنوان المحتوى" type="text"/>
+<button class="w-full bg-dijlahBlue text-white py-2 rounded-lg text-xs font-bold hover:bg-blue-600 transition" onclick="showToast('تم رفع المحتوى بنجاح!')"><i class="fas fa-upload ml-1"></i>رفع المحتوى</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ======= 7. الامتحانات والنتائج ======= -->
+<section class="hidden fade-in" id="exams">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+<div class="stat-card border-b-4 border-dijlahBlue"><p class="text-xs text-gray-500">الامتحانات المجدولة</p><h3 class="text-3xl font-black mt-1">48</h3></div>
+<div class="stat-card border-b-4 border-green-500"><p class="text-xs text-gray-500">نتائج مدخلة</p><h3 class="text-3xl font-black mt-1">32</h3></div>
+<div class="stat-card border-b-4 border-red-500"><p class="text-xs text-gray-500">نتائج معلقة</p><h3 class="text-3xl font-black mt-1">16</h3></div>
+</div>
+<div class="glass-card p-5">
+<div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+<h3 class="text-base font-bold text-dijlahDark"><i class="fas fa-file-alt text-dijlahBlue ml-2"></i>جدول الامتحانات النهائية - الدور الأول 2026</h3>
+<button class="bg-dijlahGold text-white px-4 py-2 rounded-lg text-sm font-bold" onclick="showToast('تم تصدير جدول الامتحانات')"><i class="fas fa-file-pdf ml-1"></i>تصدير الجدول</button>
+</div>
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+<table class="w-full text-right text-sm">
+<thead class="bg-dijlahDark text-white">
+<tr>
+<th class="p-3">التاريخ</th>
+<th class="p-3">الوقت</th>
+<th class="p-3">المادة</th>
+<th class="p-3">الكلية / المرحلة</th>
+<th class="p-3">القاعة</th>
+<th class="p-3">عدد الطلبة</th>
+<th class="p-3 text-center">الحالة</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white">
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold">25/5/2026</td><td class="p-3">09:00 ص</td><td class="p-3 font-bold">هياكل البيانات</td><td class="p-3 text-xs text-gray-600">هندسة الحاسوب - الثالثة</td><td class="p-3"><span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs">A101 + A102</span></td><td class="p-3 text-center font-bold">280</td><td class="p-3 text-center"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">مجدول</span></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold">26/5/2026</td><td class="p-3">10:00 ص</td><td class="p-3 font-bold">القانون المدني</td><td class="p-3 text-xs text-gray-600">القانون - الثانية</td><td class="p-3"><span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs">B201</span></td><td class="p-3 text-center font-bold">380</td><td class="p-3 text-center"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">مجدول</span></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold">27/5/2026</td><td class="p-3">09:00 ص</td><td class="p-3 font-bold">الصيدلانيات 1</td><td class="p-3 text-xs text-gray-600">الصيدلة - الثالثة</td><td class="p-3"><span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs">C301</span></td><td class="p-3 text-center font-bold">185</td><td class="p-3 text-center"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">مجدول</span></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold">10/5/2026</td><td class="p-3">09:00 ص</td><td class="p-3 font-bold">الكيمياء الحيوية</td><td class="p-3 text-xs text-gray-600">طب الأسنان - الثانية</td><td class="p-3"><span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs">D401</span></td><td class="p-3 text-center font-bold">420</td><td class="p-3 text-center"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">منتهي</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ======= 8. إدارة القاعات وحجوزاتها ======= -->
+<section class="hidden fade-in space-y-5" id="halls">
+<!-- إحصاءات القاعات -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="stat-card border-b-4 border-dijlahBlue"><p class="text-xs text-gray-500">إجمالي القاعات</p><h3 class="text-3xl font-black mt-1">20</h3><p class="text-xs text-gray-400 mt-1">قاعة مسجلة</p></div>
+<div class="stat-card border-b-4 border-green-500"><p class="text-xs text-gray-500">متاحة الآن</p><h3 class="text-3xl font-black text-green-600 mt-1">12</h3><p class="text-xs text-green-500 mt-1">جاهزة للحجز</p></div>
+<div class="stat-card border-b-4 border-red-500"><p class="text-xs text-gray-500">محجوزة حالياً</p><h3 class="text-3xl font-black text-red-500 mt-1">6</h3><p class="text-xs text-red-400 mt-1">جارٍ استخدامها</p></div>
+<div class="stat-card border-b-4 border-yellow-500"><p class="text-xs text-gray-500">تحت الصيانة</p><h3 class="text-3xl font-black text-yellow-500 mt-1">2</h3><p class="text-xs text-yellow-400 mt-1">غير متاحة</p></div>
+</div>
+<!-- تبويبات القاعات -->
+<div class="glass-card p-5">
+<div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+<div class="flex gap-2 flex-wrap">
+<button class="halls-filter-btn px-4 py-2 bg-dijlahDark text-white rounded-lg text-sm font-bold" onclick="filterHalls('all',this)">الكل (20)</button>
+<button class="halls-filter-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-bold hover:bg-gray-200" onclick="filterHalls('lecture',this)">قاعات المحاضرات</button>
+<button class="halls-filter-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-bold hover:bg-gray-200" onclick="filterHalls('lab',this)">المختبرات</button>
+<button class="halls-filter-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-bold hover:bg-gray-200" onclick="filterHalls('conference',this)">قاعات المؤتمرات</button>
+</div>
+<div class="flex gap-2">
+<button class="bg-dijlahGold text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-600 transition shadow" onclick="openModal('addHallModal')"><i class="fas fa-plus ml-1"></i>إضافة قاعة</button>
+<button class="bg-dijlahBlue text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-600 transition shadow" onclick="openModal('bookHallModal')"><i class="fas fa-calendar-plus ml-1"></i>حجز قاعة</button>
+</div>
+</div>
+<!-- بطاقات القاعات -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="hallsGrid">
+<!-- قاعة A101 -->
+<div class="hall-card bg-white border border-gray-200 shadow-sm" data-type="lecture">
+<div class="bg-gradient-to-r from-dijlahDark to-blue-900 p-4 text-white">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-black text-lg">A101</h4>
+<p class="text-xs text-blue-200">قاعة محاضرات - المبنى A</p>
+</div>
+<i class="fas fa-chalkboard text-2xl text-blue-300"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<span class="badge-available">متاحة</span>
+<span class="text-xs text-gray-500"><i class="fas fa-users text-gray-400 ml-1"></i>سعة 80 طالب</span>
+</div>
+<div class="space-y-1 text-xs text-gray-500 mb-3">
+<p><i class="fas fa-wifi text-green-400 ml-1"></i>واي فاي - بروجيكتور - سبورة ذكية</p>
+<p><i class="fas fa-snowflake text-blue-400 ml-1"></i>تكييف مركزي - كراسي دراسية</p>
+</div>
+<div class="mt-3 bg-gray-50 rounded-lg p-2">
+<p class="text-xs font-bold text-gray-600 mb-2">الحجوزات اليوم:</p>
+<div class="timeline-slot slot-booked">08:00-10:00 | هياكل البيانات</div>
+<div class="timeline-slot slot-free">10:00-12:00 | متاح</div>
+<div class="timeline-slot slot-booked">14:00-16:00 | رياضيات</div>
+</div>
+<button class="mt-3 w-full bg-dijlahDark text-white py-2 rounded-lg text-xs font-bold hover:bg-dijlahBlue transition" onclick="openBookingForHall('A101')">
+<i class="fas fa-calendar-plus ml-1"></i>حجز الآن
+                                </button>
+</div>
+</div>
+<!-- قاعة A102 -->
+<div class="hall-card bg-white border border-gray-200 shadow-sm" data-type="lecture">
+<div class="bg-gradient-to-r from-indigo-800 to-indigo-600 p-4 text-white">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-black text-lg">A102</h4>
+<p class="text-xs text-indigo-200">قاعة محاضرات - المبنى A</p>
+</div>
+<i class="fas fa-chalkboard text-2xl text-indigo-300"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<span class="badge-occupied">مشغولة</span>
+<span class="text-xs text-gray-500"><i class="fas fa-users text-gray-400 ml-1"></i>سعة 100 طالب</span>
+</div>
+<div class="space-y-1 text-xs text-gray-500 mb-3">
+<p><i class="fas fa-wifi text-green-400 ml-1"></i>واي فاي - بروجيكتور - ميكروفون</p>
+<p><i class="fas fa-snowflake text-blue-400 ml-1"></i>تكييف مركزي</p>
+</div>
+<div class="mt-3 bg-red-50 rounded-lg p-2">
+<p class="text-xs font-bold text-red-600 mb-1">جارٍ الاستخدام الآن:</p>
+<p class="text-xs text-red-700 font-bold">القانون المدني | أ.د. علي الشمري</p>
+<p class="text-xs text-gray-500">09:00 - 11:00 | 120 طالب</p>
+</div>
+<button class="mt-3 w-full bg-gray-300 text-gray-500 py-2 rounded-lg text-xs font-bold cursor-not-allowed">
+<i class="fas fa-lock ml-1"></i>مشغولة حتى 11:00
+                                </button>
+</div>
+</div>
+<!-- قاعة B205 -->
+<div class="hall-card bg-white border border-gray-200 shadow-sm" data-type="lab">
+<div class="bg-gradient-to-r from-green-800 to-green-600 p-4 text-white">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-black text-lg">B205</h4>
+<p class="text-xs text-green-200">مختبر حاسبات - المبنى B</p>
+</div>
+<i class="fas fa-laptop text-2xl text-green-300"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<span class="badge-available">متاح</span>
+<span class="text-xs text-gray-500"><i class="fas fa-desktop text-gray-400 ml-1"></i>40 جهاز</span>
+</div>
+<div class="space-y-1 text-xs text-gray-500 mb-3">
+<p><i class="fas fa-desktop text-blue-400 ml-1"></i>40 حاسوب - شبكة محلية - برمجيات</p>
+<p><i class="fas fa-print text-gray-400 ml-1"></i>طابعة ليزر - سكانر</p>
+</div>
+<div class="mt-3 bg-gray-50 rounded-lg p-2">
+<div class="timeline-slot slot-free">08:00-10:00 | متاح</div>
+<div class="timeline-slot slot-booked">11:00-13:00 | برمجة C++</div>
+<div class="timeline-slot slot-free">14:00-16:00 | متاح</div>
+</div>
+<button class="mt-3 w-full bg-dijlahDark text-white py-2 rounded-lg text-xs font-bold hover:bg-dijlahBlue transition" onclick="openBookingForHall('B205')">
+<i class="fas fa-calendar-plus ml-1"></i>حجز الآن
+                                </button>
+</div>
+</div>
+<!-- قاعة المؤتمرات -->
+<div class="hall-card bg-white border border-gray-200 shadow-sm" data-type="conference">
+<div class="bg-gradient-to-r from-dijlahGold to-yellow-600 p-4 text-white">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-black text-base">قاعة المؤتمرات</h4>
+<p class="text-xs text-yellow-100">قاعة VIP - المبنى الرئيسي</p>
+</div>
+<i class="fas fa-microphone-alt text-2xl text-yellow-200"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<span class="badge-available">متاحة</span>
+<span class="text-xs text-gray-500"><i class="fas fa-users text-gray-400 ml-1"></i>سعة 200 شخص</span>
+</div>
+<div class="space-y-1 text-xs text-gray-500 mb-3">
+<p><i class="fas fa-tv text-blue-400 ml-1"></i>شاشة LED ضخمة - نظام صوتي</p>
+<p><i class="fas fa-video text-red-400 ml-1"></i>تسجيل فيديو - بث مباشر</p>
+</div>
+<div class="mt-3 bg-gray-50 rounded-lg p-2">
+<div class="timeline-slot slot-free">08:00-12:00 | متاح</div>
+<div class="timeline-slot slot-booked">14:00-17:00 | ندوة علمية</div>
+</div>
+<button class="mt-3 w-full bg-dijlahDark text-white py-2 rounded-lg text-xs font-bold hover:bg-dijlahBlue transition" onclick="openBookingForHall('قاعة المؤتمرات')">
+<i class="fas fa-calendar-plus ml-1"></i>حجز الآن
+                                </button>
+</div>
+</div>
+<!-- قاعة C301 -->
+<div class="hall-card bg-white border border-gray-200 shadow-sm" data-type="lab">
+<div class="bg-gradient-to-r from-teal-800 to-teal-600 p-4 text-white">
+<div class="flex justify-between items-start">
+<div><h4 class="font-black text-lg">C301</h4><p class="text-xs text-teal-200">مختبر علوم - المبنى C</p></div>
+<i class="fas fa-flask text-2xl text-teal-300"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<span class="badge-available">متاح</span>
+<span class="text-xs text-gray-500"><i class="fas fa-flask text-gray-400 ml-1"></i>سعة 30 طالب</span>
+</div>
+<div class="text-xs text-gray-500 mb-3"><p><i class="fas fa-microscope text-teal-400 ml-1"></i>مجاهر - أجهزة قياس - خزائن كيميائية</p></div>
+<div class="mt-3 bg-gray-50 rounded-lg p-2">
+<div class="timeline-slot slot-booked">09:00-11:00 | مختبر كيمياء</div>
+<div class="timeline-slot slot-free">13:00-15:00 | متاح</div>
+</div>
+<button class="mt-3 w-full bg-dijlahDark text-white py-2 rounded-lg text-xs font-bold hover:bg-dijlahBlue transition" onclick="openBookingForHall('C301')"><i class="fas fa-calendar-plus ml-1"></i>حجز الآن</button>
+</div>
+</div>
+<!-- قاعة D401 - صيانة -->
+<div class="hall-card bg-white border border-gray-200 shadow-sm" data-type="lecture">
+<div class="bg-gradient-to-r from-gray-600 to-gray-500 p-4 text-white">
+<div class="flex justify-between items-start">
+<div><h4 class="font-black text-lg">D401</h4><p class="text-xs text-gray-300">قاعة محاضرات - المبنى D</p></div>
+<i class="fas fa-tools text-2xl text-gray-300"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<span class="badge-maintenance">صيانة</span>
+<span class="text-xs text-gray-500">سعة 60 طالب</span>
+</div>
+<div class="bg-yellow-50 rounded-lg p-3 text-xs text-yellow-700">
+<i class="fas fa-wrench ml-1"></i>جاري تركيب السبورة الذكية<br/>
+<span class="text-gray-500">متاحة من: 20/5/2026</span>
+</div>
+<button class="mt-3 w-full bg-gray-200 text-gray-500 py-2 rounded-lg text-xs font-bold cursor-not-allowed"><i class="fas fa-ban ml-1"></i>غير متاحة</button>
+</div>
+</div>
+</div>
+</div>
+<!-- جدول الحجوزات -->
+<div class="glass-card p-5">
+<div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+<h3 class="text-base font-bold text-dijlahDark"><i class="fas fa-list-alt text-dijlahGold ml-2"></i>سجل الحجوزات</h3>
+<div class="flex gap-2">
+<input class="border rounded p-2 text-sm focus:border-dijlahGold outline-none" id="reservationDateFilter" type="date" value="2026-05-16"/>
+<button class="bg-gray-100 text-gray-700 px-3 py-2 rounded text-xs font-bold hover:bg-gray-200" onclick="showToast('تم تصدير السجل')"><i class="fas fa-download ml-1"></i>تصدير</button>
+</div>
+</div>
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+<table class="w-full text-right text-sm">
+<thead class="bg-dijlahDark text-white">
+<tr>
+<th class="p-3">رقم الحجز</th>
+<th class="p-3">القاعة</th>
+<th class="p-3">الغرض</th>
+<th class="p-3">الجهة الطالبة</th>
+<th class="p-3">التاريخ</th>
+<th class="p-3">الوقت</th>
+<th class="p-3 text-center">الحالة</th>
+<th class="p-3 text-center">إجراءات</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white" id="reservationsTbody">
+<tr class="hover:bg-gray-50">
+<td class="p-3 font-mono text-xs text-gray-500">RES-001</td>
+<td class="p-3 font-bold">A101</td>
+<td class="p-3 text-xs">محاضرة - هياكل البيانات</td>
+<td class="p-3 text-xs">هندسة الحاسوب / م.د. سعد</td>
+<td class="p-3 text-xs">16/5/2026</td>
+<td class="p-3 text-xs font-bold">08:00 - 10:00</td>
+<td class="p-3 text-center"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-bold">جارٍ</span></td>
+<td class="p-3 text-center"><button class="text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-bold hover:bg-green-100" onclick="showToast('تم تأكيد الحجز')"><i class="fas fa-check ml-1"></i>تأكيد</button></td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="p-3 font-mono text-xs text-gray-500">RES-002</td>
+<td class="p-3 font-bold">قاعة المؤتمرات</td>
+<td class="p-3 text-xs">ندوة - البحث العلمي</td>
+<td class="p-3 text-xs">رئاسة الجامعة</td>
+<td class="p-3 text-xs">16/5/2026</td>
+<td class="p-3 text-xs font-bold">14:00 - 17:00</td>
+<td class="p-3 text-center"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">مؤكد</span></td>
+<td class="p-3 text-center"><button class="text-red-500 bg-red-50 px-2 py-1 rounded text-xs font-bold hover:bg-red-100" onclick="cancelReservation(this)"><i class="fas fa-times ml-1"></i>إلغاء</button></td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="p-3 font-mono text-xs text-gray-500">RES-003</td>
+<td class="p-3 font-bold">B205</td>
+<td class="p-3 text-xs">مختبر - برمجة C++</td>
+<td class="p-3 text-xs">هندسة الحاسوب / م.د. رنا</td>
+<td class="p-3 text-xs">16/5/2026</td>
+<td class="p-3 text-xs font-bold">11:00 - 13:00</td>
+<td class="p-3 text-center"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">مؤكد</span></td>
+<td class="p-3 text-center"><button class="text-red-500 bg-red-50 px-2 py-1 rounded text-xs font-bold hover:bg-red-100" onclick="cancelReservation(this)"><i class="fas fa-times ml-1"></i>إلغاء</button></td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="p-3 font-mono text-xs text-gray-500">RES-004</td>
+<td class="p-3 font-bold">A102</td>
+<td class="p-3 text-xs">محاضرة - القانون المدني</td>
+<td class="p-3 text-xs">كلية القانون / أ.د. علي</td>
+<td class="p-3 text-xs">16/5/2026</td>
+<td class="p-3 text-xs font-bold">09:00 - 11:00</td>
+<td class="p-3 text-center"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-bold">جارٍ</span></td>
+<td class="p-3 text-center"><button class="text-gray-500 bg-gray-100 px-2 py-1 rounded text-xs font-bold"><i class="fas fa-eye ml-1"></i>عرض</button></td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="p-3 font-mono text-xs text-gray-500">RES-005</td>
+<td class="p-3 font-bold">C301</td>
+<td class="p-3 text-xs">مختبر - كيمياء عضوية</td>
+<td class="p-3 text-xs">كلية الصيدلة / م.د. نور</td>
+<td class="p-3 text-xs">17/5/2026</td>
+<td class="p-3 text-xs font-bold">10:00 - 12:00</td>
+<td class="p-3 text-center"><span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs font-bold">قادم</span></td>
+<td class="p-3 text-center"><button class="text-red-500 bg-red-50 px-2 py-1 rounded text-xs font-bold hover:bg-red-100" onclick="cancelReservation(this)"><i class="fas fa-times ml-1"></i>إلغاء</button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ======= 9. المكتبة الإلكترونية ======= -->
+<section class="hidden fade-in" id="library">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+<div class="stat-card border-b-4 border-dijlahBlue"><p class="text-xs text-gray-500">إجمالي الكتب</p><h3 class="text-3xl font-black mt-1">14,820</h3></div>
+<div class="stat-card border-b-4 border-green-500"><p class="text-xs text-gray-500">المصادر الرقمية</p><h3 class="text-3xl font-black mt-1">3,200</h3></div>
+<div class="stat-card border-b-4 border-orange-500"><p class="text-xs text-gray-500">الكتب المستعارة</p><h3 class="text-3xl font-black mt-1">847</h3></div>
+<div class="stat-card border-b-4 border-purple-500"><p class="text-xs text-gray-500">الرسائل العلمية</p><h3 class="text-3xl font-black mt-1">620</h3></div>
+</div>
+<div class="glass-card p-5">
+<div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+<h3 class="text-base font-bold text-dijlahDark"><i class="fas fa-search text-dijlahBlue ml-2"></i>البحث في الفهرس الإلكتروني</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-5 bg-gray-50 p-3 rounded-lg border">
+<input class="p-2 border rounded outline-none focus:border-dijlahGold text-sm md:col-span-2" placeholder="عنوان الكتاب أو المؤلف..." type="text"/>
+<select class="p-2 border rounded outline-none text-sm">
+<option>جميع الأقسام</option><option>الهندسة</option><option>الطب</option><option>القانون</option><option>العلوم</option>
+</select>
+<button class="bg-dijlahDark text-white py-2 rounded font-bold text-sm hover:bg-dijlahBlue transition" onclick="showToast('جارٍ البحث...')"><i class="fas fa-search ml-1"></i>بحث</button>
+</div>
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+<table class="w-full text-right text-sm">
+<thead class="bg-dijlahDark text-white">
+<tr><th class="p-3">العنوان</th><th class="p-3">المؤلف</th><th class="p-3">القسم</th><th class="p-3">الإصدار</th><th class="p-3 text-center">النسخ</th><th class="p-3 text-center">الحالة</th><th class="p-3 text-center">إجراءات</th></tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white">
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold">هياكل البيانات والخوارزميات</td><td class="p-3 text-xs">Thomas Cormen</td><td class="p-3 text-xs">هندسة الحاسوب</td><td class="p-3 text-xs">الطبعة 3</td><td class="p-3 text-center font-bold text-green-600">5</td><td class="p-3 text-center"><span class="badge-available">متاح</span></td><td class="p-3 text-center"><button class="bg-dijlahGold text-white px-2 py-1 rounded text-xs font-bold" onclick="showToast('تم تسجيل الاستعارة')">استعارة</button></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold">القانون المدني - شرح الوجيز</td><td class="p-3 text-xs">د. علي الشمري</td><td class="p-3 text-xs">القانون</td><td class="p-3 text-xs">2023</td><td class="p-3 text-center font-bold text-red-500">0</td><td class="p-3 text-center"><span class="badge-occupied">مستعارة</span></td><td class="p-3 text-center"><button class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs font-bold" onclick="showToast('تم تسجيل الحجز')">حجز</button></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold">أساسيات الصيدلانيات السريرية</td><td class="p-3 text-xs">Goodman &amp; Gilman</td><td class="p-3 text-xs">الصيدلة</td><td class="p-3 text-xs">الطبعة 13</td><td class="p-3 text-center font-bold text-green-600">3</td><td class="p-3 text-center"><span class="badge-available">متاح</span></td><td class="p-3 text-center"><button class="bg-dijlahGold text-white px-2 py-1 rounded text-xs font-bold" onclick="showToast('تم تسجيل الاستعارة')">استعارة</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ======= 10. البحوث والنشر ======= -->
+<section class="hidden fade-in" id="research">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+<div class="stat-card border-b-4 border-dijlahBlue"><p class="text-xs text-gray-500">البحوث المنشورة</p><h3 class="text-3xl font-black mt-1">284</h3></div>
+<div class="stat-card border-b-4 border-green-500"><p class="text-xs text-gray-500">قيد المراجعة</p><h3 class="text-3xl font-black mt-1">42</h3></div>
+<div class="stat-card border-b-4 border-purple-500"><p class="text-xs text-gray-500">المؤتمرات المشارَك بها</p><h3 class="text-3xl font-black mt-1">18</h3></div>
+<div class="stat-card border-b-4 border-dijlahGold"><p class="text-xs text-gray-500">براءات الاختراع</p><h3 class="text-3xl font-black mt-1">7</h3></div>
+</div>
+<div class="glass-card p-5">
+<div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+<h3 class="text-base font-bold text-dijlahDark"><i class="fas fa-flask text-purple-500 ml-2"></i>قاعدة بيانات البحوث العلمية</h3>
+<button class="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-purple-700 transition shadow" onclick="openModal('addResearchModal')"><i class="fas fa-plus ml-1"></i>تسجيل بحث</button>
+</div>
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+<table class="w-full text-right text-sm">
+<thead class="bg-dijlahDark text-white"><tr><th class="p-3">عنوان البحث</th><th class="p-3">الباحث الرئيسي</th><th class="p-3">الكلية</th><th class="p-3">المجلة/المؤتمر</th><th class="p-3">سنة النشر</th><th class="p-3 text-center">الحالة</th></tr></thead>
+<tbody class="divide-y divide-gray-100 bg-white">
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold text-sm">تطبيقات الذكاء الاصطناعي في التشخيص الطبي</td><td class="p-3 text-xs">أ.د. محمد القيسي</td><td class="p-3 text-xs">طب الأسنان</td><td class="p-3 text-xs">مجلة بغداد للعلوم</td><td class="p-3 text-xs">2025</td><td class="p-3 text-center"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">منشور</span></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold text-sm">خوارزميات تحسين أداء الشبكات اللاسلكية</td><td class="p-3 text-xs">م.د. سعد الجبوري</td><td class="p-3 text-xs">الهندسة</td><td class="p-3 text-xs">IEEE Transactions</td><td class="p-3 text-xs">2024</td><td class="p-3 text-center"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">منشور</span></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold text-sm">دراسة تحليلية للنظام القانوني المقارن</td><td class="p-3 text-xs">أ.د. علي الشمري</td><td class="p-3 text-xs">القانون</td><td class="p-3 text-xs">مجلة القانون والسياسة</td><td class="p-3 text-xs">2026</td><td class="p-3 text-center"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">قيد المراجعة</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ======= 11. الهيئة التدريسية HR ======= -->
+<section class="hidden fade-in" id="staff">
+<div class="glass-card p-5 border-t-4 border-purple-500">
+<div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+<h3 class="text-lg font-bold text-dijlahDark">الهيئة التدريسية والإدارية (HR)</h3>
+<button class="bg-purple-600 text-white px-5 py-2 rounded-lg shadow hover:bg-purple-700 transition font-bold text-sm" onclick="openModal('addStaffModal')"><i class="fas fa-user-tie ml-1"></i>إضافة موظف/تدريسي</button>
+</div>
+<div class="grid grid-cols-3 gap-4 mb-5">
+<div class="bg-gray-50 p-4 rounded-lg border text-center"><h4 class="text-gray-500 text-xs mb-1">الملاك التدريسي</h4><p class="text-2xl font-bold text-dijlahDark">480</p></div>
+<div class="bg-gray-50 p-4 rounded-lg border text-center"><h4 class="text-gray-500 text-xs mb-1">الملاك الإداري</h4><p class="text-2xl font-bold text-dijlahDark">120</p></div>
+<div class="bg-gray-50 p-4 rounded-lg border text-center"><h4 class="text-gray-500 text-xs mb-1">العقود والمحاضرين</h4><p class="text-2xl font-bold text-dijlahDark">40</p></div>
+</div>
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+<table class="w-full text-right text-sm">
+<thead class="bg-purple-50 text-purple-900">
+<tr><th class="p-3 font-semibold">الاسم واللقب العلمي</th><th class="p-3 font-semibold">المنصب / الاختصاص</th><th class="p-3 font-semibold">الكلية التابع لها</th><th class="p-3 font-semibold">نوع التعيين</th><th class="p-3 font-semibold">الحالة</th><th class="p-3 font-semibold text-center">إجراءات</th></tr>
+</thead>
+<tbody class="divide-y divide-gray-100 bg-white">
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold text-gray-800">أ.د. محمد القيسي</td><td class="p-3 text-gray-600 text-xs">عميد الكلية / جراحة وجه وفكين</td><td class="p-3 text-xs">طب الأسنان</td><td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">ملاك دائم</span></td><td class="p-3 text-xs text-green-600"><i class="fas fa-circle text-[10px] ml-1"></i>مباشر</td><td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-edit text-xs"></i></button></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold text-gray-800">م.د. علي حسن الشمري</td><td class="p-3 text-gray-600 text-xs">تدريسي / قانون عام</td><td class="p-3 text-xs">كلية القانون</td><td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">ملاك دائم</span></td><td class="p-3 text-xs text-green-600"><i class="fas fa-circle text-[10px] ml-1"></i>مباشر</td><td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-edit text-xs"></i></button></td></tr>
+<tr class="hover:bg-gray-50"><td class="p-3 font-bold text-gray-800">سعاد جبار خليل</td><td class="p-3 text-gray-600 text-xs">مدير قسم التسجيل</td><td class="p-3 text-xs">رئاسة الجامعة</td><td class="p-3"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs font-bold">عقد</span></td><td class="p-3 text-xs text-green-600"><i class="fas fa-circle text-[10px] ml-1"></i>مباشر</td><td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-edit text-xs"></i></button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ======= 12. الحسابات والأقساط ======= -->
+<section class="hidden fade-in" id="finance">
+<div class="glass-card p-5 border-t-4 border-green-500">
+<div class="flex items-center gap-3 mb-5">
+<i class="fas fa-money-check-alt text-2xl text-green-600"></i>
+<div>
+<h3 class="text-lg font-bold text-gray-800">النظام المالي والأقساط الدراسية</h3>
+<p class="text-xs text-gray-500">متابعة دفعات الطلاب للعام الدراسي الحالي</p>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-right text-sm border-collapse">
+<thead>
+<tr class="bg-gray-100 text-gray-700">
+<th class="p-3 border-b font-bold">اسم الطالب</th>
+<th class="p-3 border-b font-bold">الكلية</th>
+<th class="p-3 border-b font-bold text-center">القسط الكلي (د.ع)</th>
+<th class="p-3 border-b font-bold text-center">المدفوع (د.ع)</th>
+<th class="p-3 border-b font-bold text-center">المتبقي (د.ع)</th>
+<th class="p-3 border-b font-bold text-center">موقف الدفع</th>
+<th class="p-3 border-b font-bold text-center">إجراءات</th>
+</tr>
+</thead>
+<tbody id="financeTableBody">
+<tr>
+<td class="p-3 border-b font-bold">أحمد محمود سلمان</td>
+<td class="p-3 border-b text-gray-500 text-xs">هندسة الحاسوب</td>
+<td class="p-3 border-b text-center font-mono">2,500,000</td>
+<td class="p-3 border-b text-center font-mono text-green-600">2,500,000</td>
+<td class="p-3 border-b text-center font-mono text-gray-400">0</td>
+<td class="p-3 border-b text-center"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">مسدد بالكامل</span></td>
+<td class="p-3 border-b text-center flex justify-center items-center gap-1">
+<button class="bg-gray-200 text-dijlahDark px-2 py-1 rounded text-xs hover:bg-gray-300" onclick="printReceipt(this)" title="طباعة وصل"><i class="fas fa-print"></i></button>
+<button class="bg-red-50 text-red-600 px-2 py-1 rounded text-xs hover:bg-red-100 border border-red-200" onclick="downloadReceiptPDF(this)" title="PDF"><i class="fas fa-file-pdf"></i></button>
+</td>
+</tr>
+<tr class="bg-red-50/20">
+<td class="p-3 border-b font-bold">زهراء علي حسن</td>
+<td class="p-3 border-b text-gray-500 text-xs">طب الأسنان</td>
+<td class="p-3 border-b text-center font-mono">7,000,000</td>
+<td class="p-3 border-b text-center font-mono text-blue-600">3,500,000</td>
+<td class="p-3 border-b text-center font-mono text-red-600 font-bold">3,500,000</td>
+<td class="p-3 border-b text-center"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs font-bold">القسط الثاني مطلوب</span></td>
+<td class="p-3 border-b text-center flex justify-center items-center gap-1">
+<button class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600" onclick="openPaymentModal(this)">استلام دفعة</button>
+<button class="bg-gray-200 text-dijlahDark px-2 py-1 rounded text-xs hover:bg-gray-300" onclick="printReceipt(this)"><i class="fas fa-print"></i></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ======= 13. الطلبات والمعاملات ======= -->
+<section class="hidden fade-in" id="requests">
+<div class="flex flex-wrap justify-between items-center mb-5 gap-3">
+<h3 class="text-lg font-bold text-gray-800">إدارة الطلبات والمعاملات الإلكترونية</h3>
+<div class="flex gap-2">
+<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold">7 طلبات معلقة</span>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+<div class="stat-card border-b-4 border-red-500 cursor-pointer hover:shadow-lg" onclick="filterRequests('pending')"><p class="text-xs text-gray-500">معلقة</p><h3 class="text-3xl font-black text-red-500 mt-1">7</h3></div>
+<div class="stat-card border-b-4 border-yellow-500 cursor-pointer hover:shadow-lg" onclick="filterRequests('processing')"><p class="text-xs text-gray-500">قيد المعالجة</p><h3 class="text-3xl font-black text-yellow-500 mt-1">12</h3></div>
+<div class="stat-card border-b-4 border-green-500 cursor-pointer hover:shadow-lg" onclick="filterRequests('approved')"><p class="text-xs text-gray-500">موافق عليها</p><h3 class="text-3xl font-black text-green-500 mt-1">48</h3></div>
+<div class="stat-card border-b-4 border-gray-400 cursor-pointer hover:shadow-lg" onclick="filterRequests('rejected')"><p class="text-xs text-gray-500">مرفوضة</p><h3 class="text-3xl font-black text-gray-500 mt-1">5</h3></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+<div class="lg:col-span-2 space-y-3" id="requestsList">
+<div class="request-card">
+<div class="flex justify-between items-start mb-2">
+<div><h4 class="font-bold text-sm">طلب تأجيل امتحان</h4><p class="text-xs text-gray-500">أحمد كاظم - هندسة الحاسوب - الثالثة</p></div>
+<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-bold">معلق</span>
+</div>
+<p class="text-xs text-gray-600 mb-3">بسبب ظروف صحية طارئة، أطلب تأجيل امتحان هياكل البيانات المقرر يوم 25/5</p>
+<div class="flex gap-2"><button class="bg-green-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-600" onclick="approveRequest(this)"><i class="fas fa-check ml-1"></i>موافقة</button><button class="bg-red-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-600" onclick="rejectRequest(this)"><i class="fas fa-times ml-1"></i>رفض</button><button class="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-bold hover:bg-gray-200"><i class="fas fa-eye ml-1"></i>تفاصيل</button></div>
+</div>
+<div class="request-card">
+<div class="flex justify-between items-start mb-2">
+<div><h4 class="font-bold text-sm">طلب انتساب للدراسة المسائية</h4><p class="text-xs text-gray-500">زهراء علي - القانون - الثانية</p></div>
+<span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">قيد الدراسة</span>
+</div>
+<p class="text-xs text-gray-600 mb-3">طلب نقل من الدراسة الصباحية إلى المسائية للعام الدراسي 2025-2026</p>
+<div class="flex gap-2"><button class="bg-green-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-600" onclick="approveRequest(this)"><i class="fas fa-check ml-1"></i>موافقة</button><button class="bg-red-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-600" onclick="rejectRequest(this)"><i class="fas fa-times ml-1"></i>رفض</button></div>
+</div>
+<div class="request-card">
+<div class="flex justify-between items-start mb-2">
+<div><h4 class="font-bold text-sm">طلب إصدار وثيقة تخرج</h4><p class="text-xs text-gray-500">مصطفى جاسم - طب الأسنان - خامسة</p></div>
+<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-bold">معلق</span>
+</div>
+<p class="text-xs text-gray-600 mb-3">طلب استخراج وثيقة التخرج لغرض التقديم على دراسة الماجستير</p>
+<div class="flex gap-2"><button class="bg-green-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-600" onclick="approveRequest(this)"><i class="fas fa-check ml-1"></i>موافقة</button><button class="bg-red-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-600" onclick="rejectRequest(this)"><i class="fas fa-times ml-1"></i>رفض</button></div>
+</div>
+<div class="request-card">
+<div class="flex justify-between items-start mb-2">
+<div><h4 class="font-bold text-sm">طلب حجز قاعة المؤتمرات</h4><p class="text-xs text-gray-500">كلية الهندسة - يوم 25/5/2026</p></div>
+<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-bold">معلق</span>
+</div>
+<p class="text-xs text-gray-600 mb-3">حجز قاعة المؤتمرات لإقامة يوم علمي لقسم هندسة المعلومات من 9 صباحاً حتى 5 مساءً</p>
+<div class="flex gap-2"><button class="bg-green-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-600" onclick="approveRequest(this)"><i class="fas fa-check ml-1"></i>موافقة وتأكيد الحجز</button><button class="bg-red-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-600" onclick="rejectRequest(this)"><i class="fas fa-times ml-1"></i>رفض</button></div>
+</div>
+</div>
+<div>
+<div class="glass-card p-5">
+<h4 class="font-bold text-sm text-dijlahDark mb-3"><i class="fas fa-plus-circle text-dijlahGold ml-2"></i>فتح معاملة جديدة</h4>
+<form class="space-y-3" onsubmit="submitNewRequest(event)">
+<select class="w-full border rounded p-2 text-xs focus:border-dijlahGold outline-none">
+<option>نوع الطلب</option>
+<option>تأجيل امتحان</option><option>انتساب</option><option>نقل داخلي</option><option>وثيقة تخرج</option>
+<option>حجز قاعة</option><option>شكوى</option><option>مقترح</option>
+</select>
+<input class="w-full border rounded p-2 text-xs focus:border-dijlahGold outline-none" placeholder="اسم مقدم الطلب" type="text"/>
+<textarea class="w-full border rounded p-2 text-xs focus:border-dijlahGold outline-none" placeholder="وصف الطلب بالتفصيل..." rows="3"></textarea>
+<button class="w-full bg-dijlahDark text-white py-2 rounded-lg text-xs font-bold hover:bg-dijlahBlue transition" type="submit">
+<i class="fas fa-paper-plane ml-1"></i>إرسال الطلب
+                                </button>
+</form>
+</div>
+</div>
+</div>
+</section>
+<!-- ======= 14. الوثائق والكتب الرسمية ======= -->
+<section class="hidden fade-in" id="documents">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 min-h-[700px]">
+<div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col">
+<h3 class="text-lg font-bold text-dijlahDark mb-1">إصدار كتاب رسمي</h3>
+<p class="text-xs text-gray-500 mb-4">قم بتعبئة البيانات لتوليد الكتاب المطبوع</p>
+<form class="space-y-3 flex-1" id="docForm" onsubmit="event.preventDefault(); updateDocumentPreview();">
+<div>
+<label class="block text-xs font-bold text-gray-700 mb-1">نوع الكتاب</label>
+<select class="w-full border-2 border-gray-200 rounded-lg p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="doc_type" onchange="autoFillTemplate()">
+<option value="tayed">تأييد استمرار بالدراسة</option>
+<option value="khitab">مخاطبة دوائر الدولة</option>
+<option value="takhroj">تأييد تخرج</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-bold text-gray-700 mb-1">العدد</label>
+<input class="w-full border-2 border-gray-200 rounded-lg p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="doc_number" placeholder="ج د / 123" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-gray-700 mb-1">التاريخ</label>
+<input class="w-full border-2 border-gray-200 rounded-lg p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="doc_date" type="date"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-gray-700 mb-1">إلى / (الجهة الموجه إليها)</label>
+<input class="w-full border-2 border-gray-200 rounded-lg p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="doc_to" type="text" value="من يهمه الأمر"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-gray-700 mb-1">الموضوع /</label>
+<input class="w-full border-2 border-gray-200 rounded-lg p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm font-bold" id="doc_subject" type="text" value="تأييد استمرار بالدراسة"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-gray-700 mb-1">نص الكتاب</label>
+<textarea class="w-full border-2 border-gray-200 rounded-lg p-2 bg-gray-50 focus:border-dijlahGold outline-none text-xs leading-loose" id="doc_body" rows="6">نؤيد لكم بأن الطالب (.....) هو أحد طلبة جامعتنا / كلية (.....) / قسم (.....) للمرحلة (.....) للعام الدراسي (2025-2026) ومستمر بالدواملِ الرسمي لغاية تاريخ تحرير هذا الكتاب.
+
+وبناءً على طلبه زود بهذا التأييد.</textarea>
+</div>
+<div class="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl">
+<h4 class="text-xs font-bold text-dijlahDark mb-2 flex items-center gap-1"><i class="fas fa-robot text-dijlahBlue"></i>المساعد الإداري الذكي</h4>
+<input class="w-full border border-gray-300 p-2 rounded text-xs outline-none focus:border-dijlahBlue mb-2" id="ai_prompt" placeholder="مثال: اكتب كتاب شكر للأستاذ محمد..." type="text"/>
+<div class="flex gap-2">
+<button class="flex-1 bg-dijlahBlue text-white text-xs font-bold py-1.5 rounded hover:bg-blue-600" onclick="generateAILetter()" type="button">✨ صياغة ذكية</button>
+<button class="flex-1 bg-indigo-500 text-white text-xs font-bold py-1.5 rounded hover:bg-indigo-600" onclick="improveAILetter()" type="button">✨ تدقيق لغوي</button>
+</div>
+<div class="hidden text-xs text-dijlahBlue font-bold text-center animate-pulse mt-1" id="ai_loading">جارٍ المعالجة...</div>
+</div>
+<button class="w-full bg-dijlahDark text-white py-2.5 rounded-xl font-bold hover:bg-dijlahBlue transition flex justify-center items-center gap-2 text-sm" type="submit">
+<i class="fas fa-eye"></i>تحديث المعاينة
+                            </button>
+</form>
+</div>
+<div class="lg:col-span-8 bg-gray-200 rounded-2xl p-4 flex justify-center items-start overflow-y-auto">
+<div class="bg-white w-[210mm] min-h-[297mm] p-10 shadow-2xl relative text-black mx-auto" id="official-document-preview">
+<div class="flex justify-between items-center mb-5 border-b-2 border-dijlahDark pb-5">
+<div class="text-center w-[30%] text-sm font-bold">
+<p>جمهورية العـراق</p>
+<p>وزارة التعليم العالي والبحث العلمي</p>
+<p>دائرة التعليم الجامعي الأهلي</p>
+<p class="text-base mt-1 text-dijlahDark font-black">جامعة دجلـة</p>
+</div>
+<div class="w-[40%] flex justify-center">
+<div class="w-28 h-28"><svg class="w-full h-full" viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" fill="#1c283d" r="95" stroke="#d4af37" stroke-width="3"></circle><rect fill="#0a192f" height="40" width="40" x="80" y="55"></rect><path d="M 80 55 L 80 15 L 120 15 A 40 40 0 0 1 120 95 L 120 55 Z" fill="#3bb4e5"></path><path d="M 120 95 L 120 135 L 80 135 A 40 40 0 0 1 80 55 L 80 95 Z" fill="#aacc38"></path><text fill="#ffffff" font-family="'Cairo', sans-serif" font-size="24" font-weight="900" text-anchor="middle" x="100" y="160">جامعة دجلة</text><text fill="#ffffff" font-family="'Cairo', sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="100" y="178">Dijlah University</text></svg></div>
+</div>
+<div class="text-right w-[30%] text-sm font-bold" dir="rtl">
+<p>العدد: <span class="font-normal text-red-700" id="v_num">.....</span></p>
+<p>التاريخ: <span class="font-normal text-blue-700" id="v_date">.....</span></p>
+</div>
+</div>
+<div class="mt-10 px-6">
+<div class="mb-8 text-base">
+<p class="font-bold">إلى / <span class="font-black text-lg" id="v_to">من يهمه الأمر</span></p>
+<p class="font-bold mt-5 underline underline-offset-8">م / <span class="font-black text-lg" id="v_subject">تأييد استمرار بالدراسة</span></p>
+</div>
+<div class="text-justify leading-[2.5] text-lg min-h-[300px] font-medium" id="v_body">نؤيد لكم بأن الطالب (.....) هو أحد طلبة جامعتنا / كلية (.....) / قسم (.....) للمرحلة (.....) للعام الدراسي (2025-2026) ومستمر بالدوام الرسمي لغاية تاريخ تحرير هذا الكتاب.<br/><br/>وبناءً على طلبه زود بهذا التأييد.</div>
+<div class="mt-16 flex justify-between items-center px-8">
+<div class="text-center"><p class="font-bold text-base mb-12" id="print_role1">مسؤول قسم التسجيل</p><p class="text-gray-400 text-xs border-t border-gray-300 pt-2 w-36 mx-auto">التوقيع</p></div>
+<div class="text-center"><p class="font-bold text-base mb-12 text-dijlahDark" id="print_role2">مساعد رئيس الجامعة للشؤون العلمية</p><p class="text-gray-400 text-xs border-t border-gray-300 pt-2 w-44 mx-auto">التوقيع والختم</p></div>
+</div>
+</div>
+<div class="absolute bottom-5 w-full text-center text-[10px] text-gray-400 left-0 border-t border-gray-200 pt-2 px-10 flex justify-between">
+<span>العراق - بغداد - جامعة دجلة</span>
+<span>نظام الإدارة الإلكتروني المركزي</span>
+<span>www.dijlah.edu.iq</span>
+</div>
+</div>
+</div>
+</div>
+<button class="fixed bottom-8 left-8 bg-dijlahGold text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:bg-yellow-600 hover:scale-110 transition z-50 ring-4 ring-white no-print" onclick="preparePrint('document'); window.print()" title="طباعة">
+<i class="fas fa-print text-xl"></i>
+</button>
+<button class="fixed bottom-[100px] left-9 bg-red-600 text-white w-12 h-12 rounded-full shadow-2xl flex items-center justify-center hover:bg-red-700 hover:scale-110 transition z-50 ring-4 ring-white no-print" onclick="downloadDocumentPDF()" title="تحميل PDF">
+<i class="fas fa-file-pdf"></i>
+</button>
+</section>
+<!-- ======= 15. التقارير والإحصاءات ======= -->
+<section class="hidden fade-in" id="reports">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="glass-card p-5 hover:shadow-xl cursor-pointer" onclick="showToast('جارٍ إنشاء تقرير الطلبة...')">
+<div class="w-14 h-14 bg-blue-50 text-dijlahBlue rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fas fa-users"></i></div>
+<h4 class="font-bold text-base mb-2">تقرير شامل عن الطلبة</h4>
+<p class="text-xs text-gray-500 mb-4">إحصاء الطلبة المسجلين حسب الكلية والمرحلة والجنس ونوع الدراسة</p>
+<button class="w-full bg-dijlahBlue text-white py-2 rounded-lg text-xs font-bold hover:bg-blue-600 transition"><i class="fas fa-download ml-1"></i>تنزيل التقرير</button>
+</div>
+<div class="glass-card p-5 hover:shadow-xl cursor-pointer" onclick="showToast('جارٍ إنشاء التقرير المالي...')">
+<div class="w-14 h-14 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fas fa-money-bill-wave"></i></div>
+<h4 class="font-bold text-base mb-2">التقرير المالي الشهري</h4>
+<p class="text-xs text-gray-500 mb-4">تفاصيل الأقساط المحصلة والمتبقية لكل كلية خلال الشهر الحالي</p>
+<button class="w-full bg-green-500 text-white py-2 rounded-lg text-xs font-bold hover:bg-green-600 transition"><i class="fas fa-download ml-1"></i>تنزيل التقرير</button>
+</div>
+<div class="glass-card p-5 hover:shadow-xl cursor-pointer" onclick="showToast('جارٍ إنشاء تقرير الدرجات...')">
+<div class="w-14 h-14 bg-yellow-50 text-dijlahGold rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fas fa-chart-line"></i></div>
+<h4 class="font-bold text-base mb-2">تقرير الأداء الأكاديمي</h4>
+<p class="text-xs text-gray-500 mb-4">معدلات الدرجات والنجاح والرسوب لكل قسم ومرحلة دراسية</p>
+<button class="w-full bg-dijlahGold text-white py-2 rounded-lg text-xs font-bold hover:bg-yellow-600 transition"><i class="fas fa-download ml-1"></i>تنزيل التقرير</button>
+</div>
+<div class="glass-card p-5 hover:shadow-xl cursor-pointer" onclick="showToast('جارٍ إنشاء تقرير القاعات...')">
+<div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fas fa-door-open"></i></div>
+<h4 class="font-bold text-base mb-2">تقرير استخدام القاعات</h4>
+<p class="text-xs text-gray-500 mb-4">نسبة استخدام كل قاعة وساعات الحجز والأوقات المتاحة</p>
+<button class="w-full bg-orange-500 text-white py-2 rounded-lg text-xs font-bold hover:bg-orange-600 transition"><i class="fas fa-download ml-1"></i>تنزيل التقرير</button>
+</div>
+<div class="glass-card p-5 hover:shadow-xl cursor-pointer" onclick="showToast('جارٍ إنشاء تقرير الموارد البشرية...')">
+<div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fas fa-user-tie"></i></div>
+<h4 class="font-bold text-base mb-2">تقرير الموارد البشرية</h4>
+<p class="text-xs text-gray-500 mb-4">الكادر التدريسي والإداري حسب الرتبة والكلية وطبيعة التعيين</p>
+<button class="w-full bg-purple-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-purple-700 transition"><i class="fas fa-download ml-1"></i>تنزيل التقرير</button>
+</div>
+<div class="glass-card p-5 hover:shadow-xl cursor-pointer" onclick="showToast('جارٍ إنشاء تقرير البحوث...')">
+<div class="w-14 h-14 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fas fa-flask"></i></div>
+<h4 class="font-bold text-base mb-2">تقرير البحث العلمي</h4>
+<p class="text-xs text-gray-500 mb-4">إحصاء البحوث المنشورة والمؤتمرات وبراءات الاختراع</p>
+<button class="w-full bg-teal-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-teal-700 transition"><i class="fas fa-download ml-1"></i>تنزيل التقرير</button>
+</div>
+</div>
+</section>
+<!-- ======= 16. الإعلانات والتعاميم ======= -->
+<section class="hidden fade-in" id="announcements">
+<div class="flex justify-between items-center mb-5 gap-3">
+<h3 class="text-lg font-bold">إدارة الإعلانات والتعاميم الرسمية</h3>
+<button class="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-600 transition shadow" onclick="openModal('addAnnouncementModal')"><i class="fas fa-plus ml-1"></i>إضافة تعميم</button>
+</div>
+<div class="space-y-4" id="announcementsList">
+<div class="glass-card p-5 border-r-4 border-red-500">
+<div class="flex justify-between items-start mb-2">
+<div><h4 class="font-bold">وزارة التعليم العالي والبحث العلمي</h4><p class="text-xs text-gray-500">10/5/2026 | عاجل</p></div>
+<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-bold">عاجل</span>
+</div>
+<p class="text-sm text-gray-700">تحديد موعد الامتحانات النهائية التحريرية للدور الأول لتكون يوم 25/5/2026. على جميع الكليات الالتزام بهذا الموعد وإعداد الجداول اللازمة.</p>
+<div class="mt-3 flex gap-2"><button class="text-xs text-gray-500 hover:text-red-500"><i class="fas fa-trash ml-1"></i>حذف</button><button class="text-xs text-gray-500 hover:text-blue-500"><i class="fas fa-edit ml-1"></i>تعديل</button></div>
+</div>
+<div class="glass-card p-5 border-r-4 border-dijlahBlue">
+<div class="flex justify-between items-start mb-2">
+<div><h4 class="font-bold">رئاسة الجامعة</h4><p class="text-xs text-gray-500">8/5/2026 | إداري</p></div>
+<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-bold">إداري</span>
+</div>
+<p class="text-sm text-gray-700">إيقاف ترويج معاملات النقل والاستضافة بين الجامعات الأهلية بدءاً من الأسبوع القادم. الرجاء إبلاغ الأقسام المعنية.</p>
+</div>
+<div class="glass-card p-5 border-r-4 border-yellow-500">
+<div class="flex justify-between items-start mb-2">
+<div><h4 class="font-bold">القسم المالي</h4><p class="text-xs text-gray-500">5/5/2026 | مالي</p></div>
+<span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">مالي</span>
+</div>
+<p class="text-sm text-gray-700">ضرورة تبليغ طلبة المرحلة الرابعة بتسديد القسط المتبقي قبل تسليم وثيقة التخرج. على أقسام التسجيل التنسيق مع القسم المالي.</p>
+</div>
+<div class="glass-card p-5 border-r-4 border-green-500">
+<div class="flex justify-between items-start mb-2">
+<div><h4 class="font-bold">إدارة القاعات والمرافق</h4><p class="text-xs text-gray-500">3/5/2026 | مرافق</p></div>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">مرافق</span>
+</div>
+<p class="text-sm text-gray-700">تم استلام قاعة المؤتمرات الكبرى بعد الانتهاء من أعمال الصيانة وتركيب نظام الصوت والشاشات الجديدة. القاعة متاحة للحجز اعتباراً من الآن.</p>
+</div>
+</div>
+</section>
+<!-- ======= 17. الإعدادات ======= -->
+<section class="hidden fade-in" id="settings">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+<div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm h-fit">
+<h3 class="font-bold text-gray-800 mb-3 px-1">أقسام الإعدادات</h3>
+<ul class="space-y-1 text-sm">
+<li><a class="block bg-dijlahDark text-white rounded-lg px-4 py-2 font-bold" href="#"><i class="fas fa-university ml-2"></i>بيانات الجامعة الأساسية</a></li>
+<li><a class="block text-gray-600 hover:bg-gray-50 rounded-lg px-4 py-2" href="#"><i class="fas fa-users-cog ml-2"></i>صلاحيات المستخدمين</a></li>
+<li><a class="block text-gray-600 hover:bg-gray-50 rounded-lg px-4 py-2" href="#"><i class="fas fa-calendar ml-2"></i>إعدادات العام الدراسي</a></li>
+<li><a class="block text-gray-600 hover:bg-gray-50 rounded-lg px-4 py-2" href="#"><i class="fas fa-dollar-sign ml-2"></i>إعدادات الأقساط</a></li>
+<li><a class="block text-gray-600 hover:bg-gray-50 rounded-lg px-4 py-2" href="#"><i class="fas fa-database ml-2"></i>النسخ الاحتياطي</a></li>
+<li><a class="block text-gray-600 hover:bg-gray-50 rounded-lg px-4 py-2" href="#"><i class="fas fa-bell ml-2"></i>إعدادات الإشعارات</a></li>
+<li><a class="block text-gray-600 hover:bg-gray-50 rounded-lg px-4 py-2" href="#"><i class="fas fa-palette ml-2"></i>تخصيص المظهر</a></li>
+</ul>
+</div>
+<div class="md:col-span-2 glass-card p-6">
+<h3 class="text-lg font-bold text-dijlahDark border-b pb-4 mb-5">بيانات الجامعة الأساسية</h3>
+<form class="space-y-4" onsubmit="event.preventDefault(); showToast('تم حفظ الإعدادات بنجاح!');">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">اسم الجامعة الرسمي</label>
+<input class="w-full border p-2 rounded outline-none focus:border-dijlahGold text-sm" type="text" value="جامعة دجلة"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">تاريخ التأسيس</label>
+<input class="w-full border p-2 rounded outline-none focus:border-dijlahGold text-sm" type="text" value="2004"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">اسم رئيس الجامعة الحالي</label>
+<input class="w-full border p-2 rounded outline-none focus:border-dijlahGold text-sm" type="text" value="أ.د. غير محدد"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">العام الدراسي الحالي</label>
+<input class="w-full border p-2 rounded outline-none focus:border-dijlahGold text-sm" type="text" value="2025-2026"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">اسم المساعد العلمي</label>
+<input class="w-full border p-2 rounded outline-none focus:border-dijlahGold text-sm" id="set_role2" onkeyup="document.getElementById('print_role2').innerText = this.value" type="text" value="مساعد رئيس الجامعة للشؤون العلمية"/>
+<p class="text-xs text-gray-400 mt-1">يظهر في تذييل الكتب الرسمية</p>
+</div>
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">الموقع الإلكتروني</label>
+<input class="w-full border p-2 rounded outline-none focus:border-dijlahGold text-sm" type="text" value="www.dijlah.edu.iq"/>
+</div>
+</div>
+<div class="border-t pt-4 flex justify-end">
+<button class="bg-dijlahDark text-white px-8 py-2 rounded-lg font-bold hover:bg-dijlahBlue transition shadow" type="submit">حفظ التعديلات</button>
+</div>
+</form>
+</div>
+</div>
+</section>
+<!-- وصل المالية (مخفي للطباعة) -->
+<div class="hidden bg-white w-[210mm] min-h-[148mm] p-8 relative text-black mx-auto border-4 border-double border-gray-300 rounded" id="receipt-preview">
+<div class="flex justify-between items-center border-b-2 border-gray-300 pb-4 mb-5">
+<div class="text-right w-1/3 text-sm font-bold leading-relaxed"><p>وزارة التعليم العالي والبحث العلمي</p><p class="text-lg text-dijlahDark font-black">جامعـة دجلـة</p><p>قسم الشؤون المالية والحسابات</p></div>
+<div class="w-1/3 flex justify-center"><div class="w-20 h-20 border-2 border-dijlahGold rounded-full p-1"><svg class="w-full h-full" viewbox="0 0 200 200"><circle cx="100" cy="100" fill="#1c283d" r="95" stroke="#d4af37" stroke-width="3"></circle><rect fill="#0a192f" height="40" width="40" x="80" y="55"></rect><path d="M 80 55 L 80 15 L 120 15 A 40 40 0 0 1 120 95 L 120 55 Z" fill="#3bb4e5"></path><path d="M 120 95 L 120 135 L 80 135 A 40 40 0 0 1 80 55 L 80 95 Z" fill="#aacc38"></path><text fill="#fff" font-family="'Cairo', sans-serif" font-size="24" font-weight="900" text-anchor="middle" x="100" y="160">جامعة دجلة</text></svg></div></div>
+<div class="text-left w-1/3 text-sm font-bold" dir="rtl"><p>رقم الوصل: <span class="text-red-600 font-mono text-lg" id="rec_num">00000</span></p><p>التاريخ: <span class="text-blue-600 font-mono" id="rec_date">...</span></p></div>
+</div>
+<h2 class="text-xl font-black text-center mb-6 border-2 border-dijlahDark w-fit mx-auto px-8 py-2 rounded-lg bg-gray-50">وصـل استلام مبلـغ (Receipt)</h2>
+<div class="text-lg leading-[2.5] space-y-2 px-4">
+<div class="flex items-center"><span class="font-bold w-44 text-dijlahDark">استلمنا من الطالب/ة:</span><span class="flex-1 border-b-2 border-dotted border-gray-400 font-black px-4" id="rec_name"></span></div>
+<div class="flex items-center"><span class="font-bold w-44 text-dijlahDark">مبلـغاً وقـدره (د.ع):</span><span class="flex-1 border-b-2 border-dotted border-gray-400 font-black text-green-700 font-mono text-xl px-4" id="rec_amount"></span></div>
+<div class="flex items-center"><span class="font-bold w-44 text-dijlahDark">وذلك عن أجور دراسية:</span><span class="flex-1 border-b-2 border-dotted border-gray-400 font-bold px-4" id="rec_college"></span></div>
+<div class="flex items-center"><span class="font-bold w-44 text-dijlahDark">المتبقي بذمة الطالب:</span><span class="flex-1 border-b-2 border-dotted border-gray-400 font-bold text-red-600 font-mono px-4" id="rec_rem"></span></div>
+</div>
+<div class="mt-16 flex justify-between items-center px-14">
+<div class="text-center"><p class="font-bold text-base mb-10">توقيع المستلم</p><p class="text-gray-500 font-bold text-xs border-t-2 border-gray-400 pt-2 w-36 mx-auto">أمين الصندوق</p></div>
+<div class="text-center"><p class="font-bold text-base mb-10">ختم الحسابات</p><p class="text-gray-500 font-bold text-xs border-t-2 border-gray-400 pt-2 w-36 mx-auto">القسم المالي</p></div>
+</div>
+<div class="absolute bottom-3 left-0 w-full text-center text-xs text-gray-400 font-bold border-t pt-2">نسخة الطالب - يرجى الاحتفاظ بهذا الوصل للمراجعة والتدقيق</div>
+</div>
+</main>
+</div>
+</div>
+<!-- ========== النوافذ المنبثقة (Modals) ========== -->
+<!-- Modal: إضافة طالب -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="addStudentModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-dijlahDark p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-user-plus ml-2"></i>استمارة تسجيل طالب جديد</h3>
+<button class="hover:text-red-400 text-xl" onclick="closeModal('addStudentModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<form class="space-y-3" id="formAddStudent" onsubmit="submitStudentForm(event)">
+<div class="grid grid-cols-2 gap-3">
+<div class="col-span-2"><label class="block text-xs mb-1 font-bold">الاسم الرباعي</label><input class="w-full border rounded p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="stu_name" required="" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">الرقم الامتحاني / الجامعي</label><input class="w-full border rounded p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="stu_id" placeholder="يتم توليده تلقائياً إن ترك فارغاً" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">الكلية</label><select class="w-full border rounded p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="stu_college"><option value="طب الأسنان">طب الأسنان</option><option value="الصيدلة">الصيدلة</option><option value="الهندسة">الهندسة</option><option value="هندسة تقنيات الحاسوب">هندسة تقنيات الحاسوب</option><option value="القانون">القانون</option><option value="الإدارة والاقتصاد">الإدارة والاقتصاد</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">المرحلة</label><select class="w-full border rounded p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="stu_stage"><option>الأولى</option><option>الثانية</option><option>الثالثة</option><option>الرابعة</option><option>الخامسة</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">نوع الدراسة</label><select class="w-full border rounded p-2 bg-gray-50 focus:border-dijlahGold outline-none text-sm" id="stu_study"><option value="صباحي">صباحي</option><option value="مسائي">مسائي</option></select></div>
+</div>
+<div class="flex justify-end gap-3 mt-4 pt-3 border-t">
+<button class="px-5 py-2 text-gray-600 font-bold hover:bg-gray-100 rounded-lg text-sm" onclick="closeModal('addStudentModal')" type="button">إلغاء</button>
+<button class="px-5 py-2 bg-dijlahGold text-white font-bold rounded-lg hover:bg-yellow-600 shadow text-sm" type="submit">تأكيد التسجيل</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Modal: إضافة موظف -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="addStaffModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-purple-700 p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-user-tie ml-2"></i>إضافة ملف وظيفي (HR)</h3>
+<button class="hover:text-red-400 text-xl" onclick="closeModal('addStaffModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<form class="space-y-3" id="formAddStaff" onsubmit="submitStaffForm(event)">
+<div class="grid grid-cols-2 gap-3">
+<div class="col-span-2"><label class="block text-xs mb-1 font-bold">الاسم الكامل</label><input class="w-full border rounded p-2 focus:border-purple-500 outline-none text-sm" id="stf_name" required="" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">اللقب العلمي / الوظيفي</label><select class="w-full border rounded p-2 focus:border-purple-500 outline-none text-sm" id="stf_title"><option value="أستاذ دكتور (أ.د)">أستاذ دكتور (أ.د)</option><option value="أستاذ مساعد دكتور (أ.م.د)">أستاذ مساعد دكتور (أ.م.د)</option><option value="مدرس دكتور (م.د)">مدرس دكتور (م.د)</option><option value="تدريسي">تدريسي</option><option value="موظف إداري">موظف إداري</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">جهة التنسيب</label><select class="w-full border rounded p-2 focus:border-purple-500 outline-none text-sm" id="stf_dept"><option value="رئاسة الجامعة">رئاسة الجامعة</option><option value="كلية الهندسة">كلية الهندسة</option><option value="كلية طب الأسنان">كلية طب الأسنان</option><option value="كلية الصيدلة">كلية الصيدلة</option><option value="كلية القانون">كلية القانون</option></select></div>
+</div>
+<div class="flex justify-end gap-3 mt-4 pt-3 border-t">
+<button class="px-5 py-2 text-gray-600 font-bold hover:bg-gray-100 rounded-lg text-sm" onclick="closeModal('addStaffModal')" type="button">إلغاء</button>
+<button class="px-5 py-2 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-800 shadow text-sm" type="submit">حفظ البيانات</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Modal: استحداث كلية/قسم -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="addFacultyModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-dijlahGold p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-university ml-2"></i>استحداث تشكيل أكاديمي</h3>
+<button class="hover:text-red-600 text-xl" onclick="closeModal('addFacultyModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<form class="space-y-3" id="formAddFaculty" onsubmit="submitFacultyForm(event)">
+<div><label class="block text-xs mb-1 font-bold">اسم الكلية / القسم</label><input class="w-full border rounded p-2 focus:border-dijlahGold outline-none text-sm" id="fac_name" placeholder="مثال: كلية التمريض" required="" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">اسم العميد / رئيس القسم</label><input class="w-full border rounded p-2 focus:border-dijlahGold outline-none text-sm" id="fac_dean" type="text"/></div>
+<div class="flex justify-end gap-3 mt-4 pt-3 border-t">
+<button class="w-full px-5 py-2 bg-dijlahDark text-white font-bold rounded-lg hover:bg-dijlahBlue shadow text-sm" type="submit">استحداث</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Modal: إضافة قاعة -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="addHallModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-dijlahDark p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-door-open ml-2"></i>إضافة قاعة جديدة</h3>
+<button class="hover:text-red-400 text-xl" onclick="closeModal('addHallModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<form class="space-y-3" onsubmit="submitHallForm(event)">
+<div class="grid grid-cols-2 gap-3">
+<div><label class="block text-xs mb-1 font-bold">رمز / اسم القاعة</label><input class="w-full border rounded p-2 focus:border-dijlahGold outline-none text-sm" id="hall_name" placeholder="مثال: E501" required="" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">السعة الاستيعابية</label><input class="w-full border rounded p-2 focus:border-dijlahGold outline-none text-sm" id="hall_capacity" placeholder="عدد الأشخاص" type="number"/></div>
+<div><label class="block text-xs mb-1 font-bold">نوع القاعة</label><select class="w-full border rounded p-2 focus:border-dijlahGold outline-none text-sm" id="hall_type"><option value="lecture">قاعة محاضرات</option><option value="lab">مختبر</option><option value="conference">قاعة مؤتمرات</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">المبنى</label><input class="w-full border rounded p-2 focus:border-dijlahGold outline-none text-sm" id="hall_building" placeholder="مثال: المبنى E" type="text"/></div>
+</div>
+<div><label class="block text-xs mb-1 font-bold">المرافق والتجهيزات</label><input class="w-full border rounded p-2 focus:border-dijlahGold outline-none text-sm" id="hall_facilities" placeholder="بروجيكتور، واي فاي، تكييف..." type="text"/></div>
+<div class="flex justify-end gap-3 pt-3 border-t">
+<button class="px-4 py-2 text-gray-600 font-bold hover:bg-gray-100 rounded-lg text-sm" onclick="closeModal('addHallModal')" type="button">إلغاء</button>
+<button class="px-5 py-2 bg-dijlahGold text-white font-bold rounded-lg hover:bg-yellow-600 shadow text-sm" type="submit">إضافة القاعة</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Modal: حجز قاعة -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="bookHallModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-dijlahBlue p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-calendar-plus ml-2"></i>حجز قاعة</h3>
+<button class="hover:text-red-200 text-xl" onclick="closeModal('bookHallModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<form class="space-y-3" onsubmit="submitBookingForm(event)">
+<div class="grid grid-cols-2 gap-3">
+<div><label class="block text-xs mb-1 font-bold">القاعة المطلوبة</label><select class="w-full border rounded p-2 focus:border-dijlahBlue outline-none text-sm" id="book_hall"><option>A101 - محاضرات (80 طالب)</option><option>B205 - مختبر حاسبات (40 جهاز)</option><option>C301 - مختبر علوم (30 طالب)</option><option>قاعة المؤتمرات (200 شخص)</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">تاريخ الحجز</label><input class="w-full border rounded p-2 focus:border-dijlahBlue outline-none text-sm" id="book_date" required="" type="date"/></div>
+<div><label class="block text-xs mb-1 font-bold">وقت البداية</label><select class="w-full border rounded p-2 focus:border-dijlahBlue outline-none text-sm" id="book_start"><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">وقت الانتهاء</label><select class="w-full border rounded p-2 focus:border-dijlahBlue outline-none text-sm" id="book_end"><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option></select></div>
+</div>
+<div><label class="block text-xs mb-1 font-bold">غرض الحجز</label><select class="w-full border rounded p-2 focus:border-dijlahBlue outline-none text-sm" id="book_purpose"><option>محاضرة نظرية</option><option>مختبر عملي</option><option>اجتماع</option><option>ندوة أو مؤتمر</option><option>امتحان</option><option>يوم دراسي</option><option>أخرى</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">اسم الجهة الطالبة / المدرس</label><input class="w-full border rounded p-2 focus:border-dijlahBlue outline-none text-sm" id="book_requester" placeholder="اسم الأستاذ أو الجهة الطالبة" required="" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">ملاحظات (اختياري)</label><input class="w-full border rounded p-2 focus:border-dijlahBlue outline-none text-sm" id="book_notes" placeholder="أي متطلبات إضافية..." type="text"/></div>
+<div class="flex justify-end gap-3 pt-3 border-t">
+<button class="px-4 py-2 text-gray-600 font-bold hover:bg-gray-100 rounded-lg text-sm" onclick="closeModal('bookHallModal')" type="button">إلغاء</button>
+<button class="px-5 py-2 bg-dijlahBlue text-white font-bold rounded-lg hover:bg-blue-600 shadow text-sm" type="submit"><i class="fas fa-check ml-1"></i>تأكيد الحجز</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Modal: استلام قسط مالي -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="paymentModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-green-600 p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-money-bill-wave ml-2"></i>استلام دفعة مالية</h3>
+<button class="hover:text-red-200 text-xl" onclick="closeModal('paymentModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<form id="formPayment" onsubmit="submitPaymentForm(event)">
+<div class="mb-3 text-center">
+<p class="text-xs text-gray-500">الطالب</p>
+<p class="font-bold text-base" id="pay_student_name">يتم التحميل...</p>
+<p class="text-xs text-red-500 font-bold mb-3" id="pay_student_rem">المتبقي: ...</p>
+</div>
+<div class="mb-3">
+<label class="block text-sm mb-1 font-bold">مبلغ الدفعة المستلمة (د.ع)</label>
+<input class="w-full border rounded p-2 text-center font-mono font-bold text-lg focus:border-green-500 outline-none" id="pay_amount" placeholder="أدخل المبلغ هنا" required="" type="number"/>
+</div>
+<div class="flex justify-end gap-3 mt-4 border-t pt-3">
+<button class="w-full px-5 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-700 shadow text-sm" type="submit"><i class="fas fa-print ml-1"></i>تأكيد واستخراج وصل</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Modal: إدارة المواد الدراسية -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="manageSubjectsModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-dijlahBlue p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-book ml-2"></i>إدارة مواد الأقسام</h3>
+<button class="hover:text-red-200 text-xl" onclick="closeModal('manageSubjectsModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<div class="mb-3">
+<label class="block text-xs mb-1 font-bold">اختر القسم</label>
+<select class="w-full border rounded p-2 focus:border-dijlahGold outline-none text-sm" id="manage_sub_dept" onchange="renderManageSubjectsList()">
+<option value="هندسة تقنيات الحاسوب">هندسة تقنيات الحاسوب</option>
+<option value="طب الأسنان">طب الأسنان</option>
+<option value="الصيدلة">الصيدلة</option>
+<option value="الهندسة">الهندسة</option>
+<option value="القانون">القانون</option>
+</select>
+</div>
+<div class="bg-gray-50 border rounded-lg p-3 mb-3 h-48 overflow-y-auto"><ul class="space-y-1" id="manage_sub_list"></ul></div>
+<div class="flex gap-2 items-end border-t pt-3">
+<div class="flex-1">
+<label class="block text-xs text-gray-500 mb-1">اسم المادة الجديدة</label>
+<input class="w-full border rounded p-2 text-sm focus:border-dijlahGold outline-none" id="new_subject_input" placeholder="مثال: هياكل بيانات" type="text"/>
+</div>
+<button class="bg-dijlahGold text-white px-4 py-2 rounded shadow hover:bg-yellow-600 font-bold text-sm" onclick="addNewSubject()" type="button">إضافة</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal: إضافة تعميم -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="addAnnouncementModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-red-500 p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-bullhorn ml-2"></i>إضافة تعميم / إعلان</h3>
+<button class="hover:text-red-200 text-xl" onclick="closeModal('addAnnouncementModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<form class="space-y-3" onsubmit="submitAnnouncementForm(event)">
+<div><label class="block text-xs mb-1 font-bold">الجهة المصدرة</label><input class="w-full border rounded p-2 focus:border-red-400 outline-none text-sm" id="ann_source" placeholder="مثال: رئاسة الجامعة" required="" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">نوع التعميم</label><select class="w-full border rounded p-2 focus:border-red-400 outline-none text-sm" id="ann_type"><option value="urgent">عاجل</option><option value="admin">إداري</option><option value="finance">مالي</option><option value="academic">أكاديمي</option><option value="facility">مرافق</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">نص التعميم</label><textarea class="w-full border rounded p-2 focus:border-red-400 outline-none text-sm" id="ann_text" required="" rows="4"></textarea></div>
+<div class="flex justify-end gap-3 pt-3 border-t">
+<button class="px-4 py-2 text-gray-600 font-bold hover:bg-gray-100 rounded-lg text-sm" onclick="closeModal('addAnnouncementModal')" type="button">إلغاء</button>
+<button class="px-5 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 shadow text-sm" type="submit">نشر التعميم</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Modal: إضافة بحث -->
+<div class="fixed inset-0 bg-black/60 hidden z-[100] flex items-center justify-center backdrop-blur-sm" id="addResearchModal">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="bg-purple-700 p-4 flex justify-between items-center text-white">
+<h3 class="font-bold text-base"><i class="fas fa-flask ml-2"></i>تسجيل بحث علمي</h3>
+<button class="hover:text-red-200 text-xl" onclick="closeModal('addResearchModal')"><i class="fas fa-times"></i></button>
+</div>
+<div class="p-5">
+<form class="space-y-3" onsubmit="submitResearchForm(event)">
+<div><label class="block text-xs mb-1 font-bold">عنوان البحث</label><input class="w-full border rounded p-2 text-sm focus:border-purple-400 outline-none" id="res_title" required="" type="text"/></div>
+<div class="grid grid-cols-2 gap-3">
+<div><label class="block text-xs mb-1 font-bold">الباحث الرئيسي</label><input class="w-full border rounded p-2 text-sm focus:border-purple-400 outline-none" id="res_author" required="" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">الكلية</label><select class="w-full border rounded p-2 text-sm focus:border-purple-400 outline-none" id="res_college"><option>الهندسة</option><option>طب الأسنان</option><option>الصيدلة</option><option>القانون</option></select></div>
+<div><label class="block text-xs mb-1 font-bold">المجلة / المؤتمر</label><input class="w-full border rounded p-2 text-sm focus:border-purple-400 outline-none" id="res_journal" type="text"/></div>
+<div><label class="block text-xs mb-1 font-bold">سنة النشر</label><input class="w-full border rounded p-2 text-sm focus:border-purple-400 outline-none" id="res_year" type="number" value="2026"/></div>
+</div>
+<div class="flex justify-end gap-3 pt-3 border-t">
+<button class="px-4 py-2 text-gray-600 font-bold hover:bg-gray-100 rounded-lg text-sm" onclick="closeModal('addResearchModal')" type="button">إلغاء</button>
+<button class="px-5 py-2 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 shadow text-sm" type="submit">تسجيل البحث</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Toast -->
+<div id="toast">تمت العملية بنجاح</div>
+<script>
+// ============================= دوال التنقل =============================
+const pageTitles = {
+    'dashboard': ['لوحة القيادة والمؤشرات', 'نظرة عامة على جميع أقسام الجامعة'],
+    'faculties': ['الكليات والأقسام الأكاديمية', 'إدارة التشكيلات الأكاديمية المعتمدة'],
+    'students': ['شؤون الطلبة والتسجيل', 'السجل المركزي لجميع الطلبة المسجلين'],
+    'grades': ['سجل الدرجات والمواد الدراسية', 'إدخال ومتابعة درجات الطلبة'],
+    'schedule': ['الجداول الدراسية الأسبوعية', 'جداول المحاضرات والمختبرات'],
+    'elearn': ['منصة التعليم الإلكتروني', 'المقررات والمحاضرات والاختبارات الرقمية'],
+    'exams': ['الامتحانات والنتائج', 'إدارة جداول الامتحانات وإدخال النتائج'],
+    'halls': ['إدارة القاعات وحجوزاتها', 'نظام حجز القاعات والمرافق الجامعية'],
+    'library': ['المكتبة الإلكترونية', 'الفهرس الرقمي للكتب والمصادر العلمية'],
+    'research': ['البحوث والنشر العلمي', 'قاعدة بيانات البحوث والمؤتمرات العلمية'],
+    'staff': ['الهيئة التدريسية والإدارية (HR)', 'إدارة الملفات الوظيفية للكادر الجامعي'],
+    'finance': ['المالية والحسابات والأقساط', 'متابعة الأقساط الدراسية وإصدار الوصولات'],
+    'requests': ['الطلبات والمعاملات الإلكترونية', 'نظام إدارة الطلبات والموافقات'],
+    'documents': ['إصدار الوثائق والكتب الرسمية', 'توليد الكتب والوثائق الجامعية الرسمية'],
+    'reports': ['التقارير والإحصاءات', 'تقارير شاملة لجميع أقسام الجامعة'],
+    'announcements': ['الإعلانات والتعاميم الرسمية', 'نشر وإدارة التعاميم والقرارات الجامعية'],
+    'settings': ['إعدادات النظام', 'تكوين وضبط إعدادات النظام الجامعي']
+};
+
+function showSection(sectionId, element) {
+    document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+    const sec = document.getElementById(sectionId);
+    if (!sec) return;
+    sec.classList.remove('hidden', 'fade-in');
+    void sec.offsetWidth;
+    sec.classList.add('fade-in');
+
+    const titles = pageTitles[sectionId] || [sectionId, ''];
+    document.getElementById('page-title').innerText = titles[0];
+    document.getElementById('page-subtitle').innerText = titles[1];
+
+    if (element) {
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        element.classList.add('active');
+    }
+    if (window.innerWidth < 768) toggleSidebar();
+    if (sectionId === 'grades') renderGradesTable();
+    if (sectionId === 'schedule') renderSchedule('cs');
+}
+
+function toggleSidebar() {
+    const sb = document.getElementById('sidebar');
+    sb.classList.toggle('hidden');
+}
+
+// ============================= النوافذ المنبثقة =============================
+function openModal(id) {
+    const m = document.getElementById(id);
+    m.classList.remove('hidden');
+    setTimeout(() => { m.children[0].classList.remove('scale-95'); m.children[0].classList.add('scale-100'); }, 10);
+}
+function closeModal(id) {
+    const m = document.getElementById(id);
+    m.children[0].classList.remove('scale-100');
+    m.children[0].classList.add('scale-95');
+    setTimeout(() => m.classList.add('hidden'), 200);
+}
+window.addEventListener('click', (e) => {
+    if (e.target.classList.contains('fixed') && e.target.classList.contains('inset-0')) {
+        e.target.classList.add('hidden');
+    }
+});
+
+// ============================= Toast =============================
+function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.className = type === 'error' ? 'show error' : 'show';
+    setTimeout(() => t.className = '', 3000);
+}
+
+// ============================= بيانات المواد الدراسية =============================
+let departmentSubjects = {
+    "هندسة تقنيات الحاسوب": ["المبادئ الرقمية", "مبادئ الهندسة الكهربائية", "الورش", "الرياضيات", "انكليزي", "رسم هندسي", "هياكل البيانات", "برمجة C++"],
+    "طب الأسنان": ["التشريح العام", "الكيمياء الحيوية", "الأنسجة", "الفيزيولوجيا", "الأمراض الداخلية"],
+    "الصيدلة": ["صيدلانيات 1", "كيمياء عضوية", "علم الأحياء الدقيقة", "الفارماكولوجيا"],
+    "الهندسة": ["رياضيات هندسية", "برمجة حاسبات", "ميكانيك هندسي", "مقاومة مواد"],
+    "القانون": ["المدخل لدراسة القانون", "حقوق إنسان", "القانون الدستوري", "القانون المدني"]
+};
+let studentGradesData = {
+    "2023010452": {"المبادئ الرقمية": 85, "الرياضيات": 92, "هياكل البيانات": 78},
+    "2024099112": {"المبادئ الرقمية": 95, "مبادئ الهندسة الكهربائية": 88}
+};
+
+function renderGradesTable() {
+    const dept = document.getElementById('grades_dept_select').value;
+    const subjects = departmentSubjects[dept] || [];
+    const thead = document.getElementById('grades_thead_tr');
+    thead.innerHTML = `<th class="p-3 font-semibold w-24 border-l border-gray-600">الرقم</th><th class="p-3 font-semibold w-44 border-l border-gray-600">اسم الطالب</th>` +
+        subjects.map(s => `<th class="p-3 font-semibold text-center border-l border-gray-600 text-xs min-w-[80px]">${s}</th>`).join('') +
+        `<th class="p-3 font-semibold text-center w-20">حفظ</th>`;
+
+    const tbody = document.getElementById('grades_tbody');
+    tbody.innerHTML = '';
+    const rows = document.querySelectorAll('#students table tbody tr');
+    let found = false;
+    rows.forEach(row => {
+        const id = row.cells[0].innerText.trim();
+        const name = row.cells[1].innerText.trim();
+        const rowDept = row.cells[2].innerText.trim();
+        if (rowDept.includes(dept) || dept.includes(rowDept)) {
+            found = true;
+            if (!studentGradesData[id]) studentGradesData[id] = {};
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50 transition border-b border-gray-100';
+            tr.innerHTML = `<td class="p-2 text-gray-500 font-mono text-xs border-l">${id}</td><td class="p-2 font-bold text-gray-800 text-xs border-l">${name}</td>` +
+                subjects.map(s => {
+                    const g = studentGradesData[id][s] !== undefined ? studentGradesData[id][s] : '';
+                    const color = g >= 50 ? 'text-green-700' : (g !== '' ? 'text-red-500' : '');
+                    return `<td class="p-2 text-center border-l bg-gray-50/20"><input type="number" min="0" max="100" class="w-14 text-center border border-gray-300 rounded p-1 outline-none focus:border-dijlahGold text-sm font-bold grade-input ${color}" data-subject="${s}" value="${g}" oninput="colorGrade(this)"></td>`;
+                }).join('') +
+                `<td class="p-2 text-center"><button onclick="saveStudentGrades('${id}',this)" class="bg-dijlahGold text-white w-8 h-8 rounded shadow hover:bg-yellow-600 transition active:scale-95" title="حفظ"><i class="fas fa-save text-xs"></i></button></td>`;
+            tbody.appendChild(tr);
+        }
+    });
+    if (!found) tbody.innerHTML = `<tr><td colspan="${subjects.length + 3}" class="p-8 text-center text-gray-500 font-bold">لا يوجد طلاب مسجلون في هذا القسم حالياً.</td></tr>`;
+}
+
+function colorGrade(input) {
+    const v = parseInt(input.value);
+    input.className = input.className.replace(/text-(green|red)-\d+/g, '');
+    if (!isNaN(v)) input.classList.add(v >= 50 ? 'text-green-700' : 'text-red-500');
+}
+
+function saveStudentGrades(id, btn) {
+    const row = btn.closest('tr');
+    row.querySelectorAll('.grade-input').forEach(inp => {
+        const sub = inp.getAttribute('data-subject');
+        const val = inp.value.trim();
+        if (val !== '') studentGradesData[id][sub] = parseInt(val);
+        else delete studentGradesData[id][sub];
+    });
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check text-xs"></i>';
+    btn.classList.add('bg-green-500'); btn.classList.remove('bg-dijlahGold');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('bg-green-500'); btn.classList.add('bg-dijlahGold'); }, 1000);
+    showToast('تم حفظ درجات الطالب بنجاح!');
+}
+
+function goToGrades(dept) {
+    document.getElementById('grades_dept_select').value = dept;
+    showSection('grades', document.getElementById('link_grades'));
+}
+
+function openManageSubjectsModal() {
+    document.getElementById('manage_sub_dept').value = document.getElementById('grades_dept_select').value;
+    renderManageSubjectsList();
+    openModal('manageSubjectsModal');
+}
+
+function renderManageSubjectsList() {
+    const dept = document.getElementById('manage_sub_dept').value;
+    const list = document.getElementById('manage_sub_list');
+    list.innerHTML = '';
+    const subjects = departmentSubjects[dept] || [];
+    if (!subjects.length) { list.innerHTML = '<li class="text-center text-gray-400 text-xs mt-4">لا توجد مواد مضافة لهذا القسم</li>'; return; }
+    subjects.forEach((s, i) => {
+        list.innerHTML += `<li class="flex justify-between items-center bg-white p-2 border rounded shadow-sm"><span class="font-bold text-xs text-dijlahDark"><i class="fas fa-book text-gray-300 ml-1"></i>${s}</span><button onclick="removeSubject('${dept}',${i})" class="text-red-400 hover:text-red-600 bg-red-50 w-6 h-6 rounded flex items-center justify-center"><i class="fas fa-trash text-xs"></i></button></li>`;
+    });
+}
+
+function removeSubject(dept, idx) {
+    departmentSubjects[dept].splice(idx, 1);
+    renderManageSubjectsList(); renderGradesTable();
+    showToast('تم إزالة المادة');
+}
+
+function addNewSubject() {
+    const dept = document.getElementById('manage_sub_dept').value;
+    const inp = document.getElementById('new_subject_input');
+    const val = inp.value.trim();
+    if (!val) { showToast('يرجى كتابة اسم المادة'); return; }
+    if (!departmentSubjects[dept]) departmentSubjects[dept] = [];
+    if (departmentSubjects[dept].includes(val)) { showToast('المادة موجودة مسبقاً!', 'error'); return; }
+    departmentSubjects[dept].push(val);
+    inp.value = '';
+    renderManageSubjectsList(); renderGradesTable();
+    showToast('تم إضافة المادة بنجاح!');
+}
+
+// ============================= الجداول الدراسية =============================
+const scheduleData = {
+    cs: [
+        { time: '08:00-10:00', sun: {name:'رياضيات', type:'lecture'}, mon: {name:'برمجة C++', type:'lab'}, tue: {name:'هياكل بيانات', type:'lecture'}, wed: null, thu: {name:'انكليزي', type:'lecture'} },
+        { time: '10:00-12:00', sun: {name:'هياكل بيانات', type:'lecture'}, mon: null, tue: {name:'مبادئ رقمية', type:'lecture'}, wed: {name:'ورش', type:'lab'}, thu: null },
+        { time: '12:00-14:00', sun: null, mon: {name:'رسم هندسي', type:'lab'}, tue: null, wed: null, thu: {name:'كهربائيات', type:'lecture'} },
+        { time: '14:00-16:00', sun: {name:'مختبر برمجة', type:'lab'}, mon: null, tue: null, wed: {name:'رياضيات', type:'lecture'}, thu: null },
+    ]
+};
+
+function renderSchedule(key) {
+    const data = scheduleData[key] || scheduleData.cs;
+    const colors = { lecture: 'bg-blue-50 border-blue-200 text-blue-800', lab: 'bg-green-50 border-green-200 text-green-800', seminar: 'bg-yellow-50 border-yellow-200 text-yellow-800' };
+    let html = '';
+    data.forEach(row => {
+        const days = [row.sun, row.mon, row.tue, row.wed, row.thu];
+        html += `<tr class="border-b border-gray-100">
+            <td class="p-2 text-center text-xs font-bold text-gray-500 bg-gray-50 border-l border-gray-200">${row.time}</td>
+            ${days.map(d => d ? `<td class="p-2"><div class="schedule-cell ${colors[d.type] || 'bg-gray-50'} border text-xs">${d.name}</div></td>` : `<td class="p-2"><div class="schedule-cell bg-gray-50 border border-gray-100 text-xs text-gray-300">فراغ</div></td>`).join('')}
+        </tr>`;
+    });
+    document.getElementById('scheduleBody').innerHTML = html;
+}
+
+// ============================= إدارة القاعات =============================
+function filterHalls(type, btn) {
+    document.querySelectorAll('.halls-filter-btn').forEach(b => { b.className = b.className.replace('bg-dijlahDark text-white', 'bg-gray-100 text-gray-700'); });
+    btn.className = btn.className.replace('bg-gray-100 text-gray-700', 'bg-dijlahDark text-white');
+    document.querySelectorAll('#hallsGrid .hall-card').forEach(card => {
+        if (type === 'all' || card.dataset.type === type) { card.style.display = ''; }
+        else card.style.display = 'none';
+    });
+}
+
+function openBookingForHall(hallName) {
+    document.getElementById('book_hall').value = [...document.getElementById('book_hall').options].find(o => o.value === hallName || o.text.startsWith(hallName))?.value || '';
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('book_date').value = today;
+    openModal('bookHallModal');
+}
+
+function cancelReservation(btn) {
+    if (confirm('هل تريد إلغاء هذا الحجز؟')) {
+        btn.closest('tr').remove();
+        showToast('تم إلغاء الحجز بنجاح');
+    }
+}
+
+function submitBookingForm(e) {
+    e.preventDefault();
+    const hall = document.getElementById('book_hall').value;
+    const date = document.getElementById('book_date').value;
+    const start = document.getElementById('book_start').value;
+    const end = document.getElementById('book_end').value;
+    const purpose = document.getElementById('book_purpose').value;
+    const requester = document.getElementById('book_requester').value;
+    const tbody = document.getElementById('reservationsTbody');
+    const num = 'RES-' + String(tbody.rows.length + 1).padStart(3, '0');
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-gray-50 fade-in';
+    tr.innerHTML = `<td class="p-3 font-mono text-xs text-gray-500">${num}</td><td class="p-3 font-bold">${hall.split('-')[0]}</td><td class="p-3 text-xs">${purpose}</td><td class="p-3 text-xs">${requester}</td><td class="p-3 text-xs">${date}</td><td class="p-3 text-xs font-bold">${start} - ${end}</td><td class="p-3 text-center"><span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs font-bold">قادم</span></td><td class="p-3 text-center"><button class="text-red-500 bg-red-50 px-2 py-1 rounded text-xs font-bold" onclick="cancelReservation(this)"><i class="fas fa-times ml-1"></i>إلغاء</button></td>`;
+    tbody.prepend(tr);
+    closeModal('bookHallModal');
+    showToast('تم تأكيد حجز القاعة بنجاح!');
+    e.target.reset();
+}
+
+function submitHallForm(e) {
+    e.preventDefault();
+    const name = document.getElementById('hall_name').value;
+    const cap = document.getElementById('hall_capacity').value;
+    const type = document.getElementById('hall_type').value;
+    const building = document.getElementById('hall_building').value;
+    const facilities = document.getElementById('hall_facilities').value;
+    const colors = { lecture: 'from-dijlahDark to-blue-900', lab: 'from-green-800 to-green-600', conference: 'from-dijlahGold to-yellow-600' };
+    const icons = { lecture: 'fa-chalkboard', lab: 'fa-laptop', conference: 'fa-microphone-alt' };
+    const div = document.createElement('div');
+    div.className = 'hall-card bg-white border border-gray-200 shadow-sm fade-in';
+    div.dataset.type = type;
+    div.innerHTML = `<div class="bg-gradient-to-r ${colors[type]} p-4 text-white"><div class="flex justify-between items-start"><div><h4 class="font-black text-lg">${name}</h4><p class="text-xs opacity-75">${type} - ${building}</p></div><i class="fas ${icons[type]} text-2xl opacity-50"></i></div></div><div class="p-4"><div class="flex justify-between items-center mb-3"><span class="badge-available">متاحة</span><span class="text-xs text-gray-500"><i class="fas fa-users text-gray-400 ml-1"></i>سعة ${cap}</span></div><div class="text-xs text-gray-500 mb-3"><p>${facilities}</p></div><button onclick="openBookingForHall('${name}')" class="mt-2 w-full bg-dijlahDark text-white py-2 rounded-lg text-xs font-bold hover:bg-dijlahBlue transition"><i class="fas fa-calendar-plus ml-1"></i>حجز الآن</button></div>`;
+    document.getElementById('hallsGrid').prepend(div);
+    closeModal('addHallModal');
+    showToast('تم إضافة القاعة بنجاح!');
+    e.target.reset();
+}
+
+// ============================= الطلبات =============================
+function approveRequest(btn) {
+    const card = btn.closest('.request-card');
+    card.querySelector('span').className = 'bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold';
+    card.querySelector('span').innerText = 'تمت الموافقة';
+    btn.closest('div').innerHTML = '<span class="text-green-600 text-xs font-bold"><i class="fas fa-check-circle ml-1"></i>تمت الموافقة على الطلب</span>';
+    showToast('تمت الموافقة على الطلب بنجاح!');
+}
+
+function rejectRequest(btn) {
+    const card = btn.closest('.request-card');
+    card.querySelector('span').className = 'bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-bold';
+    card.querySelector('span').innerText = 'مرفوض';
+    btn.closest('div').innerHTML = '<span class="text-red-500 text-xs font-bold"><i class="fas fa-times-circle ml-1"></i>تم رفض الطلب</span>';
+    showToast('تم رفض الطلب');
+}
+
+function submitNewRequest(e) {
+    e.preventDefault();
+    showToast('تم إرسال الطلب بنجاح! رقم المتابعة: REQ-' + Math.floor(Math.random()*9000+1000));
+    e.target.reset();
+}
+
+function filterRequests(status) {
+    showToast('عرض الطلبات: ' + status);
+}
+
+// ============================= الإعلانات =============================
+function submitAnnouncementForm(e) {
+    e.preventDefault();
+    const src = document.getElementById('ann_source').value;
+    const type = document.getElementById('ann_type').value;
+    const text = document.getElementById('ann_text').value;
+    const colors = { urgent: 'border-red-500', admin: 'border-dijlahBlue', finance: 'border-yellow-500', academic: 'border-purple-500', facility: 'border-green-500' };
+    const badges = { urgent: 'bg-red-100 text-red-700', admin: 'bg-blue-100 text-blue-700', finance: 'bg-yellow-100 text-yellow-700', academic: 'bg-purple-100 text-purple-700', facility: 'bg-green-100 text-green-700' };
+    const labels = { urgent: 'عاجل', admin: 'إداري', finance: 'مالي', academic: 'أكاديمي', facility: 'مرافق' };
+    const today = new Date().toLocaleDateString('ar-IQ');
+    const div = document.createElement('div');
+    div.className = `glass-card p-5 border-r-4 ${colors[type]} fade-in`;
+    div.innerHTML = `<div class="flex justify-between items-start mb-2"><div><h4 class="font-bold">${src}</h4><p class="text-xs text-gray-500">${today}</p></div><span class="${badges[type]} px-2 py-0.5 rounded-full text-xs font-bold">${labels[type]}</span></div><p class="text-sm text-gray-700">${text}</p>`;
+    document.getElementById('announcementsList').prepend(div);
+    closeModal('addAnnouncementModal');
+    showToast('تم نشر التعميم بنجاح!');
+    e.target.reset();
+}
+
+// ============================= البحوث =============================
+function submitResearchForm(e) {
+    e.preventDefault();
+    const title = document.getElementById('res_title').value;
+    const author = document.getElementById('res_author').value;
+    const college = document.getElementById('res_college').value;
+    const journal = document.getElementById('res_journal').value;
+    const year = document.getElementById('res_year').value;
+    const tbody = document.querySelector('#research table tbody');
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-gray-50 fade-in';
+    tr.innerHTML = `<td class="p-3 font-bold text-sm">${title}</td><td class="p-3 text-xs">${author}</td><td class="p-3 text-xs">${college}</td><td class="p-3 text-xs">${journal}</td><td class="p-3 text-xs">${year}</td><td class="p-3 text-center"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-bold">قيد المراجعة</span></td>`;
+    tbody.prepend(tr);
+    closeModal('addResearchModal');
+    showToast('تم تسجيل البحث بنجاح!');
+    e.target.reset();
+}
+
+// ============================= الطلاب والموظفون =============================
+function submitStudentForm(e) {
+    e.preventDefault();
+    const name = document.getElementById('stu_name').value;
+    const id = document.getElementById('stu_id').value || Math.floor(Math.random() * 9000000000 + 1000000000);
+    const college = document.getElementById('stu_college').value;
+    const stage = document.getElementById('stu_stage').value;
+    const study = document.getElementById('stu_study').value;
+    const fees = { 'طب الأسنان': 7000000, 'الصيدلة': 6500000, 'الهندسة': 3500000, 'هندسة تقنيات الحاسوب': study === 'مسائي' ? 1800000 : 2500000, 'القانون': 1800000, 'الإدارة والاقتصاد': 1500000 };
+    const fee = fees[college] || 2500000;
+    const tbody = document.querySelector('#students table tbody');
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-gray-50 transition fade-in bg-blue-50/20';
+    tr.innerHTML = `<td class="p-3 text-gray-500 font-mono text-xs">${id}</td><td class="p-3 font-bold text-gray-800">${name}</td><td class="p-3 text-gray-600 text-xs">${college}</td><td class="p-3"><span class="bg-gray-100 px-2 py-0.5 rounded text-xs font-bold">${stage}</span></td><td class="p-3 text-xs">${study}</td><td class="p-3"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">جديد</span></td><td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-edit text-xs"></i></button><button onclick="goToGrades('${college}')" class="text-gray-600 bg-gray-100 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-graduation-cap text-xs"></i></button><button class="text-red-500 bg-red-50 w-7 h-7 rounded-full mx-0.5" onclick="this.closest('tr').remove();showToast('تم حذف الطالب');"><i class="fas fa-trash text-xs"></i></button></td>`;
+    tbody.prepend(tr);
+    const tbodyF = document.querySelector('#finance table tbody');
+    const trF = document.createElement('tr');
+    trF.className = 'hover:bg-gray-50 fade-in bg-red-50/20';
+    trF.innerHTML = `<td class="p-3 border-b font-bold">${name}</td><td class="p-3 border-b text-gray-500 text-xs">${college}</td><td class="p-3 border-b text-center font-mono">${fee.toLocaleString()}</td><td class="p-3 border-b text-center font-mono text-gray-400">0</td><td class="p-3 border-b text-center font-mono text-red-600 font-bold">${fee.toLocaleString()}</td><td class="p-3 border-b text-center"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-bold">غير مسدد</span></td><td class="p-3 border-b text-center flex justify-center gap-1"><button onclick="openPaymentModal(this)" class="bg-green-500 text-white px-2 py-1 rounded text-xs">استلام دفعة</button><button onclick="printReceipt(this)" class="bg-gray-200 px-2 py-1 rounded text-xs"><i class="fas fa-print"></i></button></td>`;
+    tbodyF.prepend(trF);
+    closeModal('addStudentModal');
+    showToast('تم تسجيل الطالب بنجاح في سجلات الجامعة والمالية!');
+    e.target.reset();
+}
+
+function submitStaffForm(e) {
+    e.preventDefault();
+    const name = document.getElementById('stf_name').value;
+    const title = document.getElementById('stf_title').value;
+    const dept = document.getElementById('stf_dept').value;
+    const tbody = document.querySelector('#staff table tbody');
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-gray-50 transition fade-in bg-green-50/30';
+    tr.innerHTML = `<td class="p-3 font-bold text-gray-800">${title} ${name}</td><td class="p-3 text-gray-600 text-xs">${title}</td><td class="p-3 text-xs">${dept}</td><td class="p-3"><span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-bold">تعيين جديد</span></td><td class="p-3 text-xs text-green-600"><i class="fas fa-circle text-[10px] ml-1"></i>مباشر</td><td class="p-3 text-center"><button class="text-blue-600 bg-blue-50 w-7 h-7 rounded-full mx-0.5"><i class="fas fa-edit text-xs"></i></button><button class="text-red-500 bg-red-50 w-7 h-7 rounded-full mx-0.5" onclick="this.closest('tr').remove();showToast('تم الحذف');"><i class="fas fa-trash text-xs"></i></button></td>`;
+    tbody.prepend(tr);
+    closeModal('addStaffModal');
+    showToast('تمت إضافة التدريسي/الموظف بنجاح!');
+    e.target.reset();
+}
+
+function submitFacultyForm(e) {
+    e.preventDefault();
+    const name = document.getElementById('fac_name').value;
+    const dean = document.getElementById('fac_dean').value || 'غير محدد بعد';
+    const div = document.createElement('div');
+    div.className = 'glass-card p-5 border-t-4 border-dijlahGold flex flex-col items-center text-center fade-in';
+    div.innerHTML = `<div class="w-16 h-16 bg-yellow-50 text-dijlahGold rounded-full flex items-center justify-center text-2xl mb-3"><i class="fas fa-building"></i></div><h4 class="text-lg font-black text-gray-800 mb-1">${name}</h4><p class="text-xs text-gray-500 mb-3">العميد/الرئيس: ${dean}</p><div class="w-full grid grid-cols-3 gap-2 text-xs border-t pt-3"><div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">0</span>طالب</div><div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">0</span>تدريسي</div><div class="bg-gray-50 p-2 rounded"><span class="block font-bold text-gray-800">4</span>مراحل</div></div><button class="mt-3 text-xs text-red-500 hover:text-red-700" onclick="this.parentElement.remove();showToast('تم الحذف');">حذف التشكيل</button>`;
+    document.getElementById('facultiesGrid').prepend(div);
+    closeModal('addFacultyModal');
+    showToast('تم استحداث التشكيل الأكاديمي بنجاح!');
+    e.target.reset();
+}
+
+// ============================= المالية =============================
+let currentPaymentRow = null;
+function openPaymentModal(btn) {
+    currentPaymentRow = btn.closest('tr');
+    document.getElementById('pay_student_name').innerText = currentPaymentRow.cells[0].innerText;
+    document.getElementById('pay_student_rem').innerText = 'المتبقي: ' + currentPaymentRow.cells[4].innerText + ' د.ع';
+    document.getElementById('pay_amount').value = '';
+    openModal('paymentModal');
+}
+
+function submitPaymentForm(e) {
+    e.preventDefault();
+    if (!currentPaymentRow) return;
+    const amount = parseInt(document.getElementById('pay_amount').value) || 0;
+    const total = parseInt(currentPaymentRow.cells[2].innerText.replace(/,/g, '')) || 0;
+    let paid = parseInt(currentPaymentRow.cells[3].innerText.replace(/,/g, '')) || 0;
+    let newPaid = Math.min(paid + amount, total);
+    let remaining = total - newPaid;
+    currentPaymentRow.cells[3].innerText = newPaid.toLocaleString();
+    currentPaymentRow.cells[4].innerText = remaining.toLocaleString();
+    const statusCell = currentPaymentRow.cells[5];
+    const actionCell = currentPaymentRow.cells[6];
+    if (remaining === 0) {
+        currentPaymentRow.cells[3].className = 'p-3 border-b text-center font-mono text-green-600';
+        currentPaymentRow.cells[4].className = 'p-3 border-b text-center font-mono text-gray-400';
+        statusCell.innerHTML = '<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">مسدد بالكامل</span>';
+        actionCell.innerHTML = '<div class="flex justify-center gap-1"><button onclick="printReceipt(this)" class="bg-gray-200 px-2 py-1 rounded text-xs"><i class="fas fa-print"></i></button><button onclick="downloadReceiptPDF(this)" class="bg-red-50 text-red-600 px-2 py-1 rounded text-xs border border-red-200"><i class="fas fa-file-pdf"></i></button></div>';
+    } else {
+        currentPaymentRow.cells[3].className = 'p-3 border-b text-center font-mono text-blue-600';
+        currentPaymentRow.cells[4].className = 'p-3 border-b text-center font-mono text-red-600 font-bold';
+        statusCell.innerHTML = '<span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs font-bold">قسط غير مكتمل</span>';
+        actionCell.innerHTML = '<div class="flex justify-center gap-1"><button onclick="openPaymentModal(this)" class="bg-green-500 text-white px-2 py-1 rounded text-xs">استلام دفعة</button><button onclick="printReceipt(this)" class="bg-gray-200 px-2 py-1 rounded text-xs"><i class="fas fa-print"></i></button></div>';
+    }
+    closeModal('paymentModal');
+    showToast('تم استلام المبلغ وتحديث السجل المالي بنجاح!');
+    e.target.reset();
+    currentPaymentRow = null;
+}
+
+// ============================= الوثائق الرسمية =============================
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('doc_date')) {
+        document.getElementById('doc_date').valueAsDate = new Date();
+    }
+    renderSchedule('cs');
+    renderGradesTable();
+});
+
+function updateDocumentPreview() {
+    document.getElementById('v_num').innerText = document.getElementById('doc_number').value || '.....';
+    const dv = document.getElementById('doc_date').value;
+    document.getElementById('v_date').innerText = dv ? new Date(dv).toLocaleDateString('ar-IQ') : '.....';
+    document.getElementById('v_to').innerText = document.getElementById('doc_to').value || '.....';
+    document.getElementById('v_subject').innerText = document.getElementById('doc_subject').value || '.....';
+    document.getElementById('v_body').innerHTML = (document.getElementById('doc_body').value || '.....').replace(/\n/g, '<br>');
+}
+
+function autoFillTemplate() {
+    const type = document.getElementById('doc_type').value;
+    const to = document.getElementById('doc_to');
+    const sub = document.getElementById('doc_subject');
+    const body = document.getElementById('doc_body');
+    if (type === 'tayed') {
+        to.value = 'من يهمه الأمر';
+        sub.value = 'تأييد استمرار بالدراسة';
+        body.value = 'نؤيد لكم بأن الطالب (.....) هو أحد طلبة جامعتنا / كلية (.....) / قسم (.....) للمرحلة (.....) للعام الدراسي (2025-2026) ومستمر بالدوام الرسمي لغاية تاريخ تحرير هذا الكتاب.\n\nوبناءً على طلبه زود بهذا التأييد.';
+    } else if (type === 'khitab') {
+        to.value = 'وزارة التعليم العالي والبحث العلمي / دائرة التعليم الجامعي الأهلي';
+        sub.value = 'بيانات إحصائية';
+        body.value = 'تحية طيبة...\n\nإشارة إلى كتابكم ذي العدد (.....) والمؤرخ في (.....)، نرفق لكم طياً جدولاً يتضمن الموقف الخاص بطلبة جامعتنا للعام الدراسي الحالي وكما مبين في الجداول المرفقة.\n\nللتفضل بالاطلاع مع التقدير.';
+    } else if (type === 'takhroj') {
+        to.value = 'من يهمه الأمر';
+        sub.value = 'تأييد تخرج';
+        body.value = 'نؤيد لكم بأن الطالب (.....) قد تخرج من جامعتنا / كلية (.....) / قسم (.....) للعام الدراسي (.....) بالدور (الأول/الثاني) وحصل على شهادة (البكالوريوس) بتقدير (.....)‌.\n\nوبناءً على طلبه زود بهذا التأييد.';
+    }
+    updateDocumentPreview();
+}
+
+function preparePrint(type) {
+    document.getElementById('official-document-preview').classList.remove('print-active');
+    document.getElementById('receipt-preview').classList.remove('print-active');
+    if (type === 'document') document.getElementById('official-document-preview').classList.add('print-active');
+    else if (type === 'receipt') document.getElementById('receipt-preview').classList.add('print-active');
+}
+
+function printReceipt(btn) {
+    const row = btn.closest('tr');
+    document.getElementById('rec_name').innerText = row.cells[0].innerText;
+    document.getElementById('rec_college').innerText = row.cells[1].innerText;
+    document.getElementById('rec_amount').innerText = row.cells[3].innerText + ' دينار';
+    document.getElementById('rec_rem').innerText = row.cells[4].innerText + ' دينار';
+    document.getElementById('rec_num').innerText = Math.floor(Math.random() * 90000 + 10000);
+    document.getElementById('rec_date').innerText = new Date().toLocaleDateString('ar-IQ');
+    preparePrint('receipt');
+    window.print();
+}
+
+function downloadDocumentPDF() {
+    const el = document.getElementById('official-document-preview');
+    const num = document.getElementById('v_num').innerText;
+    showToast('جارٍ تجهيز الكتاب بصيغة PDF...');
+    html2pdf().set({
+        margin: 0,
+        filename: 'كتاب_رسمي_' + num + '.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(el).save().then(() => showToast('تم تحميل الكتاب الرسمي بنجاح!'));
+}
+
+function downloadReceiptPDF(btn) {
+    const row = btn.closest('tr');
+    document.getElementById('rec_name').innerText = row.cells[0].innerText;
+    document.getElementById('rec_college').innerText = row.cells[1].innerText;
+    document.getElementById('rec_amount').innerText = row.cells[3].innerText + ' دينار';
+    document.getElementById('rec_rem').innerText = row.cells[4].innerText + ' دينار';
+    document.getElementById('rec_num').innerText = Math.floor(Math.random() * 90000 + 10000);
+    document.getElementById('rec_date').innerText = new Date().toLocaleDateString('ar-IQ');
+    const el = document.getElementById('receipt-preview');
+    el.classList.remove('hidden');
+    el.style.cssText = 'position:absolute;left:-9999px;display:block;';
+    showToast('جارٍ تجهيز الوصل المالي...');
+    html2pdf().set({
+        margin: 0,
+        filename: 'وصل_مالي_' + row.cells[0].innerText.replace(/\s+/g, '_') + '.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a5', orientation: 'landscape' }
+    }).from(el).save().then(() => {
+        el.classList.add('hidden');
+        el.style.cssText = '';
+        showToast('تم تحميل الوصل المالي بنجاح!');
+    });
+}
+
+// ============================= الذكاء الاصطناعي - Gemini =============================
+const apiKey = "";
+
+async function fetchGemini(prompt, instruction) {
+    if (!apiKey) { showToast('يرجى إضافة مفتاح Gemini API في الكود', 'error'); return null; }
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: instruction }] } };
+    let retries = 3, delay = 1000;
+    while (retries > 0) {
+        try {
+            const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (!res.ok) throw new Error('API Error');
+            const data = await res.json();
+            return data.candidates[0].content.parts[0].text;
+        } catch (err) {
+            retries--;
+            if (retries === 0) { showToast('حدث خطأ في الاتصال بالمساعد الذكي', 'error'); return null; }
+            await new Promise(r => setTimeout(r, delay));
+            delay *= 2;
+        }
+    }
+}
+
+async function generateAILetter() {
+    const prompt = document.getElementById('ai_prompt').value;
+    if (!prompt) { showToast('يرجى كتابة وصف لموضوع الكتاب أولاً!', 'error'); return; }
+    document.getElementById('ai_loading').classList.remove('hidden');
+    const instruction = 'أنت مساعد إداري محترف في جامعة دجلة العراقية. مهمتك كتابة متن الكتب الرسمية الجامعية بأسلوب إداري رصين ومختصر باللغة العربية. لا تكتب الترويسة، ولا التاريخ، ولا التوقيع الختامي. اكتب فقط متن الكتاب مباشرة وكن دقيقاً.';
+    const result = await fetchGemini(`اكتب محتوى كتاب رسمي بناءً على الوصف التالي: ${prompt}`, instruction);
+    document.getElementById('ai_loading').classList.add('hidden');
+    if (result) { document.getElementById('doc_body').value = result; updateDocumentPreview(); showToast('تم توليد النص بنجاح!'); }
+}
+
+async function improveAILetter() {
+    const current = document.getElementById('doc_body').value;
+    if (!current || current.trim().length < 10) { showToast('النص الحالي قصير جداً للتدقيق!', 'error'); return; }
+    document.getElementById('ai_loading').classList.remove('hidden');
+    const instruction = 'أنت خبير لغوي وإداري في جامعة دجلة العراقية. مهمتك تدقيق وإعادة صياغة المخاطبات الإدارية لتكون خالية من الأخطاء النحوية والإملائية وبأسلوب إداري رسمي جداً. أعد النص المصحح فقط بدون أي إضافات أو تعليقات أخرى.';
+    const result = await fetchGemini(`قم بتدقيق وإعادة صياغة النص التالي:\n\n${current}`, instruction);
+    document.getElementById('ai_loading').classList.add('hidden');
+    if (result) { document.getElementById('doc_body').value = result; updateDocumentPreview(); showToast('تم تحسين وتدقيق النص بنجاح!'); }
+}
+
+// ============================= البحث العام =============================
+function globalSearchFn() {
+    const q = document.getElementById('globalSearch').value.trim().toLowerCase();
+    const resultsBox = document.getElementById('searchResults');
+    if (q.length < 2) { resultsBox.classList.add('hidden'); return; }
+    const sections = [
+        { id: 'dashboard', label: 'لوحة القيادة', icon: 'fa-th-large' },
+        { id: 'faculties', label: 'الكليات والأقسام', icon: 'fa-university' },
+        { id: 'students', label: 'شؤون الطلبة', icon: 'fa-user-graduate' },
+        { id: 'grades', label: 'الدرجات والمواد', icon: 'fa-star' },
+        { id: 'schedule', label: 'الجداول الدراسية', icon: 'fa-calendar-alt' },
+        { id: 'halls', label: 'إدارة القاعات وحجوزاتها', icon: 'fa-door-open' },
+        { id: 'finance', label: 'الحسابات والأقساط', icon: 'fa-file-invoice-dollar' },
+        { id: 'staff', label: 'الهيئة التدريسية HR', icon: 'fa-chalkboard-teacher' },
+        { id: 'documents', label: 'الوثائق الرسمية', icon: 'fa-stamp' },
+        { id: 'library', label: 'المكتبة الإلكترونية', icon: 'fa-book-open' },
+        { id: 'research', label: 'البحوث والنشر العلمي', icon: 'fa-flask' },
+        { id: 'requests', label: 'الطلبات والمعاملات', icon: 'fa-inbox' },
+        { id: 'reports', label: 'التقارير والإحصاءات', icon: 'fa-chart-bar' },
+        { id: 'announcements', label: 'الإعلانات والتعاميم', icon: 'fa-bullhorn' },
+        { id: 'elearn', label: 'التعليم الإلكتروني', icon: 'fa-laptop-code' },
+        { id: 'exams', label: 'الامتحانات والنتائج', icon: 'fa-file-alt' },
+        { id: 'settings', label: 'إعدادات النظام', icon: 'fa-cog' }
+    ];
+    const matches = sections.filter(s => s.label.includes(q) || s.id.includes(q));
+    if (!matches.length) { resultsBox.innerHTML = '<div class="p-4 text-center text-gray-400 text-sm">لا توجد نتائج</div>'; resultsBox.classList.remove('hidden'); return; }
+    resultsBox.innerHTML = matches.map(m => `<div class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-0" onclick="showSection('${m.id}', document.querySelector('[onclick*=${m.id}]')); document.getElementById('searchResults').classList.add('hidden'); document.getElementById('globalSearch').value='';">
+        <div class="w-8 h-8 bg-dijlahDark/10 rounded-lg flex items-center justify-center text-dijlahDark text-sm"><i class="fas ${m.icon}"></i></div>
+        <span class="font-bold text-sm text-gray-700">${m.label}</span>
+    </div>`).join('');
+    resultsBox.classList.remove('hidden');
+}
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#globalSearch') && !e.target.closest('#searchResults')) {
+        document.getElementById('searchResults').classList.add('hidden');
+    }
+});
+</script>
+</body>
+</html>
